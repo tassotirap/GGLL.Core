@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.StringReader;
 
-import org.ggll.lexical.YyFactory;
-import org.ggll.lexical.Yylex;
-import org.ggll.semantics.SemanticRoutinesIvoker;
-import org.ggll.syntax.analyzer.gsll1.Analyzer;
-import org.ggll.syntax.model.TableGraphNode;
-import org.ggll.syntax.model.TableNode;
+import org.ggll.core.lexical.YyFactory;
+import org.ggll.core.lexical.Yylex;
+import org.ggll.core.semantics.SemanticRoutinesIvoker;
+import org.ggll.core.syntax.analyzer.Analyzer;
+import org.ggll.core.syntax.model.TableGraphNode;
+import org.ggll.core.syntax.model.TableNode;
 
 public class GGLLCore
 {
@@ -19,7 +19,7 @@ public class GGLLCore
 	Analyzer analyzer = null;
 	Yylex yylex = null;
 
-	public void init(String lexPath, String fileTabGraphNodes, String fileTnTerminalTab, String fileTerminalTab, String semanaticFile)
+	public void init(String lexPath, String fileTabGraphNodes, String fileTnTerminalTab, String fileTerminalTab, String semanaticFile, boolean debug)
 	{
 		try
 		{
@@ -29,7 +29,8 @@ public class GGLLCore
 			TableNode[] termialTab = toFileTerminalTab(fileTerminalTab);
 			SemanticRoutinesIvoker semanticRoutinesIvoker = new SemanticRoutinesIvoker(new File(semanaticFile));
 			semanticRoutinesIvoker.configureAndLoad();
-			analyzer = new Analyzer(tabGraphNodes, termialTab, nTerminalTab, null, yylex);
+			analyzer = new Analyzer(tabGraphNodes, termialTab, nTerminalTab, null, yylex, debug);			
+			
 		}
 		catch (Exception e)
 		{
@@ -38,7 +39,7 @@ public class GGLLCore
 		}
 	}
 
-	public void analise(String source)
+	public void run(String source)
 	{
 		try
 		{
@@ -49,6 +50,11 @@ public class GGLLCore
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean next()
+	{
+		return analyzer.next();
 	}
 
 	private TableNode[] toFileTerminalTab(String file)

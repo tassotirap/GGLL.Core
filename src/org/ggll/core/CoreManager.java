@@ -8,6 +8,8 @@ public class CoreManager
 	private static File semanticFile;	
 	private static File lexFile;	
 	private static File sintaticaFile;	
+	private static ArrayList<String> errorList = new ArrayList<String>();
+	private static boolean sucess = true;
 
 	public static File getSemanticFile()
 	{
@@ -49,10 +51,20 @@ public class CoreManager
 		CoreManager.errorList.add(error);
 	}
 
-	private static ArrayList<String> errorList = new ArrayList<String>();
+	
 
 	public static void clearErrors()
 	{
 		errorList.clear();		
+	}
+
+	public static boolean isSucess()
+	{
+		return sucess;
+	}
+
+	public static void setSucess(boolean sucess)
+	{
+		CoreManager.sucess = sucess;
 	}
 }
