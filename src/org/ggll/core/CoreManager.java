@@ -3,6 +3,9 @@ package org.ggll.core;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.ggll.core.syntax.model.TableGraphNode;
+import org.ggll.core.syntax.model.TableNode;
+
 public class CoreManager
 {
 	private static File semanticFile;	
@@ -10,6 +13,7 @@ public class CoreManager
 	private static File sintaticaFile;	
 	private static ArrayList<String> errorList = new ArrayList<String>();
 	private static boolean sucess = true;
+	
 
 	public static File getSemanticFile()
 	{

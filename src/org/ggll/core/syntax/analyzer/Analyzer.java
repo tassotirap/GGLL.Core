@@ -45,10 +45,10 @@ public class Analyzer
 		CoreManager.clearErrors();
 		
 		analyzerToken.setCurrentSemanticSymbol(null);
-		analyzerStacks.init();
+		getAnalyzerStacks().init();
 
 		CoreManager.setSucess(true);
-		semanticRoutinesRepo = SemanticRoutinesRepo.setInstance(analyzerStacks.getParseStack());
+		semanticRoutinesRepo = SemanticRoutinesRepo.setInstance(getAnalyzerStacks().getParseStack());
 
 		analyzerToken.getYylex().TabT(analyzerTabs.getTermialTable());
 		analyzerTabs.setGraphNode(0, new TableGraphNode());
@@ -57,8 +57,8 @@ public class Analyzer
 		analyzerTabs.getGraphNode(0).setAlternativeIndex(0);
 		analyzerTabs.getGraphNode(0).setSucessorIndex(0);
 
-		analyzerStacks.getGrViewStack().push(new GrViewNode(0, 1));
-		analyzerStacks.setTop(0);
+		getAnalyzerStacks().getGrViewStack().push(new GrViewNode(0, 1));
+		getAnalyzerStacks().setTop(0);
 
 		analyzerToken.readNext();
 
@@ -94,7 +94,7 @@ public class Analyzer
 					{
 						if ((currentTerminal.getName()).equals(analyzerToken.getCurrentSymbol()))
 						{
-							analyzerStacks.getParseStack().push(new ParseNode(currentTerminal.getFlag(), analyzerToken.getCurrentSymbol(), analyzerToken.getCurrentSemanticSymbol()));
+							getAnalyzerStacks().getParseStack().push(new ParseNode(currentTerminal.getFlag(), analyzerToken.getCurrentSymbol(), analyzerToken.getCurrentSemanticSymbol()));
 
 							semanticRoutinesRepo.setCurrentToken(analyzerToken.getCurrentToken());
 							semanticRoutinesRepo.execFunction(currentGraphNode.getSemanticRoutine());
@@ -103,9 +103,9 @@ public class Analyzer
 
 							I = currentGraphNode.getSucessorIndex();
 							UI = I;
-							analyzerStacks.setTop(analyzerStacks.getTop() + 1);
+							getAnalyzerStacks().setTop(getAnalyzerStacks().getTop() + 1);
 
-							analyzerStacks.getNTerminalStack().clear();
+							getAnalyzerStacks().getNTerminalStack().clear();
 
 							if (debug)
 							{
@@ -120,7 +120,7 @@ public class Analyzer
 							}
 							else
 							{
-								if (analyzerStacks.getNTerminalStack().empty())
+								if (getAnalyzerStacks().getNTerminalStack().empty())
 								{
 									I = analyzerError.dealWithError(UI, analyzerToken.getCurrentToken().charBegin + 1, analyzerToken.getCurrentToken().line + 1);
 									continueSentinel = I >= 0;
@@ -128,7 +128,7 @@ public class Analyzer
 								}
 								else
 								{
-									int alternative = analyzerAlternative.findAlternative(I, analyzerStacks.getNTerminalStack(), analyzerStacks.getGrViewStack());
+									int alternative = analyzerAlternative.findAlternative(I, getAnalyzerStacks().getNTerminalStack(), getAnalyzerStacks().getGrViewStack());
 									if (alternative != 0)
 									{
 										I = alternative;
@@ -147,27 +147,27 @@ public class Analyzer
 				else
 				{
 					TableNode currentNTerminal = analyzerTabs.getNTerminal(analyzerTabs.getGraphNode(I).getNodeReference());
-					analyzerStacks.getNTerminalStack().push(I);
-					analyzerStacks.getGrViewStack().push(new GrViewNode(I, analyzerStacks.getTop() + 1));
+					getAnalyzerStacks().getNTerminalStack().push(I);
+					getAnalyzerStacks().getGrViewStack().push(new GrViewNode(I, getAnalyzerStacks().getTop() + 1));
 					I = currentNTerminal.getFirstNode();
 				}
 			}
 			else
 			{
-				if (!analyzerStacks.getGrViewStack().empty())
+				if (!getAnalyzerStacks().getGrViewStack().empty())
 				{
-					grViewStackNode = analyzerStacks.getGrViewStack().pop();
+					grViewStackNode = getAnalyzerStacks().getGrViewStack().pop();
 					auxParseSNode = null;
 
-					while (analyzerStacks.getParseStack().size() >= grViewStackNode.size)
+					while (getAnalyzerStacks().getParseStack().size() >= grViewStackNode.size)
 					{
-						auxParseSNode = analyzerStacks.getParseStack().pop();
+						auxParseSNode = getAnalyzerStacks().getParseStack().pop();
 					}
 
 					if (auxParseSNode != null)
 					{
 						TableNode currentNTerminal = analyzerTabs.getNTerminal(analyzerTabs.getGraphNode(grViewStackNode.indexNode).getNodeReference());
-						analyzerStacks.getParseStack().push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
+						getAnalyzerStacks().getParseStack().push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
 
 						if (debug)
 						{
@@ -195,5 +195,10 @@ public class Analyzer
 			}
 		}
 		return false;
+	}
+
+	public AnalyzerStackRepository getAnalyzerStacks()
+	{
+		return analyzerStacks;
 	}
 }
