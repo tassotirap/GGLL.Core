@@ -82,8 +82,6 @@ public final class DynaCode
 			{
 				throw new RuntimeException("Failed to load DynaCode class " + srcFile.getAbsolutePath());
 			}
-
-			info("Init " + clazz);
 		}
 
 		boolean isChanged()
@@ -265,14 +263,6 @@ public final class DynaCode
 		return buf.toString();
 	}
 
-	/**
-	 * Log a message.
-	 */
-	private static void info(String msg)
-	{
-		System.out.println("[DynaCode] " + msg);
-	}
-
 	private SourceDir locateResource(String resource)
 	{
 		for (int i = 0; i < sourceDirs.size(); i++)
@@ -339,8 +329,6 @@ public final class DynaCode
 			// add new
 			SourceDir src = new SourceDir(srcDir, localBinDir);
 			sourceDirs.add(src);
-
-			info("Add source dir " + srcDir);
 		}
 
 		return true;

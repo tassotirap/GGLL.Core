@@ -49,8 +49,7 @@ public class ChangeStrategy extends IErroStrategy
 							String temp = analyzerTable.getTermial(analyzerTable.getGraphNode(IY).getNodeReference()).getName();
 							if (temp.equals(analyzerToken.getCurrentSymbol()))
 							{
-								CoreManager.setError("<font color='red'>Symbol \"" + analyzerToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\"\n");
-								//AppOutput.displayText("<font color='red'>Symbol \"" + analyzerToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\"\n", TOPIC.Output);
+								CoreManager.setError("Symbol \"" + analyzerToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\"");
 								analyzerStack.getParseStack().push(new ParseNode(analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference()).getFlag(), terminalNode.getName(), terminalNode.getName()));
 								analyzerStack.setTop(analyzerStack.getTop() + 1);
 								

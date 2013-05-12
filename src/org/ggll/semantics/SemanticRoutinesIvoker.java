@@ -65,7 +65,7 @@ public class SemanticRoutinesIvoker implements Cloneable, TokenListener
 	public void configureAndLoad()
 	{
 		File modBeanInjection = new File(System.getProperty("java.io.tmpdir"), "beaninjection.xml");
-		File beanInjection = new File(SPRING_XML_MODEL);
+		File beanInjection = new File(getClass().getResource(SPRING_XML_MODEL).getFile());
 		try
 		{
 			if (!modBeanInjection.exists())
@@ -96,6 +96,7 @@ public class SemanticRoutinesIvoker implements Cloneable, TokenListener
 		{
 			Log.log(Log.ERROR, this, "Could not semantic routines file.", e);
 		}
+		System.setProperty("org.apache.commons.logging.Log","org.apache.commons.logging.impl.NoOpLog");
 		ctx = new FileSystemXmlApplicationContext(modBeanInjection.getAbsolutePath());
 		scriptlet = ctx.getBean("routines");
 		loaded = true;

@@ -48,8 +48,7 @@ public class InsertStrategy extends IErroStrategy
 							String temp = analyzerTable.getTermial(analyzerTable.getGraphNode(IY).getNodeReference()).getName();
 							if (temp.equals(analyzerToken.getCurrentSymbol()))
 							{
-								CoreManager.setError("<font color='red'>Symbol \"" + terminalNode.getName() + "\" inserted before column " + column + "\n</font>");
-								//AppOutput.displayText("<font color='red'>Symbol \"" + terminalNode.getName() + "\" inserted before column " + column + "\n</font>", TOPIC.Output);
+								CoreManager.setError("Symbol \"" + terminalNode.getName() + "\" inserted before column " + column + ".");
 								analyzerStack.getParseStack().push(new ParseNode(terminalNode.getFlag(), terminalNode.getName(), terminalNode.getName()));
 								analyzerStack.setTop(analyzerStack.getTop() + 1);
 

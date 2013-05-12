@@ -42,8 +42,7 @@ public class DelimiterSearchStrategy extends IErroStrategy
 
 				if (terminalNode.getName().equals(analyzerToken.getCurrentSymbol()))
 				{
-					CoreManager.setError("<font color='red'>Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter.\n</font>");
-					//AppOutput.displayText("<font color='red'>Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter.\n</font>", TOPIC.Output);
+					CoreManager.setError("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter.");
 					I = IX;
 				}
 				else

@@ -24,7 +24,6 @@ public class Analyzer extends Thread
 	private AnalyzerAlternative analyzerAlternative;
 	private AnalyzerErrorFacede analyzerError;
 	private AnalyzerToken analyzerToken;
-
 	private AnalyzerStackRepository analyzerStacks;
 	private AnalyzerTableRepository analyzerTabs;
 	private AnalyzerPrint analyzerPrint;
@@ -34,9 +33,7 @@ public class Analyzer extends Thread
 		analyzerPrint = AnalyzerPrint.setInstance(this);
 		analyzerToken = AnalyzerToken.setInstance(yylex);
 		analyzerTabs = AnalyzerTableRepository.setInstance(tabGraphNodes, nTerminalTab, termialTab);
-
 		analyzerStacks = AnalyzerStackRepository.setInstance();
-
 		analyzerAlternative = AnalyzerAlternative.setInstance();
 		analyzerError = new AnalyzerErrorFacede(fileIn);
 	}
@@ -58,7 +55,6 @@ public class Analyzer extends Thread
 		semanticRoutinesRepo = SemanticRoutinesRepo.setInstance(analyzerStacks.getParseStack());
 
 		analyzerToken.getYylex().TabT(analyzerTabs.getTermialTable());
-
 		analyzerTabs.setGraphNode(0, new TableGraphNode());
 		analyzerTabs.getGraphNode(0).setIsTerminal(false);
 		analyzerTabs.getGraphNode(0).setNodeReference(1);

@@ -27,8 +27,7 @@ public class DeleteStrategy extends IErroStrategy
 
 				if (terminalNode.getName().equals(analyzerToken.getCurrentSymbol()))
 				{
-					CoreManager.setError("<font color='red'>Symbol \"" + analyzerToken.getLastToken().text + "\" was ignored.\n</font>");
-					//AppOutput.displayText("<font color='red'>Symbol \"" + analyzerToken.getLastToken().text + "\" was ignored.\n</font>", TOPIC.Output);
+					CoreManager.setError("Symbol \"" + analyzerToken.getLastToken().text + "\" was ignored.");
 					I = IX;
 					break;
 				}

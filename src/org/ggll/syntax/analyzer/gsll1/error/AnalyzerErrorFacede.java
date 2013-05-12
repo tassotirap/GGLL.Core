@@ -44,7 +44,6 @@ public class AnalyzerErrorFacede
 				String wrongLine = bufferedReader.readLine();
 				bufferedReader.close();
 				CoreManager.setError("\n" + wrongLine + "\n");
-				//AppOutput.displayText("\n" + wrongLine + "\n", TOPIC.Output);
 			}
 
 		}
@@ -53,12 +52,9 @@ public class AnalyzerErrorFacede
 			if (fileIn != null)
 			{
 				CoreManager.setError("File not found...");
-				//AppOutput.displayText("File not found...", TOPIC.Output);
 			}
 		}
-		CoreManager.setError("<font color='red'>Error found at the symbol " + syntaxToken.getCurrentToken().text + " of line: " + line + ", column: " + column + ". </font>");
-		//AppOutput.displayText("<font color='red'>Error found at the symbol " + syntaxToken.getCurrentToken().text + " of line: " + line + ", column: " + column + ". </font>", TOPIC.Output);
-
+		CoreManager.setError("Error found at the symbol " + syntaxToken.getCurrentToken().text + " of line: " + line + ", column: " + column + ".");
 		int IX = UI;
 
 		Stack<TableGraphNode> nTerminalStack = new Stack<TableGraphNode>();
@@ -67,9 +63,7 @@ public class AnalyzerErrorFacede
 		{
 			if (analyzerTable.getGraphNode(IX).IsTerminal())
 			{
-				CoreManager.setError("<font color='red'>" + analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference()).getName() + " expected.</font>");
-				//AppOutput.displayText("<font color='red'>" + analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference()).getName() + " expected.</font>", TOPIC.Output);
-
+				CoreManager.setError(analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference()).getName() + " expected.");
 				IX = analyzerTable.getGraphNode(IX).getAlternativeIndex();
 
 				if (IX == 0 && nTerminalStack.size() > 0)
