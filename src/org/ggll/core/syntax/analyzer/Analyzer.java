@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.ggll.core.CoreManager;
 import org.ggll.core.lexical.Yylex;
-import org.ggll.core.semantics.SemanticRoutinesRepo;
+import org.ggll.core.semantics.SemanticRoutinesHelper;
 import org.ggll.core.syntax.error.AnalyzerErrorFacede;
 import org.ggll.core.syntax.model.GrViewNode;
 import org.ggll.core.syntax.model.ParseNode;
@@ -19,7 +19,7 @@ public class Analyzer
 
 	ParseNode auxParseSNode = null;
 
-	private SemanticRoutinesRepo semanticRoutinesRepo;
+	private SemanticRoutinesHelper semanticRoutinesRepo;
 
 	private AnalyzerAlternative analyzerAlternative;
 	private AnalyzerErrorFacede analyzerError;
@@ -30,13 +30,16 @@ public class Analyzer
 	private int UI;
 	private boolean debug;
 
-	public Analyzer(TableGraphNode tabGraphNodes[], TableNode termialTab[], TableNode nTerminalTab[], File fileIn, Yylex yylex, boolean debug)
+	public Analyzer(TableGraphNode tabGraphNodes[], TableNode termialTab[], TableNode nTerminalTab[], File fileIn, Yylex yylex, File semanticFile, boolean debug)
 	{
 		analyzerToken = AnalyzerToken.setInstance(yylex);
 		analyzerTabs = AnalyzerTableRepository.setInstance(tabGraphNodes, nTerminalTab, termialTab);
 		analyzerStacks = AnalyzerStackRepository.setInstance();
 		analyzerAlternative = AnalyzerAlternative.setInstance();
 		analyzerError = new AnalyzerErrorFacede(fileIn);
+		semanticRoutinesRepo = SemanticRoutinesHelper.setInstance(getAnalyzerStacks().getParseStack(), semanticFile);
+		
+		CoreManager.setSemanticFile(semanticFile);
 		this.debug = debug;
 	}
 
@@ -48,7 +51,7 @@ public class Analyzer
 		getAnalyzerStacks().init();
 
 		CoreManager.setSucess(true);
-		semanticRoutinesRepo = SemanticRoutinesRepo.setInstance(getAnalyzerStacks().getParseStack());
+		
 
 		analyzerToken.getYylex().TabT(analyzerTabs.getTermialTable());
 		analyzerTabs.setGraphNode(0, new TableGraphNode());
@@ -168,11 +171,6 @@ public class Analyzer
 					{
 						TableNode currentNTerminal = analyzerTabs.getNTerminal(analyzerTabs.getGraphNode(grViewStackNode.indexNode).getNodeReference());
 						getAnalyzerStacks().getParseStack().push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
-
-						if (debug)
-						{
-							return true;
-						}
 					}
 
 					I = grViewStackNode.indexNode;

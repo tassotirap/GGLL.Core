@@ -8,7 +8,6 @@ import java.io.StringReader;
 
 import org.ggll.core.lexical.YyFactory;
 import org.ggll.core.lexical.Yylex;
-import org.ggll.core.semantics.SemanticRoutinesIvoker;
 import org.ggll.core.syntax.analyzer.Analyzer;
 import org.ggll.core.syntax.model.TableGraphNode;
 import org.ggll.core.syntax.model.TableNode;
@@ -19,7 +18,7 @@ public class GGLLCore
 	Analyzer analyzer = null;
 	Yylex yylex = null;
 
-	public void init(String lexPath, String fileTabGraphNodes, String fileTnTerminalTab, String fileTerminalTab, String semanaticFile, boolean debug)
+	public void init(String lexPath, String fileTabGraphNodes, String fileTnTerminalTab, String fileTerminalTab, File semanaticFile, boolean debug)
 	{
 		try
 		{
@@ -27,9 +26,7 @@ public class GGLLCore
 			TableGraphNode[] tabGraphNodes = toFileTabGraphNodes(fileTabGraphNodes);
 			TableNode[] nTerminalTab = toFileTnTerminalTab(fileTnTerminalTab);
 			TableNode[] termialTab = toFileTerminalTab(fileTerminalTab);
-			SemanticRoutinesIvoker semanticRoutinesIvoker = new SemanticRoutinesIvoker(new File(semanaticFile));
-			semanticRoutinesIvoker.configureAndLoad();
-			analyzer = new Analyzer(tabGraphNodes, termialTab, nTerminalTab, null, yylex, debug);			
+			analyzer = new Analyzer(tabGraphNodes, termialTab, nTerminalTab, null, yylex, semanaticFile, debug);			
 			
 		}
 		catch (Exception e)

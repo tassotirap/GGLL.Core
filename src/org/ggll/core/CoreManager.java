@@ -53,9 +53,7 @@ public class CoreManager
 	public static void setError(String error)
 	{
 		CoreManager.errorList.add(error);
-	}
-
-	
+	}	
 
 	public static void clearErrors()
 	{

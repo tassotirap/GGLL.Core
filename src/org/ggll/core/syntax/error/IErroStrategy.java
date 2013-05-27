@@ -1,6 +1,6 @@
 package org.ggll.core.syntax.error;
 
-import org.ggll.core.semantics.SemanticRoutinesRepo;
+import org.ggll.core.semantics.SemanticRoutinesHelper;
 import org.ggll.core.syntax.analyzer.AnalyzerAlternative;
 import org.ggll.core.syntax.analyzer.AnalyzerStackRepository;
 import org.ggll.core.syntax.analyzer.AnalyzerTableRepository;
@@ -20,7 +20,7 @@ public abstract class IErroStrategy
 
 	protected AnalyzerAlternative analyzerAlternative;
 	protected AnalyzerToken analyzerToken;
-	protected SemanticRoutinesRepo semanticRoutinesRepo;
+	protected SemanticRoutinesHelper semanticRoutinesRepo;
 
 	abstract int tryFix(int UI, int column, int line);
 
@@ -30,7 +30,7 @@ public abstract class IErroStrategy
 		this.analyzerStack = AnalyzerStackRepository.getInstance();
 		this.analyzerAlternative = AnalyzerAlternative.getInstance();
 		this.analyzerToken = AnalyzerToken.getInstance();
-		this.semanticRoutinesRepo = SemanticRoutinesRepo.getInstance();
+		this.semanticRoutinesRepo = SemanticRoutinesHelper.getInstance();
 		oldGrViewStack = analyzerStack.getGrViewStack().clone();
 		oldNTerminalStack = analyzerStack.getNTerminalStack().clone();
 		oldTop = analyzerStack.getTop();
