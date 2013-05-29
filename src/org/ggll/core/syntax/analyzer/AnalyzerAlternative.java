@@ -5,26 +5,26 @@ import org.ggll.core.syntax.model.NTerminalStack;
 
 public class AnalyzerAlternative
 {
-	AnalyzerTableRepository analyzerTabs;
-	
+	AnalyzerTable analyzerTabs;
+
 	private static AnalyzerAlternative instance;
-	
+
 	public static AnalyzerAlternative getInstance()
 	{
 		return instance;
 	}
-	
-	public static AnalyzerAlternative setInstance()
+
+	public static AnalyzerAlternative setInstance(AnalyzerTable analyzerTabs)
 	{
-		instance = new AnalyzerAlternative();
+		instance = new AnalyzerAlternative(analyzerTabs);
 		return instance;
-	}	
-	
-	private AnalyzerAlternative()
-	{
-		this.analyzerTabs = AnalyzerTableRepository.getInstance();
 	}
-	
+
+	private AnalyzerAlternative(AnalyzerTable analyzerTabs)
+	{
+		this.analyzerTabs = analyzerTabs;
+	}
+
 	public int findAlternative(int indexNode, NTerminalStack nTermStack, GrViewStack grViewStack)
 	{
 		int alternative = 0;

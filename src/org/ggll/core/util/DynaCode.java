@@ -56,17 +56,10 @@ public final class DynaCode
 			}
 
 			// compile, if required
-			String error = null;
 			if (binFile.lastModified() < srcFile.lastModified())
 			{
-				error = srcDir.javac.compile(new File[]{ srcFile });
+				srcDir.javac.compile(new File[]{ srcFile });
 			}
-
-			if (error != null)
-			{
-				throw new RuntimeException("Failed to compile " + srcFile.getAbsolutePath() + ". Error: " + error);
-			}
-
 			try
 			{
 				// load class
@@ -121,7 +114,6 @@ public final class DynaCode
 			}
 			catch (Exception e)
 			{
-				Log.log(Log.ERROR, this, "Compilation error! See console for details.", e);
 				// e.printStackTrace();
 				throw new RuntimeException("Failed to new instance of DynaCode class " + clz.getName(), e);
 			}

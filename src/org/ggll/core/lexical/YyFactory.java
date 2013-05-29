@@ -3,7 +3,6 @@ package org.ggll.core.lexical;
 import java.io.File;
 
 import org.ggll.core.util.DynaCode;
-import org.ggll.core.util.Log;
 
 public class YyFactory
 {
@@ -24,7 +23,6 @@ public class YyFactory
 			{
 				if (!targetDir.mkdir())
 				{
-					Log.log(Log.ERROR, null, "Could not generate Yylex.java");
 					return;
 				}
 			}

@@ -1,6 +1,7 @@
 package org.ggll.core.syntax.error;
 
 import org.ggll.core.CoreManager;
+import org.ggll.core.syntax.analyzer.AnalyzerTable;
 import org.ggll.core.syntax.model.GrViewNode;
 import org.ggll.core.syntax.model.NTerminalStack;
 import org.ggll.core.syntax.model.ParseNode;
@@ -8,6 +9,11 @@ import org.ggll.core.syntax.model.TableNode;
 
 public class ChangeStrategy extends IErroStrategy
 {
+	public ChangeStrategy(AnalyzerTable analyzerTable)
+	{
+		super(analyzerTable);
+	}
+	
 	public int tryFix(int UI, int column, int line)
 	{
 		int IX, IY;

@@ -2,36 +2,33 @@ package org.ggll.core.syntax.model;
 
 import java.io.Serializable;
 
+
 /*
  * Created on 11/08/2003
  *
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-
-/**
- * * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- * 
- * @author gohan
- * 
- */
 public class TableGraphNode implements Serializable
 {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	private int alternativeIndex;
+	
 	private String semanticRoutine;
+	
 	private int nodeReference;
+	
 	private int sucessorIndex;
+	
 	private boolean isTerminal;
 
 	public TableGraphNode()
 	{
-
 	}
 
 	public int getAlternativeIndex()

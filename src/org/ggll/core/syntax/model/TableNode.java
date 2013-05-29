@@ -2,6 +2,7 @@ package org.ggll.core.syntax.model;
 
 import java.io.Serializable;
 
+
 public class TableNode implements Serializable
 {
 	/**
@@ -10,10 +11,15 @@ public class TableNode implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	private String flag;
-	
+		
 	private String name;
 
 	private int firstNode;
+	
+	public TableNode()
+	{
+		
+	}
 
 	public TableNode(String flag, String nodeName)
 	{

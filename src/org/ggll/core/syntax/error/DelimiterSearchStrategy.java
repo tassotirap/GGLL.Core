@@ -5,18 +5,19 @@ import java.util.Stack;
 import org.ggll.core.CoreManager;
 import org.ggll.core.syntax.analyzer.AnalyzerAlternative;
 import org.ggll.core.syntax.analyzer.AnalyzerStackRepository;
-import org.ggll.core.syntax.analyzer.AnalyzerTableRepository;
+import org.ggll.core.syntax.analyzer.AnalyzerTable;
 import org.ggll.core.syntax.analyzer.AnalyzerToken;
 import org.ggll.core.syntax.model.TableNode;
 
 public class DelimiterSearchStrategy extends IErroStrategy
 {
-	private AnalyzerTableRepository analyzerTable;
+	private AnalyzerTable analyzerTable;
 	private AnalyzerToken analyzerToken;
 
-	public DelimiterSearchStrategy()
+	public DelimiterSearchStrategy(AnalyzerTable analyzerTable)
 	{
-		this.analyzerTable = AnalyzerTableRepository.getInstance();
+		super(analyzerTable);
+		this.analyzerTable = analyzerTable;
 		this.analyzerStack = AnalyzerStackRepository.getInstance();
 		this.analyzerAlternative = AnalyzerAlternative.getInstance();
 		this.analyzerToken = AnalyzerToken.getInstance();

@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.ggll.core.CoreManager;
 import org.ggll.core.lexical.Yylex;
-import org.ggll.core.semantics.SemanticRoutinesHelper;
+import org.ggll.core.semantics.SemanticRoutines;
 import org.ggll.core.syntax.error.AnalyzerErrorFacede;
 import org.ggll.core.syntax.model.GrViewNode;
 import org.ggll.core.syntax.model.ParseNode;
@@ -19,27 +19,25 @@ public class Analyzer
 
 	ParseNode auxParseSNode = null;
 
-	private SemanticRoutinesHelper semanticRoutinesRepo;
+	private SemanticRoutines semanticRoutinesRepo;
 
 	private AnalyzerAlternative analyzerAlternative;
 	private AnalyzerErrorFacede analyzerError;
 	private AnalyzerToken analyzerToken;
 	private AnalyzerStackRepository analyzerStacks;
-	private AnalyzerTableRepository analyzerTabs;
+	private AnalyzerTable analyzerTabs;
 	private int I;
 	private int UI;
 	private boolean debug;
 
-	public Analyzer(TableGraphNode tabGraphNodes[], TableNode termialTab[], TableNode nTerminalTab[], File fileIn, Yylex yylex, File semanticFile, boolean debug)
+	public Analyzer(AnalyzerTable analyzerTabs, File fileIn, Yylex yylex, File semanticFile, boolean debug)
 	{
 		analyzerToken = AnalyzerToken.setInstance(yylex);
-		analyzerTabs = AnalyzerTableRepository.setInstance(tabGraphNodes, nTerminalTab, termialTab);
+		this.analyzerTabs = analyzerTabs;
 		analyzerStacks = AnalyzerStackRepository.setInstance();
-		analyzerAlternative = AnalyzerAlternative.setInstance();
-		analyzerError = new AnalyzerErrorFacede(fileIn);
-		semanticRoutinesRepo = SemanticRoutinesHelper.setInstance(getAnalyzerStacks().getParseStack(), semanticFile);
-		
-		CoreManager.setSemanticFile(semanticFile);
+		analyzerAlternative = AnalyzerAlternative.setInstance(analyzerTabs);
+		analyzerError = new AnalyzerErrorFacede(fileIn, analyzerTabs);
+		semanticRoutinesRepo = SemanticRoutines.setInstance(getAnalyzerStacks().getParseStack(), semanticFile);
 		this.debug = debug;
 	}
 
@@ -50,8 +48,7 @@ public class Analyzer
 		analyzerToken.setCurrentSemanticSymbol(null);
 		getAnalyzerStacks().init();
 
-		CoreManager.setSucess(true);
-		
+		CoreManager.setSucess(true);	
 
 		analyzerToken.getYylex().TabT(analyzerTabs.getTermialTable());
 		analyzerTabs.setGraphNode(0, new TableGraphNode());

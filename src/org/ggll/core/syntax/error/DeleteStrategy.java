@@ -1,12 +1,18 @@
 package org.ggll.core.syntax.error;
 
 import org.ggll.core.CoreManager;
+import org.ggll.core.syntax.analyzer.AnalyzerTable;
 import org.ggll.core.syntax.model.GrViewNode;
 import org.ggll.core.syntax.model.TableGraphNode;
 import org.ggll.core.syntax.model.TableNode;
 
 public class DeleteStrategy extends IErroStrategy
 {
+	public DeleteStrategy(AnalyzerTable analyzerTable)
+	{
+		super(analyzerTable);
+	}
+
 	@Override
 	public int tryFix(int UI, int column, int line)
 	{

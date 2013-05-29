@@ -8,22 +8,21 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import org.ggll.core.CoreManager;
-import org.ggll.core.syntax.analyzer.AnalyzerTableRepository;
+import org.ggll.core.syntax.analyzer.AnalyzerTable;
 import org.ggll.core.syntax.analyzer.AnalyzerToken;
 import org.ggll.core.syntax.model.TableGraphNode;
 
 public class AnalyzerErrorFacede
 {
-
 	private File fileIn;
-	private AnalyzerTableRepository analyzerTable;
+	private AnalyzerTable analyzerTable;
 
 	private AnalyzerToken syntaxToken;
 
-	public AnalyzerErrorFacede(File fileIn)
+	public AnalyzerErrorFacede(File fileIn, AnalyzerTable analyzerTable)
 	{
 		this.fileIn = fileIn;
-		this.analyzerTable = AnalyzerTableRepository.getInstance();
+		this.analyzerTable = analyzerTable;
 		this.syntaxToken = AnalyzerToken.getInstance();
 	}
 
@@ -81,10 +80,10 @@ public class AnalyzerErrorFacede
 
 		ArrayList<IErroStrategy> strategyList = new ArrayList<IErroStrategy>();
 		
-		strategyList.add(new DeleteStrategy());
-		strategyList.add(new InsertStrategy());		
-		strategyList.add(new ChangeStrategy());
-		strategyList.add(new DelimiterSearchStrategy());
+		strategyList.add(new DeleteStrategy(analyzerTable));
+		strategyList.add(new InsertStrategy(analyzerTable));		
+		strategyList.add(new ChangeStrategy(analyzerTable));
+		strategyList.add(new DelimiterSearchStrategy(analyzerTable));
 
 		int I = UI;
 
