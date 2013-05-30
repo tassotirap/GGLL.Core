@@ -1,40 +1,46 @@
 package org.ggll.core.syntax.error;
 
-import org.ggll.core.semantics.SemanticRoutines;
-import org.ggll.core.syntax.analyzer.AnalyzerAlternative;
-import org.ggll.core.syntax.analyzer.AnalyzerStackRepository;
-import org.ggll.core.syntax.analyzer.AnalyzerTable;
-import org.ggll.core.syntax.analyzer.AnalyzerToken;
+import org.ggll.core.semantics.SemanticRoutine;
 import org.ggll.core.syntax.model.GrViewStack;
 import org.ggll.core.syntax.model.NTerminalStack;
+import org.ggll.core.syntax.parser.Parser;
+import org.ggll.core.syntax.parser.ParserAlternative;
+import org.ggll.core.syntax.parser.ParserStack;
+import org.ggll.core.syntax.parser.ParserTable;
+import org.ggll.core.syntax.parser.ParserToken;
 
 public abstract class IErroStrategy
 {
-	protected AnalyzerTable analyzerTable;
-	protected AnalyzerStackRepository analyzerStack;
+	protected Parser analyzer;
+	protected ParserStack analyzerStack;
 
-	public IErroStrategy(AnalyzerTable analyzerTable)
-	{
-		this.analyzerTable = analyzerTable;
-	}
+	protected ParserToken oldToken;
 
-	protected AnalyzerToken oldToken;
 	protected GrViewStack oldGrViewStack;
 	protected NTerminalStack oldNTerminalStack;
 	protected int oldTop;
+	protected int MAX_ITERATOR = 100;
+	protected ParserAlternative analyzerAlternative;
 
-	protected AnalyzerAlternative analyzerAlternative;
-	protected AnalyzerToken analyzerToken;
-	protected SemanticRoutines semanticRoutinesRepo;
-
-	abstract int tryFix(int UI, int column, int line);
-
-	protected void init()
+	protected ParserToken analyzerToken;
+	protected SemanticRoutine semanticRoutines;
+	protected ParserTable analyzerTable;
+	public IErroStrategy(Parser analyzer)
 	{
-		this.analyzerStack = AnalyzerStackRepository.getInstance();
-		this.analyzerAlternative = AnalyzerAlternative.getInstance();
-		this.analyzerToken = AnalyzerToken.getInstance();
-		this.semanticRoutinesRepo = SemanticRoutines.getInstance();
+		this.analyzer = analyzer;
+	}
+
+	abstract int tryFix(int UI, int column, int line) throws Exception;
+
+	protected void init() throws Exception
+	{
+		this.analyzerStack = analyzer.getParseStacks();
+		this.analyzerAlternative = analyzer.getParseAlternative();
+		this.analyzerToken = analyzer.getParseToken();
+		this.semanticRoutines = analyzer.getSemanticRoutines();
+		this.analyzerTable = analyzer.getParseTable();
+		
+		
 		oldGrViewStack = analyzerStack.getGrViewStack().clone();
 		oldNTerminalStack = analyzerStack.getNTerminalStack().clone();
 		oldTop = analyzerStack.getTop();

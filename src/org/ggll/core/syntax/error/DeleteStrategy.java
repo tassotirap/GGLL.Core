@@ -1,20 +1,19 @@
 package org.ggll.core.syntax.error;
 
-import org.ggll.core.CoreManager;
-import org.ggll.core.syntax.analyzer.AnalyzerTable;
 import org.ggll.core.syntax.model.GrViewNode;
 import org.ggll.core.syntax.model.TableGraphNode;
 import org.ggll.core.syntax.model.TableNode;
+import org.ggll.core.syntax.parser.Parser;
 
 public class DeleteStrategy extends IErroStrategy
 {
-	public DeleteStrategy(AnalyzerTable analyzerTable)
+	public DeleteStrategy(Parser analyzer)
 	{
-		super(analyzerTable);
+		super(analyzer);
 	}
 
 	@Override
-	public int tryFix(int UI, int column, int line)
+	public int tryFix(int UI, int column, int line) throws Exception
 	{
 		int I = -1;
 		int IX = UI;
@@ -23,17 +22,22 @@ public class DeleteStrategy extends IErroStrategy
 
 		analyzerToken.readNext();
 
+		int iteration = 0;
 		while (IX != 0)
 		{
+			if(iteration > MAX_ITERATOR)
+			{
+				break;
+			}
+			
 			TableGraphNode graphNode = analyzerTable.getGraphNode(IX);
-
 			if (analyzerTable.getGraphNode(IX).IsTerminal())
 			{
 				TableNode terminalNode = analyzerTable.getTermial(graphNode.getNodeReference());
 
 				if (terminalNode.getName().equals(analyzerToken.getCurrentSymbol()))
 				{
-					CoreManager.setError("Symbol \"" + analyzerToken.getLastToken().text + "\" was ignored.");
+					analyzer.setError("Symbol \"" + analyzerToken.getLastToken().text + "\" was ignored.");
 					I = IX;
 					break;
 				}
@@ -53,6 +57,7 @@ public class DeleteStrategy extends IErroStrategy
 				analyzerStack.getNTerminalStack().push(IX);
 				IX = nTerminalNode.getFirstNode();
 			}
+			iteration++;
 		}
 
 		if (I < 0)

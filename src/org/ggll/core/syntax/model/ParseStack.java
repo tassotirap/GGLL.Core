@@ -12,19 +12,9 @@ public class ParseStack
 		parseNode = new Stack<ParseNode>();
 	}
 	
-	public void push(ParseNode item)
+	public void clear()
 	{
-		parseNode.push(item);
-	}
-	
-	public ParseNode pop()
-	{
-		return parseNode.pop();
-	}
-	
-	public ParseNode peek()
-	{
-		return parseNode.peek();
+		parseNode.clear();		
 	}
 	
 	@Override
@@ -33,19 +23,14 @@ public class ParseStack
 		return (ParseStack)this.clone();
 	}
 	
+	public ParseNode elementAt(int index)
+	{
+		return parseNode.elementAt(index);
+	}
+	
 	public boolean empty()
 	{
 		return parseNode.empty();
-	}
-	
-	public void clear()
-	{
-		parseNode.clear();		
-	}
-	
-	public int size()
-	{
-		return parseNode.size();		
 	}
 	
 	public Iterator<ParseNode> iterator()
@@ -53,9 +38,24 @@ public class ParseStack
 		return parseNode.iterator();
 	}
 	
-	public ParseNode elementAt(int index)
+	public ParseNode peek()
 	{
-		return parseNode.elementAt(index);
+		return parseNode.peek();
+	}
+	
+	public ParseNode pop()
+	{
+		return parseNode.pop();
+	}
+	
+	public void push(ParseNode item)
+	{
+		parseNode.push(item);
+	}
+	
+	public int size()
+	{
+		return parseNode.size();		
 	}
 	
 	public int topIndex()

@@ -1,13 +1,17 @@
 package org.ggll.core.lexical;
 
 import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-import org.ggll.core.util.DynaCode;
+import org.ggll.core.compile.Compiler;
 
 public class YyFactory
 {
 
 	private static YyFactory instance;
+	private static URLClassLoader loader;
+	private static Class cls;
 
 	private YyFactory()
 	{
@@ -44,12 +48,25 @@ public class YyFactory
 		return instance;
 	}
 
-	public static Yylex getYylex(String baseDir, String path, java.io.Reader in)
+	public static Yylex getYylex(File path) throws Exception
 	{
-		DynaCode dynacode = new DynaCode();
-		dynacode.addSourceDir(new File(baseDir + "/"), new File("dynacode"));
-		Yylex yl = (Yylex) dynacode.newProxyInstance(Yylex.class, (path == null) ? "Yylex" : path + ".Yylex");
-		yl.setReader(in);
-		return yl;
+		try
+		{
+			Compiler compile = new Compiler();
+			compile.compile(path.getPath());
+			
+			URL url = path.getParentFile().toURI().toURL();
+			URL[] urls = new URL[]{ url };
+
+			loader = new URLClassLoader(urls);
+			cls = loader.loadClass(path.getName().replace(".java", ""));
+			Yylex yl = (Yylex) cls.newInstance();
+			return yl;
+			
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
 	}
 }

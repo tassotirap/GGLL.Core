@@ -12,12 +12,14 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import org.core.properties.GGLLProperties;
+
 public class Compiler
 {
 	public class OutputCompiler extends Writer
 	{
 		@Override
-		public void write(char[] cbuf, int off, int len) throws IOException
+		public void close() throws IOException
 		{
 		}
 
@@ -27,29 +29,37 @@ public class Compiler
 		}
 
 		@Override
-		public void close() throws IOException
+		public void write(char[] cbuf, int off, int len) throws IOException
 		{
+			output += String.copyValueOf(cbuf, off, len);
 		}
-	}
-
-	private String javaSDK = "C:\\Program Files\\Java\\jdk1.7.0_05";
-
-	public Compiler(String javaSDK)
-	{
-		this.javaSDK = javaSDK;
-	}
-
+	}	
+	
+	private String output = "";
+	private String javaSDK = "";
+	
 	public Compiler()
 	{
+		GGLLProperties properties = new GGLLProperties();
+		javaSDK = properties.getJavaSDKPath();
 	}
 
-	public boolean compile(String fileName) throws IOException
+	private String validateJavaFile(String fileName)
+	{
+		if (!fileName.endsWith(".java"))
+		{
+			return fileName + ".java";
+		}
+		return fileName;
+	}
+
+	public void compile(String fileName) throws Exception
 	{
 		String[] fileNames = new String[]{ fileName };
-		return compile(fileNames);
+		compile(fileNames);
 	}
 
-	public boolean compile(String[] fileNames) throws IOException
+	public void compile(String[] fileNames) throws Exception
 	{
 		System.setProperty("java.home", javaSDK);
 
@@ -67,17 +77,13 @@ public class Compiler
 		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(sourceFileList);
 
 		CompilationTask task = compiler.getTask(new OutputCompiler(), fileManager, null, null, null, compilationUnits);
+		
 		boolean result = task.call();
 		fileManager.close();
-		return result;
-	}
-
-	private String validateJavaFile(String fileName)
-	{
-		if (!fileName.endsWith(".java"))
+		
+		if(!result)
 		{
-			return fileName + ".java";
+			throw new Exception(output);
 		}
-		return fileName;
 	}
 }

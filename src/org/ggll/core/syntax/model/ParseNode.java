@@ -1,6 +1,5 @@
 package org.ggll.core.syntax.model;
 
-import javax.xml.bind.annotation.XmlElement;
 
 public class ParseNode
 {

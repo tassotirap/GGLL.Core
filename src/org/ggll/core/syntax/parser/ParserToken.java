@@ -1,11 +1,11 @@
-package org.ggll.core.syntax.analyzer;
+package org.ggll.core.syntax.parser;
 
 import java.io.IOException;
 
 import org.ggll.core.lexical.Yylex;
 import org.ggll.core.lexical.Yytoken;
 
-public class AnalyzerToken
+public class ParserToken
 {	
 	private Yytoken currentToken;
 	
@@ -17,24 +17,16 @@ public class AnalyzerToken
 
 	private Yytoken lastToken;
 	
-	private static AnalyzerToken instance;
-	
-	public static AnalyzerToken getInstance()
-	{
-		return instance;
-	}
-	
-	public static AnalyzerToken setInstance(Yylex yylex)
-	{
-		instance = new AnalyzerToken(yylex);
-		return instance;
-	}
-	
-	private AnalyzerToken(Yylex yylex)
+	public ParserToken(Yylex yylex)
 	{
 		this.yylex = yylex;
 	}
 	
+	private void setLastToken(Yytoken token)
+	{
+		this.lastToken = token;		
+	}
+
 	public String getCurrentSemanticSymbol()
 	{
 		return currentSemanticSymbol;
@@ -50,9 +42,19 @@ public class AnalyzerToken
 		return currentToken;
 	}
 
+	public String getLastSemanticSymbol()
+	{
+		return lastSemanticSymbol;
+	}
+
 	public String getLastSymbol()
 	{
 		return lastSymbol;
+	}
+
+	public Yytoken getLastToken()
+	{
+		return lastToken;
 	}
 
 	public Yylex getYylex()
@@ -89,11 +91,6 @@ public class AnalyzerToken
 		//AppOutput.printToken("Current Token: " + getCurrentToken());
 	}
 
-	private void setLastToken(Yytoken token)
-	{
-		this.lastToken = token;		
-	}
-
 	public void setCurrentSemanticSymbol(String currentSemanticSymbol)
 	{
 		this.currentSemanticSymbol = currentSemanticSymbol;
@@ -109,24 +106,14 @@ public class AnalyzerToken
 		this.currentToken = currentToken;
 	}
 
-	public void setLastSymbol(String lastSymbol)
-	{
-		this.lastSymbol = lastSymbol;
-	}
-
-	public Yytoken getLastToken()
-	{
-		return lastToken;
-	}
-
-	public String getLastSemanticSymbol()
-	{
-		return lastSemanticSymbol;
-	}
-	
 	public void setLastSemanticSymbol(String lastSemanticSymbol)
 	{
 		this.lastSemanticSymbol = lastSemanticSymbol;
+	}
+	
+	public void setLastSymbol(String lastSymbol)
+	{
+		this.lastSymbol = lastSymbol;
 	}
 
 }

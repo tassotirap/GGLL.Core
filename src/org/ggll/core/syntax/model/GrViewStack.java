@@ -11,19 +11,9 @@ public class GrViewStack
 		grViewStack = new Stack<GrViewNode>();
 	}
 	
-	public void push(GrViewNode item)
+	public void clear()
 	{
-		grViewStack.push(item);
-	}
-	
-	public GrViewNode pop()
-	{
-		return grViewStack.pop();
-	}
-	
-	public GrViewNode peak()
-	{
-		return grViewStack.peek();
+		grViewStack.clear();		
 	}
 	
 	@Override
@@ -39,9 +29,19 @@ public class GrViewStack
 		return grViewStack.empty();
 	}
 	
-	public void clear()
+	public GrViewNode peak()
 	{
-		grViewStack.clear();		
+		return grViewStack.peek();
+	}
+	
+	public GrViewNode pop()
+	{
+		return grViewStack.pop();
+	}
+	
+	public void push(GrViewNode item)
+	{
+		grViewStack.push(item);
 	}
 	
 	public int size()

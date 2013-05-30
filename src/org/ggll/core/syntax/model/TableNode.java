@@ -16,11 +16,6 @@ public class TableNode implements Serializable
 
 	private int firstNode;
 	
-	public TableNode()
-	{
-		
-	}
-
 	public TableNode(String flag, String nodeName)
 	{
 		this.flag = flag;
@@ -33,6 +28,11 @@ public class TableNode implements Serializable
 		this.flag = flag;
 		getName(nodeName);
 		setFirstNode(firstNode);
+	}
+
+	public int getFirstNode()
+	{
+		return firstNode;
 	}
 
 	public String getFlag()
@@ -50,20 +50,15 @@ public class TableNode implements Serializable
 		name = nodeName;
 	}
 
-	public int getFirstNode()
+	public void setFirstNode(int nodePrim)
 	{
-		return firstNode;
+		firstNode = nodePrim;
 	}
+
 
 	public void setFlag(String flag)
 	{
 		this.flag = flag;
-	}
-
-
-	public void setFirstNode(int nodePrim)
-	{
-		firstNode = nodePrim;
 	}
 
 	@Override

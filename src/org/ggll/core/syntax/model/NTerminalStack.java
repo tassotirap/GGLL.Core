@@ -11,19 +11,9 @@ public class NTerminalStack
 		nTerminalStack = new Stack<Integer>();
 	}
 	
-	public void push(Integer item)
+	public void clear()
 	{
-		nTerminalStack.push(item);
-	}
-	
-	public Integer pop()
-	{
-		return nTerminalStack.pop();
-	}
-	
-	public Integer peak()
-	{
-		return nTerminalStack.peek();
+		nTerminalStack.clear();		
 	}
 	
 	@Override
@@ -39,9 +29,19 @@ public class NTerminalStack
 		return nTerminalStack.empty();
 	}
 	
-	public void clear()
+	public Integer peak()
 	{
-		nTerminalStack.clear();		
+		return nTerminalStack.peek();
+	}
+	
+	public Integer pop()
+	{
+		return nTerminalStack.pop();
+	}
+	
+	public void push(Integer item)
+	{
+		nTerminalStack.push(item);
 	}
 	
 	public int size()

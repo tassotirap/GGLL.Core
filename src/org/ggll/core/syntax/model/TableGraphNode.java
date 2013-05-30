@@ -36,19 +36,24 @@ public class TableGraphNode implements Serializable
 		return alternativeIndex;
 	}
 
-	public String getSemanticRoutine()
-	{
-		return semanticRoutine;
-	}
-
 	public int getNodeReference()
 	{
 		return nodeReference;
 	}
 
+	public String getSemanticRoutine()
+	{
+		return semanticRoutine;
+	}
+
 	public int getSucessorIndex()
 	{
 		return sucessorIndex;
+	}
+
+	public boolean isLambda()
+	{
+		return nodeReference == 0;
 	}
 
 	public boolean IsTerminal()
@@ -61,9 +66,9 @@ public class TableGraphNode implements Serializable
 		alternativeIndex = node;
 	}
 
-	public void setSemanticRoutine(String routine)
+	public void setIsTerminal(boolean bool)
 	{
-		semanticRoutine = routine;
+		isTerminal = bool;
 	}
 
 	public void setNodeReference(int node)
@@ -71,19 +76,14 @@ public class TableGraphNode implements Serializable
 		nodeReference = node;
 	}
 
+	public void setSemanticRoutine(String routine)
+	{
+		semanticRoutine = routine;
+	}
+
 	public void setSucessorIndex(int node)
 	{
 		sucessorIndex = node;
-	}
-
-	public void setIsTerminal(boolean bool)
-	{
-		isTerminal = bool;
-	}
-
-	public boolean isLambda()
-	{
-		return nodeReference == 0;
 	}
 
 	@Override

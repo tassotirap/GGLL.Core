@@ -2,29 +2,18 @@ package org.ggll.core.syntax.error;
 
 import java.util.Stack;
 
-import org.ggll.core.CoreManager;
-import org.ggll.core.syntax.analyzer.AnalyzerAlternative;
-import org.ggll.core.syntax.analyzer.AnalyzerStackRepository;
-import org.ggll.core.syntax.analyzer.AnalyzerTable;
-import org.ggll.core.syntax.analyzer.AnalyzerToken;
 import org.ggll.core.syntax.model.TableNode;
+import org.ggll.core.syntax.parser.Parser;
 
 public class DelimiterSearchStrategy extends IErroStrategy
 {
-	private AnalyzerTable analyzerTable;
-	private AnalyzerToken analyzerToken;
-
-	public DelimiterSearchStrategy(AnalyzerTable analyzerTable)
+	public DelimiterSearchStrategy(Parser analyzer)
 	{
-		super(analyzerTable);
-		this.analyzerTable = analyzerTable;
-		this.analyzerStack = AnalyzerStackRepository.getInstance();
-		this.analyzerAlternative = AnalyzerAlternative.getInstance();
-		this.analyzerToken = AnalyzerToken.getInstance();
+		super(analyzer);
 	}
 
 	@Override
-	public int tryFix(int UI, int column, int line)
+	public int tryFix(int UI, int column, int line) throws Exception
 	{
 		int IX;
 		IX = UI;
@@ -34,16 +23,21 @@ public class DelimiterSearchStrategy extends IErroStrategy
 		Stack<Integer> pilhaNaoTerminalY = new Stack<Integer>();
 
 		init();
-
+		
+		int iteration = 0;
 		while (IX != 0 && I < 0)
 		{
+			if(iteration > MAX_ITERATOR)
+			{
+				break;
+			}
 			if (analyzerTable.getGraphNode(IX).IsTerminal())
 			{
 				TableNode terminalNode = analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference());
 
 				if (terminalNode.getName().equals(analyzerToken.getCurrentSymbol()))
 				{
-					CoreManager.setError("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter.");
+					analyzer.setError("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter.");
 					I = IX;
 				}
 				else
@@ -79,6 +73,7 @@ public class DelimiterSearchStrategy extends IErroStrategy
 					IX = analyzerTable.getNTerminal(analyzerTable.getGraphNode(IX).getNodeReference()).getFirstNode();
 				}
 			}
+			iteration++;
 		}
 		if (I < 0)
 		{

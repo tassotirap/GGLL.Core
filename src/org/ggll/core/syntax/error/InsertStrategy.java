@@ -1,20 +1,19 @@
 package org.ggll.core.syntax.error;
 
-import org.ggll.core.CoreManager;
-import org.ggll.core.syntax.analyzer.AnalyzerTable;
 import org.ggll.core.syntax.model.GrViewNode;
 import org.ggll.core.syntax.model.NTerminalStack;
 import org.ggll.core.syntax.model.ParseNode;
 import org.ggll.core.syntax.model.TableNode;
+import org.ggll.core.syntax.parser.Parser;
 
 public class InsertStrategy extends IErroStrategy
 {
-	public InsertStrategy(AnalyzerTable analyzerTable)
+	public InsertStrategy(Parser analyzer)
 	{
-		super(analyzerTable);
+		super(analyzer);
 	}
 	
-	public int tryFix(int UI, int column, int line)
+	public int tryFix(int UI, int column, int line) throws Exception
 	{
 		int IX, IY;
 		int I = -1;
@@ -23,8 +22,13 @@ public class InsertStrategy extends IErroStrategy
 
 		init();		
 
+		int iteration = 0;
 		while (IX != 0 && I < 0)
 		{
+			if(iteration > MAX_ITERATOR)
+			{
+				break;
+			}
 			if (analyzerTable.getGraphNode(IX).IsTerminal())
 			{
 				NTerminalStack pilhaNaoTerminalY = new NTerminalStack();
@@ -45,11 +49,11 @@ public class InsertStrategy extends IErroStrategy
 							String temp = analyzerTable.getTermial(analyzerTable.getGraphNode(IY).getNodeReference()).getName();
 							if (temp.equals(analyzerToken.getCurrentSymbol()))
 							{
-								CoreManager.setError("Symbol \"" + terminalNode.getName() + "\" inserted before column " + column + ".");
+								analyzer.setError("Symbol \"" + terminalNode.getName() + "\" inserted before column " + column + ".");
 								analyzerStack.getParseStack().push(new ParseNode(terminalNode.getFlag(), terminalNode.getName(), terminalNode.getName()));
 								analyzerStack.setTop(analyzerStack.getTop() + 1);
-								semanticRoutinesRepo.setCurrentToken(analyzerToken.getLastToken());
-								semanticRoutinesRepo.execFunction(analyzerTable.getGraphNode(IX).getSemanticRoutine());
+								semanticRoutines.setCurrentToken(analyzerToken.getLastToken());
+								semanticRoutines.execFunction(analyzerTable.getGraphNode(IX).getSemanticRoutine());
 								analyzerStack.getNTerminalStack().clear();
 								I = IY;
 							}
@@ -75,6 +79,7 @@ public class InsertStrategy extends IErroStrategy
 				analyzerStack.getNTerminalStack().push(IX);
 				IX = analyzerTable.getNTerminal(analyzerTable.getGraphNode(IX).getNodeReference()).getFirstNode();
 			}
+			iteration++;
 		}
 		
 		if (I < 0)

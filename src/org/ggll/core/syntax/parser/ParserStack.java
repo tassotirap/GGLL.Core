@@ -1,30 +1,18 @@
-package org.ggll.core.syntax.analyzer;
+package org.ggll.core.syntax.parser;
 
 import org.ggll.core.syntax.model.GrViewStack;
 import org.ggll.core.syntax.model.NTerminalStack;
 import org.ggll.core.syntax.model.ParseStack;
 
-public class AnalyzerStackRepository
+public class ParserStack
 {
 	private ParseStack parseStack;
 	private GrViewStack grViewStack;
 	private NTerminalStack nTerminalStack;
 	private int top;
 	
-	private static AnalyzerStackRepository instance;
-	
-	public static AnalyzerStackRepository getInstance()
-	{
-		return instance;
-	}
-	
-	public static AnalyzerStackRepository setInstance()
-	{
-		instance = new AnalyzerStackRepository();
-		return instance;
-	}
-	
-	private AnalyzerStackRepository()
+
+	public ParserStack()
 	{
 		
 	}
@@ -44,6 +32,11 @@ public class AnalyzerStackRepository
 		return parseStack;
 	}
 
+	public int getTop()
+	{
+		return top;
+	}
+
 	public void init()
 	{
 		grViewStack = new GrViewStack();
@@ -59,11 +52,6 @@ public class AnalyzerStackRepository
 	public void setNTerminalStack(NTerminalStack nTerminalStack)
 	{
 		this.nTerminalStack = nTerminalStack;		
-	}
-
-	public int getTop()
-	{
-		return top;
 	}
 
 	public void setTop(int top)

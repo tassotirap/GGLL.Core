@@ -1,33 +1,32 @@
 package org.ggll.core;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.StringReader;
+import java.util.ArrayList;
 
 import org.ggll.core.lexical.YyFactory;
 import org.ggll.core.lexical.Yylex;
-import org.ggll.core.syntax.analyzer.Analyzer;
-import org.ggll.core.syntax.analyzer.AnalyzerTable;
-import org.ggll.core.syntax.model.TableGraphNode;
-import org.ggll.core.syntax.model.TableNode;
+import org.ggll.core.syntax.parser.Parser;
+import org.ggll.core.syntax.parser.ParserTable;
 
 public class GGLLCore
 {
-	private AnalyzerTable analyzerTable;
-	
-	
-	Analyzer analyzer = null;
-	Yylex yylex = null;
+	private Parser parser = null;
+	private Yylex yylex = null;
 
-	public void init(String xmlAnalyzerTable, String lexPath, File semanaticFile, boolean debug)
+	public ArrayList<String> getErrorList()
+	{
+		return parser.getErrorList();
+	}
+
+	public void init(String xmlAnalyzerTable, File lexPath, File semanaticFile, boolean debug)
 	{
 		try
 		{
-			analyzerTable = AnalyzerTable.deserialize(xmlAnalyzerTable);			
-			yylex = YyFactory.getYylex(lexPath, null, new StringReader(""));
-			analyzer = new Analyzer(analyzerTable, null, yylex, semanaticFile, debug);			
+			ParserTable analyzerTable = ParserTable.deserialize(xmlAnalyzerTable);			
+			yylex = YyFactory.getYylex(lexPath);
+			parser = new Parser(analyzerTable, yylex, semanaticFile, debug);			
 		}
 		catch (Exception e)
 		{
@@ -35,22 +34,27 @@ public class GGLLCore
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean isSucess()
+	{
+		return parser.isSucess();
+	}	
+		
+	public boolean next() throws Exception
+	{
+		return parser.next();
+	}
 
-	public void run(String source)
+	public void run(String source) throws Exception
 	{
 		try
 		{
 			yylex.yyreset(new StringReader(source));
-			analyzer.run();
+			parser.run();
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	public boolean next()
-	{
-		return analyzer.next();
 	}
 }
