@@ -2,20 +2,17 @@ package ggll.core.syntax.parser;
 
 import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.model.TableNode;
+import ggll.core.xml.GGLLTableParser;
+import ggll.core.xml.XmlSemanticFile;
+import ggll.core.xml.YylexSemanticFile;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.StringReader;
 
 public class GGLLTable implements Serializable
 {
@@ -39,123 +36,45 @@ public class GGLLTable implements Serializable
 		return deserialize(new File(file));
 	}
 
-	private static String readFile(File file) throws IOException
-	{
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		try
-		{
-			StringBuilder sb = new StringBuilder();
-			String line = br.readLine();
-
-			while (line != null)
-			{
-				sb.append(line);
-				line = br.readLine();
-			}
-			return sb.toString();
-		}
-		finally
-		{
-			br.close();
-		}
-	}
-
 	public static GGLLTable deserialize(File file) throws Exception
 	{
-		TableGraphNode tableGraphNode[] = null;
-		TableNode nTerminalTableNode[] = null;
-		TableNode terminalTableNode[] = null;
-
-		BufferedReader in = new BufferedReader(new FileReader(file));
-		String fileString = readFile(file);
-
-		Pattern pattern = Pattern.compile("<TableGraph size=\"(.*?)\">(.*?)</TableGraph>");
-		Matcher matcher = pattern.matcher(fileString);
-
-		if (matcher.find())
-		{
-			int size = Integer.parseInt(matcher.group(1));
-			tableGraphNode = new TableGraphNode[size];
-
-			pattern = Pattern.compile("<Item.*?/>");
-			matcher = pattern.matcher(matcher.group(2));
-			int i = 0;
-			while (matcher.find())
-			{
-				Pattern ItemPattern = Pattern.compile("AlternativeIndex=\"(.*?)\" IsTerminal=\"(.*?)\" NodeReference=\"(.*?)\" SemanticRoutine=\"(.*?)\" SucessorIndex=\"(.*?)\" />");
-				Matcher ItemMatcher = pattern.matcher(matcher.group(0));
-				ItemMatcher = ItemPattern.matcher(matcher.group(0)); 
-				if (ItemMatcher.find())
-				{
-					tableGraphNode[i] = new TableGraphNode();
-					tableGraphNode[i].setAlternativeIndex(Integer.parseInt(ItemMatcher.group(1)));
-					tableGraphNode[i].setIsTerminal(Boolean.parseBoolean(ItemMatcher.group(2)));
-					tableGraphNode[i].setNodeReference(Integer.parseInt(ItemMatcher.group(3)));
-					tableGraphNode[i].setSemanticRoutine(ItemMatcher.group(4));
-					tableGraphNode[i].setSucessorIndex(Integer.parseInt(ItemMatcher.group(5)));
-				}
-				i++;
-			}
-		}
+		YylexSemanticFile yylex = new YylexSemanticFile();
+		GGLLTable ggllTable = new GGLLTableParser().ggllTable;
+		XmlSemanticFile xmlSemanticFile = new ggll.core.xml.XmlSemanticFile();
 		
-		
-		pattern = Pattern.compile("<NTerminalTable size=\"(.*?)\">(.*?)</NTerminalTable>");
-		matcher = pattern.matcher(fileString);
-
-		if (matcher.find())
+		Parser parser = new Parser(ggllTable, yylex, xmlSemanticFile, false);
+		yylex.yyreset(new StringReader(ReadFile(file)));
+		parser.run();
+		if(parser.isSucess())
 		{
-			int size = Integer.parseInt(matcher.group(1));
-			nTerminalTableNode = new TableNode[size];
-
-			pattern = Pattern.compile("<Item.*?/>");
-			matcher = pattern.matcher(matcher.group(2));
-			int i = 0;
-			while (matcher.find())
-			{
-				Pattern ItemPattern = Pattern.compile("<Item FirstNode=\"(.*?)\" Flag=\"(.*?)\" Name=\"(.*?)\" />");
-				Matcher ItemMatcher = pattern.matcher(matcher.group(0));
-				ItemMatcher = ItemPattern.matcher(matcher.group(0)); 
-				if (ItemMatcher.find())
-				{
-					nTerminalTableNode[i] = new TableNode();
-					nTerminalTableNode[i].setFirstNode(Integer.parseInt(ItemMatcher.group(1)));
-					nTerminalTableNode[i].setFlag(ItemMatcher.group(2));
-					nTerminalTableNode[i].setName(ItemMatcher.group(3));
-				}
-				i++;
-			}
+			return xmlSemanticFile.ggllTable;
 		}
-		
-		pattern = Pattern.compile("<TerminalTable size=\"(.*?)\">(.*?)</TerminalTable>");
-		matcher = pattern.matcher(fileString);
-
-		if (matcher.find())
+		return null;
+	}
+	
+	private static String ReadFile(File file)
+	{
+		BufferedReader br = null;
+		String tmp = "";
+		String fileContent = "";
+		try
 		{
-			int size = Integer.parseInt(matcher.group(1));
-			terminalTableNode = new TableNode[size];
-
-			pattern = Pattern.compile("<Item.*?/>");
-			matcher = pattern.matcher(matcher.group(2));
-			int i = 0;
-			while (matcher.find())
+			FileReader fr = new FileReader(file);
+			br = new BufferedReader(fr);
+			tmp = br.readLine();
+			while (tmp != null)
 			{
-				Pattern ItemPattern = Pattern.compile("<Item FirstNode=\"(.*?)\" Flag=\"(.*?)\" Name=\"(.*?)\" />");
-				Matcher ItemMatcher = pattern.matcher(matcher.group(0));
-				ItemMatcher = ItemPattern.matcher(matcher.group(0)); 
-				if (ItemMatcher.find())
-				{
-					terminalTableNode[i] = new TableNode();
-					terminalTableNode[i].setFirstNode(Integer.parseInt(ItemMatcher.group(1)));
-					terminalTableNode[i].setFlag(ItemMatcher.group(2));
-					terminalTableNode[i].setName(ItemMatcher.group(3));
-				}
-				i++;
-			}
-		}
 
-		GGLLTable analyzerTable = new GGLLTable(tableGraphNode, nTerminalTableNode, terminalTableNode);
-		in.close();
-		return analyzerTable;
+				fileContent = fileContent + tmp;
+				tmp = br.readLine();
+			}
+			br.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return fileContent;
 	}
 
 	public TableGraphNode getGraphNode(int index)
@@ -192,7 +111,7 @@ public class GGLLTable implements Serializable
 
 	public void serialize(String fileName)
 	{
-		StringBuffer xml = new StringBuffer("<?xml version='1.0' encoding='ISO-8859-1'?>\n");
+		StringBuffer xml = new StringBuffer("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
 		xml.append("<GGLL>\n");
 		{
 			xml.append("\t<TableGraph size=\"" + nodes.length + "\">\n");
