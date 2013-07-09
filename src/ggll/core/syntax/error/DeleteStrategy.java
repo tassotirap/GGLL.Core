@@ -44,7 +44,7 @@ public class DeleteStrategy extends IErroStrategy
 				else
 				{
 					int alternative = 0;
-					alternative = analyzerAlternative.findAlternative(IX, analyzerStack.getNTerminalStack(), analyzerStack.getGrViewStack());
+					alternative = analyzerAlternative.findAlternative(IX, analyzerStack.getNTerminalStack(), analyzerStack.getGGLLStack());
 					IX = alternative;
 				}
 			}
@@ -53,7 +53,7 @@ public class DeleteStrategy extends IErroStrategy
 
 				TableNode nTerminalNode = analyzerTable.getNTerminal(graphNode.getNodeReference());
 				analyzerStack.setTop(analyzerStack.getTop() + 1);
-				analyzerStack.getGrViewStack().push(new GGLLNode(IX, analyzerStack.getTop()));
+				analyzerStack.getGGLLStack().push(new GGLLNode(IX, analyzerStack.getTop()));
 				analyzerStack.getNTerminalStack().push(IX);
 				IX = nTerminalNode.getFirstNode();
 			}

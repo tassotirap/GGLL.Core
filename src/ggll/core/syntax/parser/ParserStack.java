@@ -17,7 +17,7 @@ public class ParserStack
 		
 	}
 	
-	public GGLLStack getGrViewStack()
+	public GGLLStack getGGLLStack()
 	{
 		return grViewStack;
 	}
@@ -44,7 +44,7 @@ public class ParserStack
 		parseStack = new ParseStack();
 	}
 
-	public void setGrViewStack(GGLLStack grViewStack)
+	public void setGGLLStack(GGLLStack grViewStack)
 	{
 		this.grViewStack = grViewStack;
 	}

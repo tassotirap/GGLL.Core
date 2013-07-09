@@ -173,20 +173,20 @@ public class Parser
 							{
 								if (getParseStacks().getNTerminalStack().empty())
 								{
-									I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().charBegin + 1, getParseToken().getCurrentToken().line + 1);
+									I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 									continueSentinel = I >= 0;
 									setSucess(false);
 								}
 								else
 								{
-									int alternative = getParseAlternative().findAlternative(I, getParseStacks().getNTerminalStack(), getParseStacks().getGrViewStack());
+									int alternative = getParseAlternative().findAlternative(I, getParseStacks().getNTerminalStack(), getParseStacks().getGGLLStack());
 									if (alternative != 0)
 									{
 										I = alternative;
 									}
 									else
 									{
-										I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().charBegin + 1, getParseToken().getCurrentToken().line + 1);
+										I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 										continueSentinel = I >= 0;
 										setSucess(false);
 									}
@@ -199,15 +199,15 @@ public class Parser
 				{
 					TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(I).getNodeReference());
 					getParseStacks().getNTerminalStack().push(I);
-					getParseStacks().getGrViewStack().push(new GGLLNode(I, getParseStacks().getTop() + 1));
+					getParseStacks().getGGLLStack().push(new GGLLNode(I, getParseStacks().getTop() + 1));
 					I = currentNTerminal.getFirstNode(); 
 				}
 			}
 			else
 			{
-				if (!getParseStacks().getGrViewStack().empty())
+				if (!getParseStacks().getGGLLStack().empty())
 				{
-					GGLLNode grViewStackNode = getParseStacks().getGrViewStack().pop();
+					GGLLNode grViewStackNode = getParseStacks().getGGLLStack().pop();
 					ParseNode auxParseSNode = null;
 
 					while (getParseStacks().getParseStack().size() >= grViewStackNode.size)
@@ -234,7 +234,7 @@ public class Parser
 				{
 					if (!getParseToken().getCurrentSymbol().equals(new String("$")))
 					{
-						I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().charBegin + 1, getParseToken().getCurrentToken().line + 1);
+						I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 						setSucess(false);
 					}
 					continueSentinel = I > 0;
@@ -265,7 +265,7 @@ public class Parser
 		getParseTable().getGraphNode(0).setAlternativeIndex(0);
 		getParseTable().getGraphNode(0).setSucessorIndex(0);
 
-		getParseStacks().getGrViewStack().push(new GGLLNode(0, 1));
+		getParseStacks().getGGLLStack().push(new GGLLNode(0, 1));
 		getParseStacks().setTop(0);
 
 		getParseToken().readNext();

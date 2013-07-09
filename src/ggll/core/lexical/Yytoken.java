@@ -2,19 +2,17 @@ package ggll.core.lexical;
 
 public class Yytoken
 {
-	public int charBegin;
-	public int charEnd;
+	public int column;
 	public int line;
 	public String type;
 	public String text;
 
-	public Yytoken(String p1, String text, int line, int charBegin, int charEnd)
+	public Yytoken(String p1, String text, int line, int column)
 	{
 		this.type = p1;
 		this.text = text;
 		this.line = line;
-		this.charBegin = charBegin;
-		this.charEnd = charEnd;
+		this.column = column;
 	}
 
 	public String token()
@@ -25,6 +23,6 @@ public class Yytoken
 	@Override
 	public String toString()
 	{
-		return "Text   : " + text + "   Type : " + type + "   line  : " + line + "   cBeg. : " + charBegin + "   cEnd. : " + charEnd;
+		return "Text: " + text + "   Type: " + type + "   line: " + line + "   column: " + column;
 	}
 }

@@ -16,7 +16,7 @@ public abstract class IErroStrategy
 
 	protected ParserToken oldToken;
 
-	protected GGLLStack oldGrViewStack;
+	protected GGLLStack oldGGLLStack;
 	protected NTerminalStack oldNTerminalStack;
 	protected int oldTop;
 	protected int MAX_ITERATOR = 100;
@@ -41,14 +41,14 @@ public abstract class IErroStrategy
 		this.analyzerTable = analyzer.getParseTable();
 		
 		
-		oldGrViewStack = analyzerStack.getGrViewStack().clone();
+		oldGGLLStack = analyzerStack.getGGLLStack().clone();
 		oldNTerminalStack = analyzerStack.getNTerminalStack().clone();
 		oldTop = analyzerStack.getTop();
 	}
 
 	protected void restore(boolean restoreToken)
 	{
-		analyzerStack.setGrViewStack(oldGrViewStack);
+		analyzerStack.setGGLLStack(oldGGLLStack);
 		analyzerStack.setNTerminalStack(oldNTerminalStack);
 		analyzerStack.setTop(oldTop);
 		if (restoreToken)

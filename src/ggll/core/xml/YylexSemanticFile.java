@@ -199,8 +199,13 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 	/** number of newlines encountered up to the start of the matched text */
 	private int yyline;
 
-	/** the number of characters up to the start of the matched text */
+	
 	private int yychar;
+	/**
+	 * the number of characters from the last newline up to the start of the
+	 * matched text
+	 */
+	private int yycolumn;
 
 	/** zzAtEOF == true <=> the scanner is at the EOF */
 	private boolean zzAtEOF;
@@ -370,6 +375,7 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 		zzEndRead = zzStartRead = 0;
 		zzCurrentPos = zzMarkedPos = 0;
 		zzLexicalState = YYINITIAL;
+		yyline = yychar = yycolumn = 0;
 	}
 
 	/**
@@ -496,8 +502,8 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 		while (true)
 		{
 			zzMarkedPosL = zzMarkedPos;
-
-			yychar += zzMarkedPosL - zzStartRead;
+			
+			yychar+= zzMarkedPosL-zzStartRead;
 
 			boolean zzR = false;
 			for (zzCurrentPosL = zzStartRead; zzCurrentPosL < zzMarkedPosL; zzCurrentPosL++)
@@ -510,10 +516,12 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					case '\u2028':
 					case '\u2029':
 						yyline++;
+						yycolumn = 0;
 						zzR = false;
 						break;
 					case '\r':
 						yyline++;
+						yycolumn = 0;
 						zzR = true;
 						break;
 					case '\n':
@@ -522,10 +530,12 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 						else
 						{
 							yyline++;
+							yycolumn = 0;
 						}
 						break;
 					default:
 						zzR = false;
+						yycolumn++;
 				}
 			}
 
@@ -615,43 +625,43 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 			{
 				case 30:
 				{
-					return (new Yytoken("</", yytext(), yyline, yychar, yychar + 2));
+					return (new Yytoken("</", yytext(), yyline, yycolumn));
 				}
 				case 36:
 					break;
 				case 18:
 				{
-					return (new Yytoken("+", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("+", yytext(), yyline, yycolumn));
 				}
 				case 37:
 					break;
 				case 32:
 				{
-					return (new Yytoken("<>", yytext(), yyline, yychar, yychar + 2));
+					return (new Yytoken("<>", yytext(), yyline, yycolumn));
 				}
 				case 38:
 					break;
 				case 28:
 				{
-					return (new Yytoken("/>", yytext(), yyline, yychar, yychar + 2));
+					return (new Yytoken("/>", yytext(), yyline, yycolumn));
 				}
 				case 39:
 					break;
 				case 9:
 				{
-					return (new Yytoken(":", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken(":", yytext(), yyline, yycolumn));
 				}
 				case 40:
 					break;
 				case 5:
 				{
-					return (new Yytoken("Esp", yytext(), yyline, yychar, yychar + yylength()));
+					return (new Yytoken("Esp", yytext(), yyline, yycolumn));
 				}
 				case 41:
 					break;
 				case 20:
 				{
-					return (new Yytoken("=", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("=", yytext(), yyline, yycolumn));
 				}
 				case 42:
 					break;
@@ -661,12 +671,12 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					/* the token is not a reserved symbol, then return IDEN */
 					if (ret == -1)
 					{
-						return (new Yytoken("Iden", yytext(), yyline, yychar, yychar + yylength()));
+						return (new Yytoken("Iden", yytext(), yyline, yycolumn));
 					}
 					/* the token is a reserved symbol */
 					else
 					{
-						return (new Yytoken("Res", yytext(), yyline, yychar, yychar + yylength()));
+						return (new Yytoken("Res", yytext(), yyline, yycolumn));
 					}
 				}
 				case 43:
@@ -679,50 +689,50 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					break;
 				case 8:
 				{
-					return (new Yytoken(",", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken(",", yytext(), yyline, yycolumn));
 				}
 				case 45:
 					break;
 				case 4:
 				{
-					return (new Yytoken("Numb", yytext(), yyline, yychar, yychar + yylength()));
+					return (new Yytoken("Numb", yytext(), yyline, yycolumn));
 				}
 				case 46:
 					break;
 				case 10:
 				{
-					return (new Yytoken(";", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken(";", yytext(), yyline, yycolumn));
 				}
 				case 47:
 					break;
 				case 13:
 				{
-					return (new Yytoken("[", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("[", yytext(), yyline, yycolumn));
 				}
 				case 48:
 					break;
 				case 22:
 				{
-					return (new Yytoken(">", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken(">", yytext(), yyline, yycolumn));
 				}
 				case 49:
 					break;
 				case 15:
 				{
-					return (new Yytoken("{", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("{", yytext(), yyline, yycolumn));
 				}
 				case 50:
 					break;
 				case 26:
 				{
 					String str = yytext().substring(1, yylength() - 1);
-					return (new Yytoken("String", str, yyline, yychar, yychar + yylength()));
+					return (new Yytoken("String", str, yyline, yycolumn));
 				}
 				case 51:
 					break;
 				case 19:
 				{
-					return (new Yytoken("-", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("-", yytext(), yyline, yycolumn));
 				}
 				case 52:
 					break;
@@ -742,49 +752,49 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					break;
 				case 23:
 				{
-					return (new Yytoken("&", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("&", yytext(), yyline, yycolumn));
 				}
 				case 55:
 					break;
 				case 33:
 				{
-					return (new Yytoken(">=", yytext(), yyline, yychar, yychar + 2));
+					return (new Yytoken(">=", yytext(), yyline, yycolumn));
 				}
 				case 56:
 					break;
 				case 21:
 				{
-					return (new Yytoken("<", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("<", yytext(), yyline, yycolumn));
 				}
 				case 57:
 					break;
 				case 12:
 				{
-					return (new Yytoken(")", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken(")", yytext(), yyline, yycolumn));
 				}
 				case 58:
 					break;
 				case 25:
 				{
-					return (new Yytoken("?", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("?", yytext(), yyline, yycolumn));
 				}
 				case 59:
 					break;
 				case 24:
 				{
-					return (new Yytoken("|", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("|", yytext(), yyline, yycolumn));
 				}
 				case 60:
 					break;
 				case 29:
 				{
-					return (new Yytoken(":=", yytext(), yyline, yychar, yychar + 2));
+					return (new Yytoken(":=", yytext(), yyline, yycolumn));
 				}
 				case 61:
 					break;
 				case 17:
 				{
-					return (new Yytoken(".", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken(".", yytext(), yyline, yycolumn));
 				}
 				case 62:
 					break;
@@ -796,31 +806,31 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					break;
 				case 14:
 				{
-					return (new Yytoken("]", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("]", yytext(), yyline, yycolumn));
 				}
 				case 64:
 					break;
 				case 7:
 				{
-					return (new Yytoken("*", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("*", yytext(), yyline, yycolumn));
 				}
 				case 65:
 					break;
 				case 16:
 				{
-					return (new Yytoken("}", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("}", yytext(), yyline, yycolumn));
 				}
 				case 66:
 					break;
 				case 31:
 				{
-					return (new Yytoken("<=", yytext(), yyline, yychar, yychar + 2));
+					return (new Yytoken("<=", yytext(), yyline, yycolumn));
 				}
 				case 67:
 					break;
 				case 6:
 				{
-					return (new Yytoken("/", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("/", yytext(), yyline, yycolumn));
 				}
 				case 68:
 					break;
@@ -831,7 +841,7 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					break;
 				case 11:
 				{
-					return (new Yytoken("(", yytext(), yyline, yychar, yychar + 1));
+					return (new Yytoken("(", yytext(), yyline, yycolumn));
 				}
 				case 70:
 					break;
@@ -840,7 +850,7 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					{
 						zzAtEOF = true;
 						{
-							return (new Yytoken("EOF", "$", 1, 1, 1));
+							return (new Yytoken("EOF", "$", yyline, yycolumn-1));
 						}
 					}
 					else

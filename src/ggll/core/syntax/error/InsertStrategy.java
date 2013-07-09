@@ -58,24 +58,24 @@ public class InsertStrategy extends IErroStrategy
 								I = IY;
 							}
 							else
-								IY = analyzerAlternative.findAlternative(IY, pilhaNaoTerminalY, analyzerStack.getGrViewStack());
+								IY = analyzerAlternative.findAlternative(IY, pilhaNaoTerminalY, analyzerStack.getGGLLStack());
 						}
 					}
 					else
 					{
-						analyzerStack.getGrViewStack().push(new GGLLNode(IY, analyzerStack.getTop() + 2));
+						analyzerStack.getGGLLStack().push(new GGLLNode(IY, analyzerStack.getTop() + 2));
 						pilhaNaoTerminalY.push(IY);
 						IY = analyzerTable.getNTerminal(analyzerTable.getGraphNode(IY).getNodeReference()).getFirstNode();
 					}
 				}
 				if (I < 0)
 				{
-					IX = analyzerAlternative.findAlternative(IX, analyzerStack.getNTerminalStack(), analyzerStack.getGrViewStack());
+					IX = analyzerAlternative.findAlternative(IX, analyzerStack.getNTerminalStack(), analyzerStack.getGGLLStack());
 				}
 			}
 			else
 			{
-				analyzerStack.getGrViewStack().push(new GGLLNode(IX, analyzerStack.getTop() + 1));
+				analyzerStack.getGGLLStack().push(new GGLLNode(IX, analyzerStack.getTop() + 1));
 				analyzerStack.getNTerminalStack().push(IX);
 				IX = analyzerTable.getNTerminal(analyzerTable.getGraphNode(IX).getNodeReference()).getFirstNode();
 			}

@@ -72,7 +72,7 @@ public class ParserError
 			}
 			else
 			{
-				I = dealWithError(lastIndexNode, analyzer.getParseToken().getCurrentToken().charBegin + 1, analyzer.getParseToken().getCurrentToken().line + 1);
+				I = dealWithError(lastIndexNode, analyzer.getParseToken().getCurrentToken().column + 1, analyzer.getParseToken().getCurrentToken().line + 1);
 			}
 		}
 		return I;
