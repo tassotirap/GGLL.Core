@@ -83,7 +83,7 @@ public class Parser
 		return parserError;
 	}
 
-	public ParserStack getParseStacks()
+	public ParserStack getParserStacks()
 	{
 		if (parserStacks == null)
 		{
@@ -144,7 +144,7 @@ public class Parser
 					{
 						if ((currentTerminal.getName()).equals(getParseToken().getCurrentSymbol()))
 						{
-							getParseStacks().getParseStack().push(new ParseNode(currentTerminal.getFlag(), getParseToken().getCurrentSymbol(), getParseToken().getCurrentSemanticSymbol()));
+							getParserStacks().getParseStack().push(new ParseNode(currentTerminal.getFlag(), getParseToken().getCurrentSymbol(), getParseToken().getCurrentSemanticSymbol()));
 							Output();
 							
 							getSemanticRoutines().setCurrentToken(getParseToken().getCurrentToken());
@@ -154,9 +154,9 @@ public class Parser
 
 							I = currentGraphNode.getSucessorIndex();
 							UI = I;
-							getParseStacks().setTop(getParseStacks().getTop() + 1);
+							getParserStacks().setTop(getParserStacks().getTop() + 1);
 
-							getParseStacks().getNTerminalStack().clear();
+							getParserStacks().getNTerminalStack().clear();
 
 							if (debug)
 							{
@@ -171,7 +171,7 @@ public class Parser
 							}
 							else
 							{
-								if (getParseStacks().getNTerminalStack().empty())
+								if (getParserStacks().getNTerminalStack().empty())
 								{
 									I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 									continueSentinel = I >= 0;
@@ -179,7 +179,7 @@ public class Parser
 								}
 								else
 								{
-									int alternative = getParseAlternative().findAlternative(I, getParseStacks().getNTerminalStack(), getParseStacks().getGGLLStack());
+									int alternative = getParseAlternative().findAlternative(I, getParserStacks().getNTerminalStack(), getParserStacks().getGGLLStack());
 									if (alternative != 0)
 									{
 										I = alternative;
@@ -198,27 +198,27 @@ public class Parser
 				else
 				{
 					TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(I).getNodeReference());
-					getParseStacks().getNTerminalStack().push(I);
-					getParseStacks().getGGLLStack().push(new GGLLNode(I, getParseStacks().getTop() + 1));
+					getParserStacks().getNTerminalStack().push(I);
+					getParserStacks().getGGLLStack().push(new GGLLNode(I, getParserStacks().getParseStack().size()));
 					I = currentNTerminal.getFirstNode(); 
 				}
 			}
 			else
 			{
-				if (!getParseStacks().getGGLLStack().empty())
+				if (!getParserStacks().getGGLLStack().empty())
 				{
-					GGLLNode grViewStackNode = getParseStacks().getGGLLStack().pop();
+					GGLLNode grViewStackNode = getParserStacks().getGGLLStack().pop();
 					ParseNode auxParseSNode = null;
 
-					while (getParseStacks().getParseStack().size() >= grViewStackNode.size)
+					while (getParserStacks().getParseStack().size() > grViewStackNode.size)
 					{
-						auxParseSNode = getParseStacks().getParseStack().pop();
+						auxParseSNode = getParserStacks().getParseStack().pop();
 					}
 
 					if (auxParseSNode != null)
 					{
 						TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(grViewStackNode.indexNode).getNodeReference());
-						getParseStacks().getParseStack().push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
+						getParserStacks().getParseStack().push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
 						Output();
 					}
 
@@ -254,7 +254,7 @@ public class Parser
 		clearErrors();
 
 		getParseToken().setCurrentSemanticSymbol(null);
-		getParseStacks().init();
+		getParserStacks().init();
 
 		setSucess(true);
 
@@ -265,8 +265,10 @@ public class Parser
 		getParseTable().getGraphNode(0).setAlternativeIndex(0);
 		getParseTable().getGraphNode(0).setSucessorIndex(0);
 
-		getParseStacks().getGGLLStack().push(new GGLLNode(0, 1));
-		getParseStacks().setTop(0);
+		getParserStacks().getGGLLStack().push(new GGLLNode(0, 0));
+		getParserStacks().setTop(0);
+		
+		getSemanticRoutines().setParseStack(getParserStacks().getParseStack());
 
 		getParseToken().readNext();
 

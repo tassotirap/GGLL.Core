@@ -34,7 +34,7 @@ public abstract class IErroStrategy
 
 	protected void init() throws Exception
 	{
-		this.analyzerStack = analyzer.getParseStacks();
+		this.analyzerStack = analyzer.getParserStacks();
 		this.analyzerAlternative = analyzer.getParseAlternative();
 		this.analyzerToken = analyzer.getParseToken();
 		this.semanticRoutines = analyzer.getSemanticRoutines();

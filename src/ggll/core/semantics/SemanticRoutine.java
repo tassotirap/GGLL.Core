@@ -2,7 +2,9 @@ package ggll.core.semantics;
 
 import ggll.core.compile.ClassLoader;
 import ggll.core.lexical.Yytoken;
+import ggll.core.syntax.model.ParseStack;
 import ggll.core.syntax.parser.Parser;
+import ggll.core.syntax.parser.ParserStack;
 
 
 public class SemanticRoutine
@@ -42,5 +44,10 @@ public class SemanticRoutine
 	public void setCurrentToken(Yytoken cToken)
 	{
 		classLoader.getInstance().currentToken = cToken;
+	}
+	
+	public void setParseStack(ParseStack parseStack)
+	{
+		classLoader.getInstance().parseStack = parseStack;
 	}
 }
