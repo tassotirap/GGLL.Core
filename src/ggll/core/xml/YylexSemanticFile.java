@@ -199,8 +199,7 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 	/** number of newlines encountered up to the start of the matched text */
 	private int yyline;
 
-	
-	private int yychar;
+
 	/**
 	 * the number of characters from the last newline up to the start of the
 	 * matched text
@@ -375,7 +374,7 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 		zzEndRead = zzStartRead = 0;
 		zzCurrentPos = zzMarkedPos = 0;
 		zzLexicalState = YYINITIAL;
-		yyline = yychar = yycolumn = 0;
+		yyline = yycolumn = 0;
 	}
 
 	/**
@@ -503,8 +502,6 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 		{
 			zzMarkedPosL = zzMarkedPos;
 			
-			yychar+= zzMarkedPosL-zzStartRead;
-
 			boolean zzR = false;
 			for (zzCurrentPosL = zzStartRead; zzCurrentPosL < zzMarkedPosL; zzCurrentPosL++)
 			{

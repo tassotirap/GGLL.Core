@@ -1,7 +1,6 @@
 package ggll.core.syntax.error;
 
 import ggll.core.syntax.model.GGLLNode;
-import ggll.core.syntax.model.NTerminalStack;
 import ggll.core.syntax.model.ParseNode;
 import ggll.core.syntax.model.TableNode;
 import ggll.core.syntax.parser.Parser;
@@ -12,80 +11,60 @@ public class InsertStrategy extends IErroStrategy
 	{
 		super(analyzer);
 	}
-	
+
 	public int tryFix(int UI, int column, int line) throws Exception
 	{
-		int IX, IY;
 		int I = -1;
-		
-		IX = UI;
+		init();
+		int prevTableGraphNode = getNextTerminal(UI);
+		TableNode prevNode = analyzerTable.getTermial(analyzerTable.getGraphNode(prevTableGraphNode).getNodeReference());
+		int currentTableGraphNode = getNextTerminal(analyzerTable.getGraphNode(prevTableGraphNode).getSucessorIndex());
 
-		init();		
-
-		int iteration = 0;
-		while (IX != 0 && I < 0)
-		{
-			if(iteration > MAX_ITERATOR)
+		if (currentTableGraphNode > 0)
+		{			
+			TableNode currentNode = analyzerTable.getTermial(analyzerTable.getGraphNode(currentTableGraphNode).getNodeReference());
+			if (currentNode.getName().equals(analyzerToken.getCurrentSymbol()))
 			{
-				break;
+				I = currentTableGraphNode;
+				analyzer.setError("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + ".");
+				analyzerStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
+				analyzerStack.setTop(analyzerStack.getTop() + 1);
+				semanticRoutines.setCurrentToken(analyzerToken.getLastToken());
+				semanticRoutines.execFunction(analyzerTable.getGraphNode(prevTableGraphNode).getSemanticRoutine());
 			}
-			if (analyzerTable.getGraphNode(IX).IsTerminal())
-			{
-				NTerminalStack pilhaNaoTerminalY = new NTerminalStack();
-				
-				TableNode terminalNode = analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference());				
-				IY = analyzerTable.getGraphNode(IX).getSucessorIndex();	
-				
-				while (IY != 0 && I < 0)
-				{
-					if (analyzerTable.getGraphNode(IY).IsTerminal())
-					{
-						if (analyzerTable.getGraphNode(IY).isLambda())
-						{
-							IY = analyzerTable.getGraphNode(IY).getSucessorIndex();
-						}
-						else
-						{
-							String temp = analyzerTable.getTermial(analyzerTable.getGraphNode(IY).getNodeReference()).getName();
-							if (temp.equals(analyzerToken.getCurrentSymbol()))
-							{
-								analyzer.setError("Symbol \"" + terminalNode.getName() + "\" inserted before column " + column + ".");
-								analyzerStack.getParseStack().push(new ParseNode(terminalNode.getFlag(), terminalNode.getName(), terminalNode.getName()));
-								analyzerStack.setTop(analyzerStack.getTop() + 1);
-								semanticRoutines.setCurrentToken(analyzerToken.getLastToken());
-								semanticRoutines.execFunction(analyzerTable.getGraphNode(IX).getSemanticRoutine());
-								analyzerStack.getNTerminalStack().clear();
-								I = IY;
-							}
-							else
-								IY = analyzerAlternative.findAlternative(IY, pilhaNaoTerminalY, analyzerStack.getGGLLStack());
-						}
-					}
-					else
-					{
-						analyzerStack.getGGLLStack().push(new GGLLNode(IY, analyzerStack.getTop() + 2));
-						pilhaNaoTerminalY.push(IY);
-						IY = analyzerTable.getNTerminal(analyzerTable.getGraphNode(IY).getNodeReference()).getFirstNode();
-					}
-				}
-				if (I < 0)
-				{
-					IX = analyzerAlternative.findAlternative(IX, analyzerStack.getNTerminalStack(), analyzerStack.getGGLLStack());
-				}
-			}
-			else
-			{
-				analyzerStack.getGGLLStack().push(new GGLLNode(IX, analyzerStack.getTop() + 1));
-				analyzerStack.getNTerminalStack().push(IX);
-				IX = analyzerTable.getNTerminal(analyzerTable.getGraphNode(IX).getNodeReference()).getFirstNode();
-			}
-			iteration++;
 		}
-		
+		else if (currentTableGraphNode == 0)
+		{
+			I = currentTableGraphNode;
+			analyzer.setError("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + ".");
+			analyzerStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
+			analyzerStack.setTop(analyzerStack.getTop() + 1);
+			semanticRoutines.setCurrentToken(analyzerToken.getLastToken());
+			semanticRoutines.execFunction(analyzerTable.getGraphNode(prevTableGraphNode).getSemanticRoutine());
+		}
+
 		if (I < 0)
 		{
 			restore(false);
 		}
 		return I;
+	}
+
+	private int getNextTerminal(int Index)
+	{
+		while (Index > 0 && !analyzerTable.getGraphNode(Index).IsTerminal())
+		{
+			analyzerStack.getGGLLStack().push(new GGLLNode(Index, analyzerStack.getTop() + 1));
+			analyzerStack.getNTerminalStack().push(Index);
+			Index = analyzerTable.getNTerminal(analyzerTable.getGraphNode(Index).getNodeReference()).getFirstNode();
+		}
+		if (Index > 0)
+		{
+			return Index;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 }

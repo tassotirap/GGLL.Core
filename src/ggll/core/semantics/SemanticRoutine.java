@@ -4,7 +4,6 @@ import ggll.core.compile.ClassLoader;
 import ggll.core.lexical.Yytoken;
 import ggll.core.syntax.model.ParseStack;
 import ggll.core.syntax.parser.Parser;
-import ggll.core.syntax.parser.ParserStack;
 
 
 public class SemanticRoutine
