@@ -5,7 +5,6 @@ import ggll.core.compile.Compiler;
 
 import java.io.File;
 
-
 public class YyFactory
 {
 	public static void createYylex(String baseDir, String path, String scanner)
@@ -35,17 +34,17 @@ public class YyFactory
 		{
 			Compiler compile = new Compiler();
 			compile.compile(path.getPath());
-			
+
 			ClassLoader<Yylex> classLoader = new ClassLoader<Yylex>(path);
 			return classLoader.getInstance();
-			
+
 		}
 		catch (Exception e)
 		{
 			throw e;
 		}
 	}
-	
+
 	public static Yylex getYylex(String file) throws Exception
 	{
 		return getYylex(new File(file));

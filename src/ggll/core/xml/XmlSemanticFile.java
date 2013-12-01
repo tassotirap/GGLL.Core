@@ -1,4 +1,5 @@
 package ggll.core.xml;
+
 import ggll.core.semantics.SemanticRoutineClass;
 import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.model.TableNode;
@@ -7,7 +8,7 @@ import ggll.core.syntax.parser.GGLLTable;
 public class XmlSemanticFile extends SemanticRoutineClass
 {
 	public GGLLTable ggllTable;
-	
+
 	private TableGraphNode[] nodes;
 	private TableNode[] nTerminal;
 	private TableNode[] terminal;
@@ -35,13 +36,13 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: IT_NAME */
 	public void IT_NAME()
 	{
-		if(isNTerminal)
+		if (isNTerminal)
 		{
-			nTerminal[index].setName(currentToken.token());
+			nTerminal[index].setName(getCurrentToken().token());
 		}
 		else
 		{
-			terminal[index].setName(currentToken.token());
+			terminal[index].setName(getCurrentToken().token());
 		}
 		index++;
 	}
@@ -50,13 +51,13 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: IT_FLAG */
 	public void IT_FLAG()
 	{
-		if(isNTerminal)
+		if (isNTerminal)
 		{
-			nTerminal[index].setFlag(currentToken.token());
+			nTerminal[index].setFlag(getCurrentToken().token());
 		}
 		else
 		{
-			terminal[index].setFlag(currentToken.token());
+			terminal[index].setFlag(getCurrentToken().token());
 		}
 	}
 
@@ -64,8 +65,8 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: IT_FNO */
 	public void IT_FNO()
 	{
-		int value = Integer.parseInt(currentToken.token());
-		if(isNTerminal)
+		int value = Integer.parseInt(getCurrentToken().token());
+		if (isNTerminal)
 		{
 			nTerminal[index] = new TableNode();
 			nTerminal[index].setFirstNode(value);
@@ -81,7 +82,7 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: TE_SIZE */
 	public void TE_SIZE()
 	{
-		int size = Integer.parseInt(currentToken.token());
+		int size = Integer.parseInt(getCurrentToken().token());
 		terminal = new TableNode[size];
 		index = 0;
 		isNTerminal = false;
@@ -91,7 +92,7 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: NTE_SIZE */
 	public void NTE_SIZE()
 	{
-		int size = Integer.parseInt(currentToken.token());
+		int size = Integer.parseInt(getCurrentToken().token());
 		nTerminal = new TableNode[size];
 		index = 0;
 		isNTerminal = true;
@@ -101,7 +102,7 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: TG_SUC */
 	public void TG_SUC()
 	{
-		int value = Integer.parseInt(currentToken.token()); 
+		int value = Integer.parseInt(getCurrentToken().token());
 		nodes[index].setSucessorIndex(value);
 		index++;
 	}
@@ -110,14 +111,14 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: TG_SROUT */
 	public void TG_SROUT()
 	{
-		nodes[index].setSemanticRoutine(currentToken.token());
+		nodes[index].setSemanticRoutine(getCurrentToken().token());
 	}
 
 	/* END ROUTINE: TG_SROUT */
 	/* BEGIN ROUTINE: TG_NREF */
 	public void TG_NREF()
 	{
-		int value = Integer.parseInt(currentToken.token()); 
+		int value = Integer.parseInt(getCurrentToken().token());
 		nodes[index].setNodeReference(value);
 	}
 
@@ -125,7 +126,7 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: TG_ISTERM */
 	public void TG_ISTERM()
 	{
-		boolean value = Boolean.parseBoolean(currentToken.token()); 
+		boolean value = Boolean.parseBoolean(getCurrentToken().token());
 		nodes[index].setIsTerminal(value);
 	}
 
@@ -133,11 +134,11 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: TG_ALT */
 	public void TG_ALT()
 	{
-		int value = Integer.parseInt(currentToken.token()); 
+		int value = Integer.parseInt(getCurrentToken().token());
 		nodes[index] = new TableGraphNode();
 		nodes[index].setAlternativeIndex(value);
 	}
-	
+
 	/* END ROUTINE: IT_EMPTY */
 	/* BEGIN ROUTINE: TG_EMPTY */
 	public void TG_EMPTY()
@@ -149,7 +150,7 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: TG_SIZE */
 	public void TG_SIZE()
 	{
-		int size = Integer.parseInt(currentToken.token());
+		int size = Integer.parseInt(getCurrentToken().token());
 		nodes = new TableGraphNode[size];
 		index = 0;
 	}

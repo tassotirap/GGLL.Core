@@ -4,48 +4,48 @@ import java.util.Stack;
 
 public class GGLLStack
 {
-	Stack<GGLLNode> grViewStack;
-	
+	Stack<GGLLNode> ggllStack;
+
 	public GGLLStack()
-	{	
-		grViewStack = new Stack<GGLLNode>();
+	{
+		ggllStack = new Stack<GGLLNode>();
 	}
-	
+
 	public void clear()
 	{
-		grViewStack.clear();		
+		ggllStack.clear();
 	}
-	
+
 	@Override
 	public GGLLStack clone()
 	{
 		GGLLStack newInstance = new GGLLStack();
-		newInstance.grViewStack = (Stack<GGLLNode>) this.grViewStack.clone();
+		newInstance.ggllStack = (Stack<GGLLNode>) this.ggllStack.clone();
 		return newInstance;
 	}
-	
+
 	public boolean empty()
 	{
-		return grViewStack.empty();
+		return ggllStack.empty();
 	}
-	
+
 	public GGLLNode peak()
 	{
-		return grViewStack.peek();
+		return ggllStack.peek();
 	}
-	
+
 	public GGLLNode pop()
 	{
-		return grViewStack.pop();
+		return ggllStack.pop();
 	}
-	
+
 	public void push(GGLLNode item)
 	{
-		grViewStack.push(item);
+		ggllStack.push(item);
 	}
-	
+
 	public int size()
 	{
-		return grViewStack.size();		
+		return ggllStack.size();
 	}
 }

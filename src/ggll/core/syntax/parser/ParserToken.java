@@ -1,31 +1,31 @@
 package ggll.core.syntax.parser;
 
+import ggll.core.exceptions.LexicalException;
 import ggll.core.lexical.Yylex;
 import ggll.core.lexical.Yytoken;
 
 import java.io.IOException;
 
-
 public class ParserToken
-{	
+{
 	private Yytoken currentToken;
-	
+
 	private String currentSemanticSymbol;
 	private String lastSemanticSymbol;
 	private String currentSymbol;
-	private String lastSymbol;	
+	private String lastSymbol;
 	private Yylex yylex;
 
 	private Yytoken lastToken;
-	
+
 	public ParserToken(Yylex yylex)
 	{
 		this.yylex = yylex;
 	}
-	
+
 	private void setLastToken(Yytoken token)
 	{
-		this.lastToken = token;		
+		this.lastToken = token;
 	}
 
 	public String getCurrentSemanticSymbol()
@@ -63,16 +63,16 @@ public class ParserToken
 		return yylex;
 	}
 
-	public void readNext()
+	public void readNext() throws LexicalException
 	{
 		try
 		{
-			setLastToken(getCurrentToken());			
+			setLastToken(getCurrentToken());
 			setLastSymbol(getCurrentSymbol());
 			setLastSemanticSymbol(getCurrentSemanticSymbol());
-			
+
 			setCurrentToken(getYylex().yylex());
-			
+
 			if (getCurrentToken().type.equals("Res") || getCurrentToken().type.equals("Esp") || getCurrentToken().type.equals("EOF"))
 			{
 				setCurrentSymbol(getCurrentToken().text);
@@ -81,7 +81,7 @@ public class ParserToken
 			{
 				setCurrentSymbol(getCurrentToken().type);
 			}
-			
+
 			setCurrentSemanticSymbol(getCurrentToken().text);
 		}
 		catch (IOException e)
@@ -108,7 +108,7 @@ public class ParserToken
 	{
 		this.lastSemanticSymbol = lastSemanticSymbol;
 	}
-	
+
 	public void setLastSymbol(String lastSymbol)
 	{
 		this.lastSymbol = lastSymbol;

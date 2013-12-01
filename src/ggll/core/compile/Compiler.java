@@ -1,19 +1,17 @@
 package ggll.core.compile;
 
+import ggll.core.list.ExtendedList;
 import ggll.core.properties.GGLLProperties;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
-
 
 public class Compiler
 {
@@ -34,11 +32,11 @@ public class Compiler
 		{
 			output += String.copyValueOf(cbuf, off, len);
 		}
-	}	
-	
+	}
+
 	private String output = "";
 	private String javaSDK = "";
-	
+
 	public Compiler()
 	{
 		GGLLProperties properties = new GGLLProperties();
@@ -53,7 +51,7 @@ public class Compiler
 		}
 		return fileName;
 	}
-	
+
 	public void compile(String fileName) throws Exception
 	{
 		String[] fileNames = new String[]{ fileName };
@@ -67,22 +65,22 @@ public class Compiler
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
-		List<File> sourceFileList = new ArrayList<File>();
+		ExtendedList<File> sourceFileList = new ExtendedList<File>();
 
 		for (String fileName : fileNames)
 		{
 			fileName = validateJavaFile(fileName);
-			sourceFileList.add(new File(fileName));
+			sourceFileList.append(new File(fileName));
 		}
 
-		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(sourceFileList);
+		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(sourceFileList.getAll());
 
 		CompilationTask task = compiler.getTask(new OutputCompiler(), fileManager, null, null, null, compilationUnits);
-		
+
 		boolean result = task.call();
 		fileManager.close();
-		
-		if(!result)
+
+		if (!result)
 		{
 			throw new Exception(output);
 		}

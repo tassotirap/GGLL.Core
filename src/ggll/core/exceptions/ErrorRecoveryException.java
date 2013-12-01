@@ -1,11 +1,10 @@
 package ggll.core.exceptions;
 
-
-public class WarningException extends Exception
+public class ErrorRecoveryException extends Exception
 {
 	private static final long serialVersionUID = 1L;
 
-	public WarningException(String mesage)
+	public ErrorRecoveryException(String mesage)
 	{
 		super(mesage);
 	}

@@ -10,13 +10,12 @@ public class ParserStack
 	private GGLLStack grViewStack;
 	private NTerminalStack nTerminalStack;
 	private int top;
-	
 
 	public ParserStack()
 	{
-		
+
 	}
-	
+
 	public GGLLStack getGGLLStack()
 	{
 		return grViewStack;
@@ -51,7 +50,7 @@ public class ParserStack
 
 	public void setNTerminalStack(NTerminalStack nTerminalStack)
 	{
-		this.nTerminalStack = nTerminalStack;		
+		this.nTerminalStack = nTerminalStack;
 	}
 
 	public void setTop(int top)

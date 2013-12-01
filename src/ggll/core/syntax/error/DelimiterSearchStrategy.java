@@ -1,10 +1,10 @@
 package ggll.core.syntax.error;
 
+import ggll.core.exceptions.ErrorRecoveryException;
 import ggll.core.syntax.model.TableNode;
 import ggll.core.syntax.parser.Parser;
 
 import java.util.Stack;
-
 
 public class DelimiterSearchStrategy extends IErroStrategy
 {
@@ -24,11 +24,11 @@ public class DelimiterSearchStrategy extends IErroStrategy
 		Stack<Integer> pilhaNaoTerminalY = new Stack<Integer>();
 
 		init();
-		
+
 		int iteration = 0;
 		while (IX != 0 && I < 0)
 		{
-			if(iteration > MAX_ITERATOR)
+			if (iteration > MAX_ITERATOR)
 			{
 				break;
 			}
@@ -38,7 +38,7 @@ public class DelimiterSearchStrategy extends IErroStrategy
 
 				if (terminalNode.getName().equals(analyzerToken.getCurrentSymbol()))
 				{
-					analyzer.setError("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter.");
+					analyzer.setError(new ErrorRecoveryException("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter."));
 					I = IX;
 				}
 				else

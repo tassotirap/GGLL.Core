@@ -1,5 +1,6 @@
 package ggll.core.syntax.error;
 
+import ggll.core.exceptions.ErrorRecoveryException;
 import ggll.core.syntax.model.GGLLNode;
 import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.model.TableNode;
@@ -25,11 +26,11 @@ public class DeleteStrategy extends IErroStrategy
 		int iteration = 0;
 		while (IX != 0)
 		{
-			if(iteration > MAX_ITERATOR)
+			if (iteration > MAX_ITERATOR)
 			{
 				break;
 			}
-			
+
 			TableGraphNode graphNode = analyzerTable.getGraphNode(IX);
 			if (analyzerTable.getGraphNode(IX).IsTerminal())
 			{
@@ -37,7 +38,7 @@ public class DeleteStrategy extends IErroStrategy
 
 				if (terminalNode.getName().equals(analyzerToken.getCurrentSymbol()))
 				{
-					analyzer.setError("Symbol \"" + analyzerToken.getLastToken().text + "\" was ignored.");
+					analyzer.setError(new ErrorRecoveryException("Symbol \"" + analyzerToken.getLastToken().text + "\" was ignored."));
 					I = IX;
 					break;
 				}

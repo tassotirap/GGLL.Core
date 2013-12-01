@@ -1,5 +1,6 @@
 package ggll.core.syntax.error;
 
+import ggll.core.exceptions.ErrorRecoveryException;
 import ggll.core.syntax.model.GGLLNode;
 import ggll.core.syntax.model.ParseNode;
 import ggll.core.syntax.model.TableNode;
@@ -12,6 +13,7 @@ public class InsertStrategy extends IErroStrategy
 		super(analyzer);
 	}
 
+	@Override
 	public int tryFix(int UI, int column, int line) throws Exception
 	{
 		int I = -1;
@@ -21,12 +23,12 @@ public class InsertStrategy extends IErroStrategy
 		int currentTableGraphNode = getNextTerminal(analyzerTable.getGraphNode(prevTableGraphNode).getSucessorIndex());
 
 		if (currentTableGraphNode > 0)
-		{			
+		{
 			TableNode currentNode = analyzerTable.getTermial(analyzerTable.getGraphNode(currentTableGraphNode).getNodeReference());
 			if (currentNode.getName().equals(analyzerToken.getCurrentSymbol()))
 			{
 				I = currentTableGraphNode;
-				analyzer.setError("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + ".");
+				analyzer.setError(new ErrorRecoveryException("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + "."));
 				analyzerStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
 				analyzerStack.setTop(analyzerStack.getTop() + 1);
 				semanticRoutines.setCurrentToken(analyzerToken.getLastToken());
@@ -36,7 +38,7 @@ public class InsertStrategy extends IErroStrategy
 		else if (currentTableGraphNode == 0)
 		{
 			I = currentTableGraphNode;
-			analyzer.setError("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + ".");
+			analyzer.setError(new ErrorRecoveryException("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + "."));
 			analyzerStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
 			analyzerStack.setTop(analyzerStack.getTop() + 1);
 			semanticRoutines.setCurrentToken(analyzerToken.getLastToken());

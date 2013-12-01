@@ -3,12 +3,29 @@ package ggll.core.semantics;
 import ggll.core.lexical.Yytoken;
 import ggll.core.syntax.model.ParseStack;
 
-import java.util.ArrayList;
-
-
 public abstract class SemanticRoutineClass
 {
-	protected Yytoken currentToken;
-	protected ParseStack parseStack;
-	protected ArrayList<String> errorList;
+	private Yytoken currentToken;
+
+	private ParseStack parseStack;
+
+	public Yytoken getCurrentToken()
+	{
+		return currentToken;
+	}
+
+	public void setCurrentToken(Yytoken currentToken)
+	{
+		this.currentToken = currentToken;
+	}
+
+	public ParseStack getParseStack()
+	{
+		return parseStack;
+	}
+
+	public void setParseStack(ParseStack parseStack)
+	{
+		this.parseStack = parseStack;
+	}
 }

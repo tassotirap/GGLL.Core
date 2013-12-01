@@ -2,19 +2,18 @@ package ggll.core.syntax.model;
 
 import java.io.Serializable;
 
-
 public class TableNode implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private String flag;		
+	private String flag;
 	private String name;
 	private int firstNode;
-	
+
 	public TableNode()
 	{
-		
+
 	}
-	
+
 	public TableNode(String flag, String nodeName)
 	{
 		this.flag = flag;
@@ -45,7 +44,7 @@ public class TableNode implements Serializable
 	}
 
 	public void setName(String nodeName)
-	{ 
+	{
 		name = nodeName;
 	}
 
@@ -53,7 +52,6 @@ public class TableNode implements Serializable
 	{
 		firstNode = nodePrim;
 	}
-
 
 	public void setFlag(String flag)
 	{

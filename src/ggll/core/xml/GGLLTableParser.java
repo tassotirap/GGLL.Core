@@ -9,7 +9,7 @@ public class GGLLTableParser
 	private TableGraphNode[] nodes;
 	private TableNode[] nTerminal;
 	private TableNode[] terminal;
-	
+
 	public GGLLTable ggllTable;
 
 	public GGLLTableParser()

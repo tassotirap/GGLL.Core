@@ -1,5 +1,6 @@
 package ggll.core.syntax.error;
 
+import ggll.core.exceptions.ErrorRecoveryException;
 import ggll.core.syntax.model.GGLLNode;
 import ggll.core.syntax.model.NTerminalStack;
 import ggll.core.syntax.model.ParseNode;
@@ -12,32 +13,33 @@ public class ChangeStrategy extends IErroStrategy
 	{
 		super(analyzer);
 	}
-	
+
+	@Override
 	public int tryFix(int UI, int column, int line) throws Exception
 	{
 		int IX, IY;
 		int I = -1;
-		
+
 		IX = UI;
 
 		init();
 
 		analyzerToken.readNext();
-		
+
 		int iteration = 0;
 		while (IX != 0 && I < 0)
 		{
-			if(iteration > MAX_ITERATOR)
+			if (iteration > MAX_ITERATOR)
 			{
 				break;
 			}
 			if (analyzerTable.getGraphNode(IX).IsTerminal())
 			{
 				NTerminalStack pilhaNaoTerminalY = new NTerminalStack();
-				
+
 				TableNode terminalNode = analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference());
 				IY = analyzerTable.getGraphNode(IX).getSucessorIndex();
-				
+
 				while (IY != 0 && I < 0)
 				{
 					if (analyzerTable.getGraphNode(IY).IsTerminal())
@@ -51,10 +53,11 @@ public class ChangeStrategy extends IErroStrategy
 							String temp = analyzerTable.getTermial(analyzerTable.getGraphNode(IY).getNodeReference()).getName();
 							if (temp.equals(analyzerToken.getCurrentSymbol()))
 							{
-								analyzer.setError("Symbol \"" + analyzerToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\"");
+
+								analyzer.setError(new ErrorRecoveryException("Symbol \"" + analyzerToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\""));
 								analyzerStack.getParseStack().push(new ParseNode(analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference()).getFlag(), terminalNode.getName(), terminalNode.getName()));
 								analyzerStack.setTop(analyzerStack.getTop() + 1);
-								
+
 								semanticRoutines.setCurrentToken(analyzerToken.getLastToken());
 								semanticRoutines.execFunction(analyzerTable.getGraphNode(IX).getSemanticRoutine());
 								analyzerStack.getNTerminalStack().clear();
@@ -84,7 +87,7 @@ public class ChangeStrategy extends IErroStrategy
 			}
 			iteration++;
 		}
-		
+
 		if (I < 0)
 		{
 			restore(true);

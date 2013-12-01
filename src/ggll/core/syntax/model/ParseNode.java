@@ -1,12 +1,11 @@
 package ggll.core.syntax.model;
 
-
 public class ParseNode
 {
 	private String flag;
-	
+
 	private Object semanticSymbol;
-	
+
 	private String type;
 
 	public ParseNode(String flag, String str)

@@ -1,6 +1,7 @@
 package ggll.core.syntax.parser;
 
 import ggll.core.lexical.Yylex;
+import ggll.core.list.ExtendedList;
 import ggll.core.semantics.SemanticRoutine;
 import ggll.core.semantics.SemanticRoutineClass;
 import ggll.core.syntax.error.ParserError;
@@ -8,9 +9,6 @@ import ggll.core.syntax.model.GGLLNode;
 import ggll.core.syntax.model.ParseNode;
 import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.model.TableNode;
-
-import java.util.ArrayList;
-
 
 public class Parser
 {
@@ -30,9 +28,8 @@ public class Parser
 	private boolean debug;
 	private Yylex yylex;
 	private SemanticRoutineClass semanticRoutineClass;
-	
-	private ArrayList<String> errorList = new ArrayList<String>();
-	private boolean sucess = true;	
+
+	private ExtendedList<Exception> errorList = new ExtendedList<Exception>();
 
 	public Parser(GGLLTable analyzerTabs, Yylex yylex, SemanticRoutineClass semanticRoutineClass, boolean debug)
 	{
@@ -44,7 +41,7 @@ public class Parser
 
 	private void Output()
 	{
-		if(parserOutput != null)
+		if (parserOutput != null)
 		{
 			parserOutput.Output();
 		}
@@ -52,14 +49,14 @@ public class Parser
 
 	public void clearErrors()
 	{
-		this.getErrorList().clear();
+		this.getErrorList().removeAll();
 	}
 
-	public ArrayList<String> getErrorList()
+	public ExtendedList<Exception> getErrorList()
 	{
-		if(this.errorList == null)
+		if (this.errorList == null)
 		{
-			this.errorList = new ArrayList<String>();
+			this.errorList = new ExtendedList<Exception>();
 		}
 		return errorList;
 	}
@@ -96,7 +93,7 @@ public class Parser
 	{
 		return parserTable;
 	}
-	
+
 	public ParserToken getParseToken()
 	{
 		if (parserToken == null)
@@ -111,18 +108,18 @@ public class Parser
 	{
 		if (semanticRoutines == null)
 		{
-			semanticRoutines = new SemanticRoutine(this, semanticRoutineClass);
+			semanticRoutines = new SemanticRoutine(semanticRoutineClass);
 		}
 
 		return semanticRoutines;
 	}
-	
+
 	public boolean isSucess()
 	{
-		return sucess;
+		return errorList.count() == 0;
 	}
 
-	public boolean next() throws Exception
+	public boolean next()
 	{
 		while (continueSentinel)
 		{
@@ -134,8 +131,15 @@ public class Parser
 					TableNode currentTerminal = getParseTable().getTermial(currentGraphNode.getNodeReference());
 					if (currentGraphNode.isLambda())
 					{
-						getSemanticRoutines().setCurrentToken(null);
-						getSemanticRoutines().execFunction(currentGraphNode.getSemanticRoutine());
+						try
+						{
+							getSemanticRoutines().setCurrentToken(null);
+							getSemanticRoutines().execFunction(currentGraphNode.getSemanticRoutine());
+						}
+						catch (Exception e)
+						{
+							errorList.append(e);
+						}
 
 						I = currentGraphNode.getSucessorIndex();
 						UI = I;
@@ -146,11 +150,27 @@ public class Parser
 						{
 							getParserStacks().getParseStack().push(new ParseNode(currentTerminal.getFlag(), getParseToken().getCurrentSymbol(), getParseToken().getCurrentSemanticSymbol()));
 							Output();
-							
-							getSemanticRoutines().setCurrentToken(getParseToken().getCurrentToken());
-							getSemanticRoutines().execFunction(currentGraphNode.getSemanticRoutine());
 
-							getParseToken().readNext();
+							try
+							{
+								getSemanticRoutines().setCurrentToken(getParseToken().getCurrentToken());
+								getSemanticRoutines().execFunction(currentGraphNode.getSemanticRoutine());
+							}
+							catch (Exception e)
+							{
+								errorList.append(e);
+							}
+
+							try
+							{
+
+								getParseToken().readNext();
+							}
+							catch (Exception e)
+							{
+								errorList.append(e);
+								return false;
+							}
 
 							I = currentGraphNode.getSucessorIndex();
 							UI = I;
@@ -173,9 +193,17 @@ public class Parser
 							{
 								if (getParserStacks().getNTerminalStack().empty())
 								{
-									I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+									try
+									{
+										I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+									}
+									catch (Exception e)
+									{
+										errorList.append(e);
+										I = -1;
+									}
+
 									continueSentinel = I >= 0;
-									setSucess(false);
 								}
 								else
 								{
@@ -186,9 +214,15 @@ public class Parser
 									}
 									else
 									{
-										I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+										try
+										{
+											I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+										}
+										catch (Exception e)
+										{
+											errorList.append(e);
+										}
 										continueSentinel = I >= 0;
-										setSucess(false);
 									}
 								}
 							}
@@ -200,7 +234,7 @@ public class Parser
 					TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(I).getNodeReference());
 					getParserStacks().getNTerminalStack().push(I);
 					getParserStacks().getGGLLStack().push(new GGLLNode(I, getParserStacks().getParseStack().size()));
-					I = currentNTerminal.getFirstNode(); 
+					I = currentNTerminal.getFirstNode();
 				}
 			}
 			else
@@ -217,15 +251,22 @@ public class Parser
 
 					if (auxParseSNode != null)
 					{
-						TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(grViewStackNode.indexNode).getNodeReference());
+						TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(grViewStackNode.index).getNodeReference());
 						getParserStacks().getParseStack().push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
 						Output();
 					}
 
-					I = grViewStackNode.indexNode;
+					I = grViewStackNode.index;
 
-					getSemanticRoutines().setCurrentToken(getParseToken().getCurrentToken());
-					getSemanticRoutines().execFunction(getParseTable().getGraphNode(I).getSemanticRoutine());
+					try
+					{
+						getSemanticRoutines().setCurrentToken(getParseToken().getCurrentToken());
+						getSemanticRoutines().execFunction(getParseTable().getGraphNode(I).getSemanticRoutine());
+					}
+					catch (Exception e)
+					{
+						errorList.append(e);
+					}
 
 					I = getParseTable().getGraphNode(I).getSucessorIndex();
 					UI = I;
@@ -234,8 +275,15 @@ public class Parser
 				{
 					if (!getParseToken().getCurrentSymbol().equals(new String("$")))
 					{
-						I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
-						setSucess(false);
+
+						try
+						{
+							I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+						}
+						catch (Exception e)
+						{
+							errorList.append(e);
+						}
 					}
 					continueSentinel = I > 0;
 				}
@@ -244,21 +292,20 @@ public class Parser
 		return false;
 	}
 
-	public void nextToEnd() throws Exception
+	public void nextToEnd()
 	{
-		while(next());
+		while (next())
+			;
 	}
-	
-	public void run() throws Exception
+
+	public void run()
 	{
 		clearErrors();
 
 		getParseToken().setCurrentSemanticSymbol(null);
 		getParserStacks().init();
 
-		setSucess(true);
-
-		getParseToken().getYylex().TabT(getParseTable().getTermials());
+		getParseToken().getYylex().TableNodes(getParseTable().getTermials());
 		getParseTable().setGraphNode(0, new TableGraphNode());
 		getParseTable().getGraphNode(0).setIsTerminal(false);
 		getParseTable().getGraphNode(0).setNodeReference(1);
@@ -267,10 +314,16 @@ public class Parser
 
 		getParserStacks().getGGLLStack().push(new GGLLNode(0, 0));
 		getParserStacks().setTop(0);
-		
-		getSemanticRoutines().setParseStack(getParserStacks().getParseStack());
-
-		getParseToken().readNext();
+		try
+		{
+			getSemanticRoutines().setParseStack(getParserStacks().getParseStack());
+			getParseToken().readNext();
+		}
+		catch (Exception e)
+		{
+			errorList.append(e);
+			return;
+		}
 
 		UI = I = getParseTable().getNTerminal(1).getFirstNode();
 
@@ -282,18 +335,13 @@ public class Parser
 		}
 	}
 
-	public void setError(String error)
+	public void setError(Exception error)
 	{
-		this.getErrorList().add(error);
+		this.getErrorList().append(error);
 	}
 
 	public void setParserOutput(ParserOutput parserOutput)
 	{
 		this.parserOutput = parserOutput;
-	}
-
-	public void setSucess(boolean sucess)
-	{
-		this.sucess = sucess;
 	}
 }

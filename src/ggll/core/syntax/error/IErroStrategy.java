@@ -3,10 +3,10 @@ package ggll.core.syntax.error;
 import ggll.core.semantics.SemanticRoutine;
 import ggll.core.syntax.model.GGLLStack;
 import ggll.core.syntax.model.NTerminalStack;
+import ggll.core.syntax.parser.GGLLTable;
 import ggll.core.syntax.parser.Parser;
 import ggll.core.syntax.parser.ParserAlternative;
 import ggll.core.syntax.parser.ParserStack;
-import ggll.core.syntax.parser.GGLLTable;
 import ggll.core.syntax.parser.ParserToken;
 
 public abstract class IErroStrategy
@@ -25,6 +25,7 @@ public abstract class IErroStrategy
 	protected ParserToken analyzerToken;
 	protected SemanticRoutine semanticRoutines;
 	protected GGLLTable analyzerTable;
+
 	public IErroStrategy(Parser analyzer)
 	{
 		this.analyzer = analyzer;
@@ -39,8 +40,7 @@ public abstract class IErroStrategy
 		this.analyzerToken = analyzer.getParseToken();
 		this.semanticRoutines = analyzer.getSemanticRoutines();
 		this.analyzerTable = analyzer.getParseTable();
-		
-		
+
 		oldGGLLStack = analyzerStack.getGGLLStack().clone();
 		oldNTerminalStack = analyzerStack.getNTerminalStack().clone();
 		oldTop = analyzerStack.getTop();

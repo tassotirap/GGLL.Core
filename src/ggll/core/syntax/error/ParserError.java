@@ -1,11 +1,12 @@
 package ggll.core.syntax.error;
 
+import ggll.core.exceptions.ErrorRecoveryException;
+import ggll.core.exceptions.SintaticException;
+import ggll.core.list.ExtendedList;
 import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.parser.Parser;
 
-import java.util.ArrayList;
 import java.util.Stack;
-
 
 public class ParserError
 {
@@ -20,7 +21,7 @@ public class ParserError
 	{
 		int lastIndexNode = UI;
 
-		analyzer.setError("Error found at the symbol " + analyzer.getParseToken().getCurrentToken().text + " of line: " + line + ", column: " + column + ".");
+		analyzer.setError(new SintaticException(analyzer.getParseToken().getCurrentToken().text, line, column));
 		int IX = UI;
 
 		Stack<TableGraphNode> nTerminalStack = new Stack<TableGraphNode>();
@@ -29,7 +30,7 @@ public class ParserError
 		{
 			if (analyzer.getParseTable().getGraphNode(IX).IsTerminal())
 			{
-				analyzer.setError(analyzer.getParseTable().getTermial(analyzer.getParseTable().getGraphNode(IX).getNodeReference()).getName() + " expected.");
+				analyzer.setError(new ErrorRecoveryException(analyzer.getParseTable().getTermial(analyzer.getParseTable().getGraphNode(IX).getNodeReference()).getName() + " expected."));
 				IX = analyzer.getParseTable().getGraphNode(IX).getAlternativeIndex();
 
 				if (IX == 0 && nTerminalStack.size() > 0)
@@ -45,18 +46,18 @@ public class ParserError
 			}
 		}
 
-		ArrayList<IErroStrategy> strategyList = new ArrayList<IErroStrategy>();
-		
-		strategyList.add(new DeleteStrategy(analyzer));
-		strategyList.add(new InsertStrategy(analyzer));		
-		strategyList.add(new ChangeStrategy(analyzer));
-		strategyList.add(new DelimiterSearchStrategy(analyzer));
+		ExtendedList<IErroStrategy> strategyList = new ExtendedList<IErroStrategy>();
+
+		strategyList.append(new DeleteStrategy(analyzer));
+		strategyList.append(new InsertStrategy(analyzer));
+		strategyList.append(new ChangeStrategy(analyzer));
+		strategyList.append(new DelimiterSearchStrategy(analyzer));
 
 		int I = UI;
 
-		for (IErroStrategy errorStrategy : strategyList)
+		for (IErroStrategy errorStrategy : strategyList.getAll())
 		{
-			I = errorStrategy.tryFix(lastIndexNode,  column, line);
+			I = errorStrategy.tryFix(lastIndexNode, column, line);
 			if (I >= 0)
 			{
 				return I;
@@ -64,7 +65,7 @@ public class ParserError
 		}
 
 		if (I < 0)
-		{			
+		{
 			analyzer.getParseToken().readNext();
 			if (analyzer.getParseToken().getCurrentToken().text.equals("$"))
 			{

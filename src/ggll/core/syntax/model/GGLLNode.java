@@ -2,18 +2,18 @@ package ggll.core.syntax.model;
 
 public class GGLLNode
 {
-	public int indexNode;
+	public int index;
 	public int size;
 
-	public GGLLNode(int indexNode, int size)
+	public GGLLNode(int index, int size)
 	{
-		this.indexNode = indexNode;
+		this.index = index;
 		this.size = size;
 	}
 
 	@Override
 	public String toString()
 	{
-		return indexNode + "," + size;
+		return index + "," + size;
 	}
 }

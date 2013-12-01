@@ -5,17 +5,17 @@ import java.io.Serializable;
 public class TableGraphNode implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private int alternativeIndex;	
-	private String semanticRoutine;	
-	private int nodeReference;	
-	private int sucessorIndex;	
+	private int alternativeIndex;
+	private String semanticRoutine;
+	private int nodeReference;
+	private int sucessorIndex;
 	private boolean isTerminal;
-	
+
 	public TableGraphNode()
 	{
-		
+
 	}
-	
+
 	public TableGraphNode(int alternativeIndex, boolean isTerminal, int nodeReference, String semanticRoutine, int sucessorIndex)
 	{
 		this.alternativeIndex = alternativeIndex;
@@ -24,6 +24,7 @@ public class TableGraphNode implements Serializable
 		this.semanticRoutine = semanticRoutine;
 		this.sucessorIndex = sucessorIndex;
 	}
+
 	public int getAlternativeIndex()
 	{
 		return alternativeIndex;
@@ -32,7 +33,7 @@ public class TableGraphNode implements Serializable
 	public int getNodeReference()
 	{
 		return nodeReference;
-	} 
+	}
 
 	public String getSemanticRoutine()
 	{

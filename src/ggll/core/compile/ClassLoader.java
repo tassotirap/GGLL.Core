@@ -5,10 +5,14 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+/**
+ * 
+ * @author Tasso Tirapani Silva Pinto Class to load other class
+ * @param <T>
+ */
 public class ClassLoader<T>
 {
 	private T instance;
-	
 
 	public ClassLoader(File file)
 	{
@@ -37,7 +41,7 @@ public class ClassLoader<T>
 	{
 		this(new File(file));
 	}
-	
+
 	public ClassLoader(T instance)
 	{
 		this.instance = instance;

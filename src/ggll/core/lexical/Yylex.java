@@ -1,16 +1,17 @@
 package ggll.core.lexical;
 
+import ggll.core.exceptions.LexicalException;
 import ggll.core.syntax.model.TableNode;
 
 public interface Yylex
 {
 	public abstract void pushback(int number);
 
-	public abstract int serchTabTSymbol(String text);
+	public abstract int searchTableNodeSymbol(String text);
 
 	public abstract void setReader(java.io.Reader in);
 
-	public abstract void TabT(TableNode TbT[]);
+	public abstract void TableNodes(TableNode TbT[]);
 
 	public abstract void yybegin(int newState);
 
@@ -20,7 +21,7 @@ public interface Yylex
 
 	public abstract int yylength();
 
-	public abstract Yytoken yylex() throws java.io.IOException;
+	public abstract Yytoken yylex() throws java.io.IOException, LexicalException;
 
 	public abstract void yyreset(java.io.Reader reader) throws java.io.IOException;
 

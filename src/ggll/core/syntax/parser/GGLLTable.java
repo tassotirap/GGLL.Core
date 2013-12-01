@@ -41,17 +41,17 @@ public class GGLLTable implements Serializable
 		YylexSemanticFile yylex = new YylexSemanticFile();
 		GGLLTable ggllTable = new GGLLTableParser().ggllTable;
 		XmlSemanticFile xmlSemanticFile = new ggll.core.xml.XmlSemanticFile();
-		
+
 		Parser parser = new Parser(ggllTable, yylex, xmlSemanticFile, false);
 		yylex.yyreset(new StringReader(ReadFile(file)));
 		parser.run();
-		if(parser.isSucess())
+		if (parser.isSucess())
 		{
 			return xmlSemanticFile.ggllTable;
 		}
 		return null;
 	}
-	
+
 	private static String ReadFile(File file)
 	{
 		BufferedReader br = null;
