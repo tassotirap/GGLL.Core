@@ -24,20 +24,20 @@ public class GGLLProperties
 	{
 		try
 		{
-			properties = new Properties();
-			properties.loadFromXML(new FileInputStream(propertieFile));
+			this.properties = new Properties();
+			this.properties.loadFromXML(new FileInputStream(this.propertieFile));
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
-			properties = null;
+			this.properties = null;
 		}
 	}
 
 	public String getJavaSDKPath()
 	{
-		if (properties != null)
+		if (this.properties != null)
 		{
-			return properties.getProperty("jdk_path");
+			return this.properties.getProperty("jdk_path");
 		}
 		return "";
 	}

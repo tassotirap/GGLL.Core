@@ -11,17 +11,17 @@ public abstract class SemanticRoutineClass
 
 	public Yytoken getCurrentToken()
 	{
-		return currentToken;
+		return this.currentToken;
+	}
+
+	public ParseStack getParseStack()
+	{
+		return this.parseStack;
 	}
 
 	public void setCurrentToken(Yytoken currentToken)
 	{
 		this.currentToken = currentToken;
-	}
-
-	public ParseStack getParseStack()
-	{
-		return parseStack;
 	}
 
 	public void setParseStack(ParseStack parseStack)

@@ -35,28 +35,28 @@ public abstract class IErroStrategy
 
 	protected void init() throws Exception
 	{
-		this.analyzerStack = analyzer.getParserStacks();
-		this.analyzerAlternative = analyzer.getParseAlternative();
-		this.analyzerToken = analyzer.getParseToken();
-		this.semanticRoutines = analyzer.getSemanticRoutines();
-		this.analyzerTable = analyzer.getParseTable();
+		this.analyzerStack = this.analyzer.getParserStacks();
+		this.analyzerAlternative = this.analyzer.getParseAlternative();
+		this.analyzerToken = this.analyzer.getParseToken();
+		this.semanticRoutines = this.analyzer.getSemanticRoutines();
+		this.analyzerTable = this.analyzer.getParseTable();
 
-		oldGGLLStack = analyzerStack.getGGLLStack().clone();
-		oldNTerminalStack = analyzerStack.getNTerminalStack().clone();
-		oldTop = analyzerStack.getTop();
+		this.oldGGLLStack = this.analyzerStack.getGGLLStack().clone();
+		this.oldNTerminalStack = this.analyzerStack.getNTerminalStack().clone();
+		this.oldTop = this.analyzerStack.getTop();
 	}
 
 	protected void restore(boolean restoreToken)
 	{
-		analyzerStack.setGGLLStack(oldGGLLStack);
-		analyzerStack.setNTerminalStack(oldNTerminalStack);
-		analyzerStack.setTop(oldTop);
+		this.analyzerStack.setGGLLStack(this.oldGGLLStack);
+		this.analyzerStack.setNTerminalStack(this.oldNTerminalStack);
+		this.analyzerStack.setTop(this.oldTop);
 		if (restoreToken)
 		{
-			analyzerToken.setCurrentToken(analyzerToken.getLastToken());
-			analyzerToken.setCurrentSymbol(analyzerToken.getLastSymbol());
-			analyzerToken.setCurrentSemanticSymbol(analyzerToken.getLastSemanticSymbol());
-			analyzerToken.getYylex().pushback(analyzerToken.getYylex().yylength());
+			this.analyzerToken.setCurrentToken(this.analyzerToken.getLastToken());
+			this.analyzerToken.setCurrentSymbol(this.analyzerToken.getLastSymbol());
+			this.analyzerToken.setCurrentSemanticSymbol(this.analyzerToken.getLastSemanticSymbol());
+			this.analyzerToken.getYylex().pushback(this.analyzerToken.getYylex().yylength());
 		}
 	}
 }

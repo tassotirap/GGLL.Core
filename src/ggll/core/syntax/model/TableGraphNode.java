@@ -27,63 +27,63 @@ public class TableGraphNode implements Serializable
 
 	public int getAlternativeIndex()
 	{
-		return alternativeIndex;
+		return this.alternativeIndex;
 	}
 
 	public int getNodeReference()
 	{
-		return nodeReference;
+		return this.nodeReference;
 	}
 
 	public String getSemanticRoutine()
 	{
-		return semanticRoutine;
+		return this.semanticRoutine;
 	}
 
 	public int getSucessorIndex()
 	{
-		return sucessorIndex;
+		return this.sucessorIndex;
 	}
 
 	public boolean isLambda()
 	{
-		return nodeReference == 0;
+		return this.nodeReference == 0;
 	}
 
 	public boolean IsTerminal()
 	{
-		return isTerminal;
+		return this.isTerminal;
 	}
 
 	public void setAlternativeIndex(int node)
 	{
-		alternativeIndex = node;
+		this.alternativeIndex = node;
 	}
 
 	public void setIsTerminal(boolean bool)
 	{
-		isTerminal = bool;
+		this.isTerminal = bool;
 	}
 
 	public void setNodeReference(int node)
 	{
-		nodeReference = node;
+		this.nodeReference = node;
 	}
 
 	public void setSemanticRoutine(String routine)
 	{
-		semanticRoutine = routine;
+		this.semanticRoutine = routine;
 	}
 
 	public void setSucessorIndex(int node)
 	{
-		sucessorIndex = node;
+		this.sucessorIndex = node;
 	}
 
 	@Override
 	public String toString()
 	{
-		return isTerminal + " " + nodeReference + " " + alternativeIndex + " " + sucessorIndex + " " + semanticRoutine;
+		return this.isTerminal + " " + this.nodeReference + " " + this.alternativeIndex + " " + this.sucessorIndex + " " + this.semanticRoutine;
 	}
 
 }

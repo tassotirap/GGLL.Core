@@ -11,7 +11,7 @@ public class YyFactory
 	{
 		try
 		{
-			File targetDir = new File(baseDir + "/" + path);
+			final File targetDir = new File(baseDir + "/" + path);
 			if (!targetDir.exists())
 			{
 				if (!targetDir.mkdir())
@@ -19,10 +19,10 @@ public class YyFactory
 					return;
 				}
 			}
-			String[] arguments = new String[]{ "-d", baseDir + "/" + path, scanner };
+			final String[] arguments = new String[]{ "-d", baseDir + "/" + path, scanner };
 			JFlex.Main.main(arguments);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -32,14 +32,14 @@ public class YyFactory
 	{
 		try
 		{
-			Compiler compile = new Compiler();
+			final Compiler compile = new Compiler();
 			compile.compile(path.getPath());
 
-			ClassLoader<Yylex> classLoader = new ClassLoader<Yylex>(path);
+			final ClassLoader<Yylex> classLoader = new ClassLoader<Yylex>(path);
 			return classLoader.getInstance();
 
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			throw e;
 		}

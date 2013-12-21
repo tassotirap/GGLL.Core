@@ -14,6 +14,6 @@ public class GGLLNode
 	@Override
 	public String toString()
 	{
-		return index + "," + size;
+		return this.index + "," + this.size;
 	}
 }

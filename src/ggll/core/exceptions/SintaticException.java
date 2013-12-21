@@ -4,9 +4,9 @@ public class SintaticException extends Exception
 {
 	private static final long serialVersionUID = 1L;
 
-	private int line;
-	private int column;
-	private String token;
+	private final int line;
+	private final int column;
+	private final String token;
 
 	public SintaticException(String token, int line, int column)
 	{
@@ -15,18 +15,18 @@ public class SintaticException extends Exception
 		this.column = column;
 	}
 
-	public int getLine()
-	{
-		return line;
-	}
-
 	public int getColumn()
 	{
-		return column;
+		return this.column;
+	}
+
+	public int getLine()
+	{
+		return this.line;
 	}
 
 	public String getToken()
 	{
-		return token;
+		return this.token;
 	}
 }

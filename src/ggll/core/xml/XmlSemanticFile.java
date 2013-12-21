@@ -19,45 +19,30 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* you can modify the lines bellow */
 
 	/* BEGIN SEMANTIC ROUTINES */
-	/* BEGIN ROUTINE: IT_EMPTY */
-	public void IT_EMPTY()
-	{
-		index++;
-	}
-
-	/* BEGIN SEMANTIC ROUTINES */
 	/* BEGIN ROUTINE: GGLL */
 	public void GGLL()
 	{
-		ggllTable = new GGLLTable(nodes, nTerminal, terminal);
+		this.ggllTable = new GGLLTable(this.nodes, this.nTerminal, this.terminal);
 	}
 
-	/* END ROUTINE: GGLL */
-	/* BEGIN ROUTINE: IT_NAME */
-	public void IT_NAME()
+	/* BEGIN SEMANTIC ROUTINES */
+	/* BEGIN ROUTINE: IT_EMPTY */
+	public void IT_EMPTY()
 	{
-		if (isNTerminal)
-		{
-			nTerminal[index].setName(getCurrentToken().token());
-		}
-		else
-		{
-			terminal[index].setName(getCurrentToken().token());
-		}
-		index++;
+		this.index++;
 	}
 
 	/* END ROUTINE: IT_NAME */
 	/* BEGIN ROUTINE: IT_FLAG */
 	public void IT_FLAG()
 	{
-		if (isNTerminal)
+		if (this.isNTerminal)
 		{
-			nTerminal[index].setFlag(getCurrentToken().token());
+			this.nTerminal[this.index].setFlag(getCurrentToken().token());
 		}
 		else
 		{
-			terminal[index].setFlag(getCurrentToken().token());
+			this.terminal[this.index].setFlag(getCurrentToken().token());
 		}
 	}
 
@@ -65,96 +50,112 @@ public class XmlSemanticFile extends SemanticRoutineClass
 	/* BEGIN ROUTINE: IT_FNO */
 	public void IT_FNO()
 	{
-		int value = Integer.parseInt(getCurrentToken().token());
-		if (isNTerminal)
+		final int value = Integer.parseInt(getCurrentToken().token());
+		if (this.isNTerminal)
 		{
-			nTerminal[index] = new TableNode();
-			nTerminal[index].setFirstNode(value);
+			this.nTerminal[this.index] = new TableNode();
+			this.nTerminal[this.index].setFirstNode(value);
 		}
 		else
 		{
-			terminal[index] = new TableNode();
-			terminal[index].setFirstNode(value);
+			this.terminal[this.index] = new TableNode();
+			this.terminal[this.index].setFirstNode(value);
 		}
 	}
 
-	/* END ROUTINE: IT_FNO */
-	/* BEGIN ROUTINE: TE_SIZE */
-	public void TE_SIZE()
+	/* END ROUTINE: GGLL */
+	/* BEGIN ROUTINE: IT_NAME */
+	public void IT_NAME()
 	{
-		int size = Integer.parseInt(getCurrentToken().token());
-		terminal = new TableNode[size];
-		index = 0;
-		isNTerminal = false;
+		if (this.isNTerminal)
+		{
+			this.nTerminal[this.index].setName(getCurrentToken().token());
+		}
+		else
+		{
+			this.terminal[this.index].setName(getCurrentToken().token());
+		}
+		this.index++;
 	}
 
 	/* END ROUTINE: TE_SIZE */
 	/* BEGIN ROUTINE: NTE_SIZE */
 	public void NTE_SIZE()
 	{
-		int size = Integer.parseInt(getCurrentToken().token());
-		nTerminal = new TableNode[size];
-		index = 0;
-		isNTerminal = true;
+		final int size = Integer.parseInt(getCurrentToken().token());
+		this.nTerminal = new TableNode[size];
+		this.index = 0;
+		this.isNTerminal = true;
 	}
 
-	/* END ROUTINE: NTE_SIZE */
-	/* BEGIN ROUTINE: TG_SUC */
-	public void TG_SUC()
+	/* END ROUTINE: IT_FNO */
+	/* BEGIN ROUTINE: TE_SIZE */
+	public void TE_SIZE()
 	{
-		int value = Integer.parseInt(getCurrentToken().token());
-		nodes[index].setSucessorIndex(value);
-		index++;
-	}
-
-	/* END ROUTINE: TG_SUC */
-	/* BEGIN ROUTINE: TG_SROUT */
-	public void TG_SROUT()
-	{
-		nodes[index].setSemanticRoutine(getCurrentToken().token());
-	}
-
-	/* END ROUTINE: TG_SROUT */
-	/* BEGIN ROUTINE: TG_NREF */
-	public void TG_NREF()
-	{
-		int value = Integer.parseInt(getCurrentToken().token());
-		nodes[index].setNodeReference(value);
-	}
-
-	/* END ROUTINE: TG_NREF */
-	/* BEGIN ROUTINE: TG_ISTERM */
-	public void TG_ISTERM()
-	{
-		boolean value = Boolean.parseBoolean(getCurrentToken().token());
-		nodes[index].setIsTerminal(value);
+		final int size = Integer.parseInt(getCurrentToken().token());
+		this.terminal = new TableNode[size];
+		this.index = 0;
+		this.isNTerminal = false;
 	}
 
 	/* END ROUTINE: TG_ISTERM */
 	/* BEGIN ROUTINE: TG_ALT */
 	public void TG_ALT()
 	{
-		int value = Integer.parseInt(getCurrentToken().token());
-		nodes[index] = new TableGraphNode();
-		nodes[index].setAlternativeIndex(value);
+		final int value = Integer.parseInt(getCurrentToken().token());
+		this.nodes[this.index] = new TableGraphNode();
+		this.nodes[this.index].setAlternativeIndex(value);
 	}
 
 	/* END ROUTINE: IT_EMPTY */
 	/* BEGIN ROUTINE: TG_EMPTY */
 	public void TG_EMPTY()
 	{
-		index++;
+		this.index++;
+	}
+
+	/* END ROUTINE: TG_NREF */
+	/* BEGIN ROUTINE: TG_ISTERM */
+	public void TG_ISTERM()
+	{
+		final boolean value = Boolean.parseBoolean(getCurrentToken().token());
+		this.nodes[this.index].setIsTerminal(value);
+	}
+
+	/* END ROUTINE: TG_SROUT */
+	/* BEGIN ROUTINE: TG_NREF */
+	public void TG_NREF()
+	{
+		final int value = Integer.parseInt(getCurrentToken().token());
+		this.nodes[this.index].setNodeReference(value);
 	}
 
 	/* END ROUTINE: TG_ALT */
 	/* BEGIN ROUTINE: TG_SIZE */
 	public void TG_SIZE()
 	{
-		int size = Integer.parseInt(getCurrentToken().token());
-		nodes = new TableGraphNode[size];
-		index = 0;
+		final int size = Integer.parseInt(getCurrentToken().token());
+		this.nodes = new TableGraphNode[size];
+		this.index = 0;
 	}
+
 	/* END ROUTINE: TG_SIZE */
+
+	/* END ROUTINE: TG_SUC */
+	/* BEGIN ROUTINE: TG_SROUT */
+	public void TG_SROUT()
+	{
+		this.nodes[this.index].setSemanticRoutine(getCurrentToken().token());
+	}
+
+	/* END ROUTINE: NTE_SIZE */
+	/* BEGIN ROUTINE: TG_SUC */
+	public void TG_SUC()
+	{
+		final int value = Integer.parseInt(getCurrentToken().token());
+		this.nodes[this.index].setSucessorIndex(value);
+		this.index++;
+	}
 
 	/* END SEMANTIC ROUTINES */
 	/* do not modify the lines bellow */

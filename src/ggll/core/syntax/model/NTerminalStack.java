@@ -8,45 +8,45 @@ public class NTerminalStack
 
 	public NTerminalStack()
 	{
-		nTerminalStack = new Stack<Integer>();
+		this.nTerminalStack = new Stack<Integer>();
 	}
 
 	public void clear()
 	{
-		nTerminalStack.clear();
+		this.nTerminalStack.clear();
 	}
 
 	@Override
 	public NTerminalStack clone()
 	{
-		NTerminalStack newInstance = new NTerminalStack();
+		final NTerminalStack newInstance = new NTerminalStack();
 		newInstance.nTerminalStack = (Stack<Integer>) this.nTerminalStack.clone();
 		return newInstance;
 	}
 
 	public boolean empty()
 	{
-		return nTerminalStack.empty();
+		return this.nTerminalStack.empty();
 	}
 
 	public Integer peak()
 	{
-		return nTerminalStack.peek();
+		return this.nTerminalStack.peek();
 	}
 
 	public Integer pop()
 	{
-		return nTerminalStack.pop();
+		return this.nTerminalStack.pop();
 	}
 
 	public void push(Integer item)
 	{
-		nTerminalStack.push(item);
+		this.nTerminalStack.push(item);
 	}
 
 	public int size()
 	{
-		return nTerminalStack.size();
+		return this.nTerminalStack.size();
 	}
 
 }

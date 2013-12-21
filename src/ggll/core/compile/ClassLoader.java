@@ -18,19 +18,19 @@ public class ClassLoader<T>
 	{
 		try
 		{
-			URL url = file.getParentFile().toURI().toURL();
-			URL[] urls = new URL[]{ url };
-			URLClassLoader loader = new URLClassLoader(urls);
+			final URL url = file.getParentFile().toURI().toURL();
+			final URL[] urls = new URL[]{ url };
+			final URLClassLoader loader = new URLClassLoader(urls);
 
-			Class clazz = loader.loadClass(getClassName(file.getName()));
-			instance = (T) clazz.newInstance();
+			final Class clazz = loader.loadClass(getClassName(file.getName()));
+			this.instance = (T) clazz.newInstance();
 			loader.close();
 		}
-		catch (ClassNotFoundException ex)
+		catch (final ClassNotFoundException ex)
 		{
 			System.out.print("Class " + getClassName(file.getName()) + " not found.");
 		}
-		catch (Exception ex)
+		catch (final Exception ex)
 		{
 			ex.printStackTrace();
 		}
@@ -45,11 +45,6 @@ public class ClassLoader<T>
 	public ClassLoader(T instance)
 	{
 		this.instance = instance;
-	}
-
-	public T getInstance()
-	{
-		return instance;
 	}
 
 	private String getClassName(String fileName)
@@ -67,18 +62,23 @@ public class ClassLoader<T>
 		{
 			if (function != null)
 			{
-				Class clazz = instance.getClass();
-				Method mtd = clazz.getMethod(function);
-				mtd.invoke(instance);
+				final Class clazz = this.instance.getClass();
+				final Method mtd = clazz.getMethod(function);
+				mtd.invoke(this.instance);
 			}
 		}
-		catch (NoSuchMethodException ex)
+		catch (final NoSuchMethodException ex)
 		{
 			System.out.println("Method " + function + " not found.");
 		}
-		catch (Exception ex)
+		catch (final Exception ex)
 		{
 			ex.printStackTrace();
 		}
+	}
+
+	public T getInstance()
+	{
+		return this.instance;
 	}
 }

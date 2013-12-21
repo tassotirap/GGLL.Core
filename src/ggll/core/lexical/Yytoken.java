@@ -17,12 +17,12 @@ public class Yytoken
 
 	public String token()
 	{
-		return text;
+		return this.text;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Text: " + text + "   Type: " + type + "   line: " + line + "   column: " + column;
+		return "Text: " + this.text + "   Type: " + this.type + "   line: " + this.line + "   column: " + this.column;
 	}
 }

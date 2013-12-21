@@ -20,14 +20,14 @@ public class Parser
 	private ParserError parserError;
 	private ParserToken parserToken;
 	private ParserStack parserStacks;
-	private GGLLTable parserTable;
+	private final GGLLTable parserTable;
 
 	private int I;
 	private int UI;
 
-	private boolean debug;
-	private Yylex yylex;
-	private SemanticRoutineClass semanticRoutineClass;
+	private final boolean debug;
+	private final Yylex yylex;
+	private final SemanticRoutineClass semanticRoutineClass;
 
 	private ExtendedList<Exception> errorList = new ExtendedList<Exception>();
 
@@ -41,15 +41,15 @@ public class Parser
 
 	private void Output()
 	{
-		if (parserOutput != null)
+		if (this.parserOutput != null)
 		{
-			parserOutput.Output();
+			this.parserOutput.Output();
 		}
 	}
 
 	public void clearErrors()
 	{
-		this.getErrorList().removeAll();
+		getErrorList().removeAll();
 	}
 
 	public ExtendedList<Exception> getErrorList()
@@ -58,77 +58,77 @@ public class Parser
 		{
 			this.errorList = new ExtendedList<Exception>();
 		}
-		return errorList;
+		return this.errorList;
 	}
 
 	public ParserAlternative getParseAlternative()
 	{
-		if (parserAlternative == null)
+		if (this.parserAlternative == null)
 		{
-			parserAlternative = new ParserAlternative(this);
+			this.parserAlternative = new ParserAlternative(this);
 		}
 
-		return parserAlternative;
+		return this.parserAlternative;
 	}
 
 	public ParserError getParseError()
 	{
-		if (parserError == null)
+		if (this.parserError == null)
 		{
-			parserError = new ParserError(this);
+			this.parserError = new ParserError(this);
 		}
-		return parserError;
+		return this.parserError;
 	}
 
 	public ParserStack getParserStacks()
 	{
-		if (parserStacks == null)
+		if (this.parserStacks == null)
 		{
-			parserStacks = new ParserStack();
+			this.parserStacks = new ParserStack();
 		}
-		return parserStacks;
+		return this.parserStacks;
 	}
 
 	public GGLLTable getParseTable()
 	{
-		return parserTable;
+		return this.parserTable;
 	}
 
 	public ParserToken getParseToken()
 	{
-		if (parserToken == null)
+		if (this.parserToken == null)
 		{
-			parserToken = new ParserToken(yylex);
+			this.parserToken = new ParserToken(this.yylex);
 		}
 
-		return parserToken;
+		return this.parserToken;
 	}
 
 	public SemanticRoutine getSemanticRoutines() throws Exception
 	{
-		if (semanticRoutines == null)
+		if (this.semanticRoutines == null)
 		{
-			semanticRoutines = new SemanticRoutine(semanticRoutineClass);
+			this.semanticRoutines = new SemanticRoutine(this.semanticRoutineClass);
 		}
 
-		return semanticRoutines;
+		return this.semanticRoutines;
 	}
 
 	public boolean isSucess()
 	{
-		return errorList.count() == 0;
+		return this.errorList.count() == 0;
 	}
 
 	public boolean next()
 	{
-		while (continueSentinel)
+		while (this.continueSentinel)
 		{
-			if (I != 0)
+			if (this.I != 0)
 			{
-				TableGraphNode currentGraphNode = getParseTable().getGraphNode(I);
+				final TableGraphNode currentGraphNode = getParseTable().getGraphNode(this.I);
 				if (currentGraphNode.IsTerminal())
 				{
-					TableNode currentTerminal = getParseTable().getTermial(currentGraphNode.getNodeReference());
+					final TableNode currentTerminal = getParseTable().getTermial(currentGraphNode.getNodeReference());
 					if (currentGraphNode.isLambda())
 					{
 						try
@@ -136,17 +136,17 @@ public class Parser
 							getSemanticRoutines().setCurrentToken(null);
 							getSemanticRoutines().execFunction(currentGraphNode.getSemanticRoutine());
 						}
-						catch (Exception e)
+						catch (final Exception e)
 						{
-							errorList.append(e);
+							this.errorList.append(e);
 						}
 
-						I = currentGraphNode.getSucessorIndex();
-						UI = I;
+						this.I = currentGraphNode.getSucessorIndex();
+						this.UI = this.I;
 					}
 					else
 					{
-						if ((currentTerminal.getName()).equals(getParseToken().getCurrentSymbol()))
+						if (currentTerminal.getName().equals(getParseToken().getCurrentSymbol()))
 						{
 							getParserStacks().getParseStack().push(new ParseNode(currentTerminal.getFlag(), getParseToken().getCurrentSymbol(), getParseToken().getCurrentSemanticSymbol()));
 							Output();
@@ -156,9 +156,9 @@ public class Parser
 								getSemanticRoutines().setCurrentToken(getParseToken().getCurrentToken());
 								getSemanticRoutines().execFunction(currentGraphNode.getSemanticRoutine());
 							}
-							catch (Exception e)
+							catch (final Exception e)
 							{
-								errorList.append(e);
+								this.errorList.append(e);
 							}
 
 							try
@@ -166,19 +166,19 @@ public class Parser
 
 								getParseToken().readNext();
 							}
-							catch (Exception e)
+							catch (final Exception e)
 							{
-								errorList.append(e);
+								this.errorList.append(e);
 								return false;
 							}
 
-							I = currentGraphNode.getSucessorIndex();
-							UI = I;
+							this.I = currentGraphNode.getSucessorIndex();
+							this.UI = this.I;
 							getParserStacks().setTop(getParserStacks().getTop() + 1);
 
 							getParserStacks().getNTerminalStack().clear();
 
-							if (debug)
+							if (this.debug)
 							{
 								return true;
 							}
@@ -187,7 +187,7 @@ public class Parser
 						{
 							if (currentGraphNode.getAlternativeIndex() != 0)
 							{
-								I = currentGraphNode.getAlternativeIndex();
+								this.I = currentGraphNode.getAlternativeIndex();
 							}
 							else
 							{
@@ -195,34 +195,34 @@ public class Parser
 								{
 									try
 									{
-										I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+										this.I = getParseError().dealWithError(this.UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 									}
-									catch (Exception e)
+									catch (final Exception e)
 									{
-										errorList.append(e);
-										I = -1;
+										this.errorList.append(e);
+										this.I = -1;
 									}
 
-									continueSentinel = I >= 0;
+									this.continueSentinel = this.I >= 0;
 								}
 								else
 								{
-									int alternative = getParseAlternative().findAlternative(I, getParserStacks().getNTerminalStack(), getParserStacks().getGGLLStack());
+									final int alternative = getParseAlternative().findAlternative(this.I, getParserStacks().getNTerminalStack(), getParserStacks().getGGLLStack());
 									if (alternative != 0)
 									{
-										I = alternative;
+										this.I = alternative;
 									}
 									else
 									{
 										try
 										{
-											I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+											this.I = getParseError().dealWithError(this.UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 										}
-										catch (Exception e)
+										catch (final Exception e)
 										{
-											errorList.append(e);
+											this.errorList.append(e);
 										}
-										continueSentinel = I >= 0;
+										this.continueSentinel = this.I >= 0;
 									}
 								}
 							}
@@ -231,17 +231,17 @@ public class Parser
 				}
 				else
 				{
-					TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(I).getNodeReference());
-					getParserStacks().getNTerminalStack().push(I);
-					getParserStacks().getGGLLStack().push(new GGLLNode(I, getParserStacks().getParseStack().size()));
-					I = currentNTerminal.getFirstNode();
+					final TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(this.I).getNodeReference());
+					getParserStacks().getNTerminalStack().push(this.I);
+					getParserStacks().getGGLLStack().push(new GGLLNode(this.I, getParserStacks().getParseStack().size()));
+					this.I = currentNTerminal.getFirstNode();
 				}
 			}
 			else
 			{
 				if (!getParserStacks().getGGLLStack().empty())
 				{
-					GGLLNode grViewStackNode = getParserStacks().getGGLLStack().pop();
+					final GGLLNode grViewStackNode = getParserStacks().getGGLLStack().pop();
 					ParseNode auxParseSNode = null;
 
 					while (getParserStacks().getParseStack().size() > grViewStackNode.size)
@@ -251,25 +251,25 @@ public class Parser
 
 					if (auxParseSNode != null)
 					{
-						TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(grViewStackNode.index).getNodeReference());
+						final TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(grViewStackNode.index).getNodeReference());
 						getParserStacks().getParseStack().push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
 						Output();
 					}
 
-					I = grViewStackNode.index;
+					this.I = grViewStackNode.index;
 
 					try
 					{
 						getSemanticRoutines().setCurrentToken(getParseToken().getCurrentToken());
-						getSemanticRoutines().execFunction(getParseTable().getGraphNode(I).getSemanticRoutine());
+						getSemanticRoutines().execFunction(getParseTable().getGraphNode(this.I).getSemanticRoutine());
 					}
-					catch (Exception e)
+					catch (final Exception e)
 					{
-						errorList.append(e);
+						this.errorList.append(e);
 					}
 
-					I = getParseTable().getGraphNode(I).getSucessorIndex();
-					UI = I;
+					this.I = getParseTable().getGraphNode(this.I).getSucessorIndex();
+					this.UI = this.I;
 				}
 				else
 				{
@@ -278,14 +278,14 @@ public class Parser
 
 						try
 						{
-							I = getParseError().dealWithError(UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+							this.I = getParseError().dealWithError(this.UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 						}
-						catch (Exception e)
+						catch (final Exception e)
 						{
-							errorList.append(e);
+							this.errorList.append(e);
 						}
 					}
-					continueSentinel = I > 0;
+					this.continueSentinel = this.I > 0;
 				}
 			}
 		}
@@ -295,7 +295,9 @@ public class Parser
 	public void nextToEnd()
 	{
 		while (next())
+		{
 			;
+		}
 	}
 
 	public void run()
@@ -319,17 +321,17 @@ public class Parser
 			getSemanticRoutines().setParseStack(getParserStacks().getParseStack());
 			getParseToken().readNext();
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
-			errorList.append(e);
+			this.errorList.append(e);
 			return;
 		}
 
-		UI = I = getParseTable().getNTerminal(1).getFirstNode();
+		this.UI = this.I = getParseTable().getNTerminal(1).getFirstNode();
 
-		continueSentinel = true;
+		this.continueSentinel = true;
 
-		if (!debug)
+		if (!this.debug)
 		{
 			nextToEnd();
 		}
@@ -337,7 +339,7 @@ public class Parser
 
 	public void setError(Exception error)
 	{
-		this.getErrorList().append(error);
+		getErrorList().append(error);
 	}
 
 	public void setParserOutput(ParserOutput parserOutput)

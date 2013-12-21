@@ -30,32 +30,32 @@ public class TableNode implements Serializable
 
 	public int getFirstNode()
 	{
-		return firstNode;
+		return this.firstNode;
 	}
 
 	public String getFlag()
 	{
-		return flag;
+		return this.flag;
 	}
 
 	public String getName()
 	{
-		return name;
-	}
-
-	public void setName(String nodeName)
-	{
-		name = nodeName;
+		return this.name;
 	}
 
 	public void setFirstNode(int nodePrim)
 	{
-		firstNode = nodePrim;
+		this.firstNode = nodePrim;
 	}
 
 	public void setFlag(String flag)
 	{
 		this.flag = flag;
+	}
+
+	public void setName(String nodeName)
+	{
+		this.name = nodeName;
 	}
 
 	@Override

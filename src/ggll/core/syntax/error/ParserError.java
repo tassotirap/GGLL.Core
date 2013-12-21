@@ -10,7 +10,7 @@ import java.util.Stack;
 
 public class ParserError
 {
-	private Parser analyzer;
+	private final Parser analyzer;
 
 	public ParserError(Parser analyzer)
 	{
@@ -19,19 +19,19 @@ public class ParserError
 
 	public int dealWithError(int UI, int column, int line) throws Exception
 	{
-		int lastIndexNode = UI;
+		final int lastIndexNode = UI;
 
-		analyzer.setError(new SintaticException(analyzer.getParseToken().getCurrentToken().text, line, column));
+		this.analyzer.setError(new SintaticException(this.analyzer.getParseToken().getCurrentToken().text, line, column));
 		int IX = UI;
 
-		Stack<TableGraphNode> nTerminalStack = new Stack<TableGraphNode>();
+		final Stack<TableGraphNode> nTerminalStack = new Stack<TableGraphNode>();
 
 		while (IX != 0)
 		{
-			if (analyzer.getParseTable().getGraphNode(IX).IsTerminal())
+			if (this.analyzer.getParseTable().getGraphNode(IX).IsTerminal())
 			{
-				analyzer.setError(new ErrorRecoveryException(analyzer.getParseTable().getTermial(analyzer.getParseTable().getGraphNode(IX).getNodeReference()).getName() + " expected."));
-				IX = analyzer.getParseTable().getGraphNode(IX).getAlternativeIndex();
+				this.analyzer.setError(new ErrorRecoveryException(this.analyzer.getParseTable().getTermial(this.analyzer.getParseTable().getGraphNode(IX).getNodeReference()).getName() + " expected."));
+				IX = this.analyzer.getParseTable().getGraphNode(IX).getAlternativeIndex();
 
 				if (IX == 0 && nTerminalStack.size() > 0)
 				{
@@ -41,21 +41,21 @@ public class ParserError
 			}
 			else
 			{
-				nTerminalStack.push(analyzer.getParseTable().getGraphNode(IX));
-				IX = analyzer.getParseTable().getNTerminal(analyzer.getParseTable().getGraphNode(IX).getNodeReference()).getFirstNode();
+				nTerminalStack.push(this.analyzer.getParseTable().getGraphNode(IX));
+				IX = this.analyzer.getParseTable().getNTerminal(this.analyzer.getParseTable().getGraphNode(IX).getNodeReference()).getFirstNode();
 			}
 		}
 
-		ExtendedList<IErroStrategy> strategyList = new ExtendedList<IErroStrategy>();
+		final ExtendedList<IErroStrategy> strategyList = new ExtendedList<IErroStrategy>();
 
-		strategyList.append(new DeleteStrategy(analyzer));
-		strategyList.append(new InsertStrategy(analyzer));
-		strategyList.append(new ChangeStrategy(analyzer));
-		strategyList.append(new DelimiterSearchStrategy(analyzer));
+		strategyList.append(new DeleteStrategy(this.analyzer));
+		strategyList.append(new InsertStrategy(this.analyzer));
+		strategyList.append(new ChangeStrategy(this.analyzer));
+		strategyList.append(new DelimiterSearchStrategy(this.analyzer));
 
 		int I = UI;
 
-		for (IErroStrategy errorStrategy : strategyList.getAll())
+		for (final IErroStrategy errorStrategy : strategyList.getAll())
 		{
 			I = errorStrategy.tryFix(lastIndexNode, column, line);
 			if (I >= 0)
@@ -66,14 +66,14 @@ public class ParserError
 
 		if (I < 0)
 		{
-			analyzer.getParseToken().readNext();
-			if (analyzer.getParseToken().getCurrentToken().text.equals("$"))
+			this.analyzer.getParseToken().readNext();
+			if (this.analyzer.getParseToken().getCurrentToken().text.equals("$"))
 			{
 				return I;
 			}
 			else
 			{
-				I = dealWithError(lastIndexNode, analyzer.getParseToken().getCurrentToken().column + 1, analyzer.getParseToken().getCurrentToken().line + 1);
+				I = dealWithError(lastIndexNode, this.analyzer.getParseToken().getCurrentToken().column + 1, this.analyzer.getParseToken().getCurrentToken().line + 1);
 			}
 		}
 		return I;

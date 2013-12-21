@@ -8,44 +8,44 @@ public class GGLLStack
 
 	public GGLLStack()
 	{
-		ggllStack = new Stack<GGLLNode>();
+		this.ggllStack = new Stack<GGLLNode>();
 	}
 
 	public void clear()
 	{
-		ggllStack.clear();
+		this.ggllStack.clear();
 	}
 
 	@Override
 	public GGLLStack clone()
 	{
-		GGLLStack newInstance = new GGLLStack();
+		final GGLLStack newInstance = new GGLLStack();
 		newInstance.ggllStack = (Stack<GGLLNode>) this.ggllStack.clone();
 		return newInstance;
 	}
 
 	public boolean empty()
 	{
-		return ggllStack.empty();
+		return this.ggllStack.empty();
 	}
 
 	public GGLLNode peak()
 	{
-		return ggllStack.peek();
+		return this.ggllStack.peek();
 	}
 
 	public GGLLNode pop()
 	{
-		return ggllStack.pop();
+		return this.ggllStack.pop();
 	}
 
 	public void push(GGLLNode item)
 	{
-		ggllStack.push(item);
+		this.ggllStack.push(item);
 	}
 
 	public int size()
 	{
-		return ggllStack.size();
+		return this.ggllStack.size();
 	}
 }

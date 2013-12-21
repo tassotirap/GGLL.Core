@@ -18,38 +18,17 @@ public class GGLLTable implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private TableGraphNode nodes[];
+	private final TableGraphNode nodes[];
 
-	private TableNode nTerminal[];
+	private final TableNode nTerminal[];
 
-	private TableNode termial[];
+	private final TableNode termial[];
 
 	public GGLLTable(TableGraphNode tabGraphNodes[], TableNode nTerminalTab[], TableNode termialTab[])
 	{
 		this.nodes = tabGraphNodes;
 		this.nTerminal = nTerminalTab;
 		this.termial = termialTab;
-	}
-
-	public static GGLLTable deserialize(String file) throws Exception
-	{
-		return deserialize(new File(file));
-	}
-
-	public static GGLLTable deserialize(File file) throws Exception
-	{
-		YylexSemanticFile yylex = new YylexSemanticFile();
-		GGLLTable ggllTable = new GGLLTableParser().ggllTable;
-		XmlSemanticFile xmlSemanticFile = new ggll.core.xml.XmlSemanticFile();
-
-		Parser parser = new Parser(ggllTable, yylex, xmlSemanticFile, false);
-		yylex.yyreset(new StringReader(ReadFile(file)));
-		parser.run();
-		if (parser.isSucess())
-		{
-			return xmlSemanticFile.ggllTable;
-		}
-		return null;
 	}
 
 	private static String ReadFile(File file)
@@ -59,7 +38,7 @@ public class GGLLTable implements Serializable
 		String fileContent = "";
 		try
 		{
-			FileReader fr = new FileReader(file);
+			final FileReader fr = new FileReader(file);
 			br = new BufferedReader(fr);
 			tmp = br.readLine();
 			while (tmp != null)
@@ -70,54 +49,75 @@ public class GGLLTable implements Serializable
 			}
 			br.close();
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
 		return fileContent;
 	}
 
+	public static GGLLTable deserialize(File file) throws Exception
+	{
+		final YylexSemanticFile yylex = new YylexSemanticFile();
+		final GGLLTable ggllTable = new GGLLTableParser().ggllTable;
+		final XmlSemanticFile xmlSemanticFile = new ggll.core.xml.XmlSemanticFile();
+
+		final Parser parser = new Parser(ggllTable, yylex, xmlSemanticFile, false);
+		yylex.yyreset(new StringReader(ReadFile(file)));
+		parser.run();
+		if (parser.isSucess())
+		{
+			return xmlSemanticFile.ggllTable;
+		}
+		return null;
+	}
+
+	public static GGLLTable deserialize(String file) throws Exception
+	{
+		return deserialize(new File(file));
+	}
+
 	public TableGraphNode getGraphNode(int index)
 	{
-		if (index < nodes.length)
+		if (index < this.nodes.length)
 		{
-			return nodes[index];
+			return this.nodes[index];
 		}
 		return null;
 	}
 
 	public TableNode getNTerminal(int index)
 	{
-		if (index < nTerminal.length)
+		if (index < this.nTerminal.length)
 		{
-			return nTerminal[index];
+			return this.nTerminal[index];
 		}
 		return null;
 	}
 
 	public TableNode getTermial(int index)
 	{
-		if (index < termial.length)
+		if (index < this.termial.length)
 		{
-			return termial[index];
+			return this.termial[index];
 		}
 		return null;
 	}
 
 	public TableNode[] getTermials()
 	{
-		return termial;
+		return this.termial;
 	}
 
 	public void serialize(String fileName)
 	{
-		StringBuffer xml = new StringBuffer("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
+		final StringBuffer xml = new StringBuffer("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
 		xml.append("<GGLL>\n");
 		{
-			xml.append("\t<TableGraph size=\"" + nodes.length + "\">\n");
-			for (int i = 0; i < nodes.length; i++)
+			xml.append("\t<TableGraph size=\"" + this.nodes.length + "\">\n");
+			for (final TableGraphNode node : this.nodes)
 			{
-				if (nodes[i] == null)
+				if (node == null)
 				{
 					xml.append("\t\t<Item />\n");
 				}
@@ -125,11 +125,11 @@ public class GGLLTable implements Serializable
 				{
 
 					xml.append("\t\t<Item ");
-					xml.append("AlternativeIndex=\"" + nodes[i].getAlternativeIndex() + "\" ");
-					xml.append("IsTerminal=\"" + nodes[i].IsTerminal() + "\" ");
-					xml.append("NodeReference=\"" + nodes[i].getNodeReference() + "\" ");
-					xml.append("SemanticRoutine=\"" + nodes[i].getSemanticRoutine() + "\" ");
-					xml.append("SucessorIndex=\"" + nodes[i].getSucessorIndex() + "\" ");
+					xml.append("AlternativeIndex=\"" + node.getAlternativeIndex() + "\" ");
+					xml.append("IsTerminal=\"" + node.IsTerminal() + "\" ");
+					xml.append("NodeReference=\"" + node.getNodeReference() + "\" ");
+					xml.append("SemanticRoutine=\"" + node.getSemanticRoutine() + "\" ");
+					xml.append("SucessorIndex=\"" + node.getSucessorIndex() + "\" ");
 					xml.append("/>\n");
 				}
 			}
@@ -137,19 +137,19 @@ public class GGLLTable implements Serializable
 		}
 
 		{
-			xml.append("\t<NTerminalTable size=\"" + nTerminal.length + "\">\n");
-			for (int i = 0; i < nTerminal.length; i++)
+			xml.append("\t<NTerminalTable size=\"" + this.nTerminal.length + "\">\n");
+			for (final TableNode element : this.nTerminal)
 			{
-				if (nTerminal[i] == null)
+				if (element == null)
 				{
 					xml.append("\t\t<Item />\n");
 				}
 				else
 				{
 					xml.append("\t\t<Item ");
-					xml.append("FirstNode=\"" + nTerminal[i].getFirstNode() + "\" ");
-					xml.append("Flag=\"" + nTerminal[i].getFlag() + "\" ");
-					xml.append("Name=\"" + nTerminal[i].getName() + "\" ");
+					xml.append("FirstNode=\"" + element.getFirstNode() + "\" ");
+					xml.append("Flag=\"" + element.getFlag() + "\" ");
+					xml.append("Name=\"" + element.getName() + "\" ");
 					xml.append("/>\n");
 				}
 			}
@@ -157,19 +157,19 @@ public class GGLLTable implements Serializable
 		}
 
 		{
-			xml.append("\t<TerminalTable size=\"" + termial.length + "\">\n");
-			for (int i = 0; i < termial.length; i++)
+			xml.append("\t<TerminalTable size=\"" + this.termial.length + "\">\n");
+			for (final TableNode element : this.termial)
 			{
-				if (termial[i] == null)
+				if (element == null)
 				{
 					xml.append("\t\t<Item />\n");
 				}
 				else
 				{
 					xml.append("\t\t<Item ");
-					xml.append("FirstNode=\"" + termial[i].getFirstNode() + "\" ");
-					xml.append("Flag=\"" + termial[i].getFlag() + "\" ");
-					xml.append("Name=\"" + termial[i].getName() + "\" ");
+					xml.append("FirstNode=\"" + element.getFirstNode() + "\" ");
+					xml.append("Flag=\"" + element.getFlag() + "\" ");
+					xml.append("Name=\"" + element.getName() + "\" ");
 					xml.append("/>\n");
 				}
 			}
@@ -182,12 +182,12 @@ public class GGLLTable implements Serializable
 		try
 		{
 			fos = new FileOutputStream(fileName);
-			OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
+			final OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
 			out.write(xml.toString());
 			out.close();
 			fos.close();
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -196,25 +196,25 @@ public class GGLLTable implements Serializable
 
 	public void setGraphNode(int index, TableGraphNode value)
 	{
-		if (index < nodes.length)
+		if (index < this.nodes.length)
 		{
-			nodes[index] = value;
+			this.nodes[index] = value;
 		}
 	}
 
 	public void setNTermial(int index, TableNode value)
 	{
-		if (index < nTerminal.length)
+		if (index < this.nTerminal.length)
 		{
-			nTerminal[index] = value;
+			this.nTerminal[index] = value;
 		}
 	}
 
 	public void setTermial(int index, TableNode value)
 	{
-		if (index < termial.length)
+		if (index < this.termial.length)
 		{
-			termial[index] = value;
+			this.termial[index] = value;
 		}
 	}
 }

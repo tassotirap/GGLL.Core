@@ -24,66 +24,68 @@ public class ChangeStrategy extends IErroStrategy
 
 		init();
 
-		analyzerToken.readNext();
+		this.analyzerToken.readNext();
 
 		int iteration = 0;
 		while (IX != 0 && I < 0)
 		{
-			if (iteration > MAX_ITERATOR)
+			if (iteration > this.MAX_ITERATOR)
 			{
 				break;
 			}
-			if (analyzerTable.getGraphNode(IX).IsTerminal())
+			if (this.analyzerTable.getGraphNode(IX).IsTerminal())
 			{
-				NTerminalStack pilhaNaoTerminalY = new NTerminalStack();
+				final NTerminalStack pilhaNaoTerminalY = new NTerminalStack();
 
-				TableNode terminalNode = analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference());
-				IY = analyzerTable.getGraphNode(IX).getSucessorIndex();
+				final TableNode terminalNode = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(IX).getNodeReference());
+				IY = this.analyzerTable.getGraphNode(IX).getSucessorIndex();
 
 				while (IY != 0 && I < 0)
 				{
-					if (analyzerTable.getGraphNode(IY).IsTerminal())
+					if (this.analyzerTable.getGraphNode(IY).IsTerminal())
 					{
-						if (analyzerTable.getGraphNode(IY).getNodeReference() == 0)
+						if (this.analyzerTable.getGraphNode(IY).getNodeReference() == 0)
 						{
-							IY = analyzerTable.getGraphNode(IY).getSucessorIndex();
+							IY = this.analyzerTable.getGraphNode(IY).getSucessorIndex();
 						}
 						else
 						{
-							String temp = analyzerTable.getTermial(analyzerTable.getGraphNode(IY).getNodeReference()).getName();
-							if (temp.equals(analyzerToken.getCurrentSymbol()))
+							final String temp = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(IY).getNodeReference()).getName();
+							if (temp.equals(this.analyzerToken.getCurrentSymbol()))
 							{
 
-								analyzer.setError(new ErrorRecoveryException("Symbol \"" + analyzerToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\""));
-								analyzerStack.getParseStack().push(new ParseNode(analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference()).getFlag(), terminalNode.getName(), terminalNode.getName()));
-								analyzerStack.setTop(analyzerStack.getTop() + 1);
+								this.analyzer.setError(new ErrorRecoveryException("Symbol \"" + this.analyzerToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\""));
+								this.analyzerStack.getParseStack().push(new ParseNode(this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(IX).getNodeReference()).getFlag(), terminalNode.getName(), terminalNode.getName()));
+								this.analyzerStack.setTop(this.analyzerStack.getTop() + 1);
 
-								semanticRoutines.setCurrentToken(analyzerToken.getLastToken());
-								semanticRoutines.execFunction(analyzerTable.getGraphNode(IX).getSemanticRoutine());
-								analyzerStack.getNTerminalStack().clear();
+								this.semanticRoutines.setCurrentToken(this.analyzerToken.getLastToken());
+								this.semanticRoutines.execFunction(this.analyzerTable.getGraphNode(IX).getSemanticRoutine());
+								this.analyzerStack.getNTerminalStack().clear();
 								I = IY;
 							}
 							else
-								IY = analyzerAlternative.findAlternative(IY, pilhaNaoTerminalY, analyzerStack.getGGLLStack());
+							{
+								IY = this.analyzerAlternative.findAlternative(IY, pilhaNaoTerminalY, this.analyzerStack.getGGLLStack());
+							}
 						}
 					}
 					else
 					{
-						analyzerStack.getGGLLStack().push(new GGLLNode(IY, analyzerStack.getTop() + 2));
+						this.analyzerStack.getGGLLStack().push(new GGLLNode(IY, this.analyzerStack.getTop() + 2));
 						pilhaNaoTerminalY.push(IY);
-						IY = analyzerTable.getNTerminal(analyzerTable.getGraphNode(IY).getNodeReference()).getFirstNode();
+						IY = this.analyzerTable.getNTerminal(this.analyzerTable.getGraphNode(IY).getNodeReference()).getFirstNode();
 					}
 				}
 				if (I < 0)
 				{
-					IX = analyzerAlternative.findAlternative(IX, analyzerStack.getNTerminalStack(), analyzerStack.getGGLLStack());
+					IX = this.analyzerAlternative.findAlternative(IX, this.analyzerStack.getNTerminalStack(), this.analyzerStack.getGGLLStack());
 				}
 			}
 			else
 			{
-				analyzerStack.getGGLLStack().push(new GGLLNode(IX, analyzerStack.getTop() + 1));
-				analyzerStack.getNTerminalStack().push(IX);
-				IX = analyzerTable.getNTerminal(analyzerTable.getGraphNode(IX).getNodeReference()).getFirstNode();
+				this.analyzerStack.getGGLLStack().push(new GGLLNode(IX, this.analyzerStack.getTop() + 1));
+				this.analyzerStack.getNTerminalStack().push(IX);
+				IX = this.analyzerTable.getNTerminal(this.analyzerTable.getGraphNode(IX).getNodeReference()).getFirstNode();
 			}
 			iteration++;
 		}

@@ -21,36 +21,36 @@ public class DelimiterSearchStrategy extends IErroStrategy
 
 		int I = -1;
 
-		Stack<Integer> pilhaNaoTerminalY = new Stack<Integer>();
+		final Stack<Integer> pilhaNaoTerminalY = new Stack<Integer>();
 
 		init();
 
 		int iteration = 0;
 		while (IX != 0 && I < 0)
 		{
-			if (iteration > MAX_ITERATOR)
+			if (iteration > this.MAX_ITERATOR)
 			{
 				break;
 			}
-			if (analyzerTable.getGraphNode(IX).IsTerminal())
+			if (this.analyzerTable.getGraphNode(IX).IsTerminal())
 			{
-				TableNode terminalNode = analyzerTable.getTermial(analyzerTable.getGraphNode(IX).getNodeReference());
+				final TableNode terminalNode = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(IX).getNodeReference());
 
-				if (terminalNode.getName().equals(analyzerToken.getCurrentSymbol()))
+				if (terminalNode.getName().equals(this.analyzerToken.getCurrentSymbol()))
 				{
-					analyzer.setError(new ErrorRecoveryException("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter."));
+					this.analyzer.setError(new ErrorRecoveryException("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter."));
 					I = IX;
 				}
 				else
 				{
-					if (analyzerTable.getGraphNode(IX).getSucessorIndex() != 0)
+					if (this.analyzerTable.getGraphNode(IX).getSucessorIndex() != 0)
 					{
-						IX = analyzerTable.getGraphNode(IX).getSucessorIndex();
+						IX = this.analyzerTable.getGraphNode(IX).getSucessorIndex();
 
 					}
 					else
 					{
-						IX = analyzerTable.getGraphNode(IX).getAlternativeIndex();
+						IX = this.analyzerTable.getGraphNode(IX).getAlternativeIndex();
 					}
 				}
 			}
@@ -58,10 +58,10 @@ public class DelimiterSearchStrategy extends IErroStrategy
 			{
 				if (!pilhaNaoTerminalY.empty() && pilhaNaoTerminalY.contains(IX))
 				{
-					IX = analyzerTable.getGraphNode(IX).getSucessorIndex();
+					IX = this.analyzerTable.getGraphNode(IX).getSucessorIndex();
 					if (IX != 0 && !pilhaNaoTerminalY.empty())
 					{
-						analyzerTable.getGraphNode(pilhaNaoTerminalY.pop()).getAlternativeIndex();
+						this.analyzerTable.getGraphNode(pilhaNaoTerminalY.pop()).getAlternativeIndex();
 					}
 					else
 					{
@@ -71,7 +71,7 @@ public class DelimiterSearchStrategy extends IErroStrategy
 				else
 				{
 					pilhaNaoTerminalY.push(IX);
-					IX = analyzerTable.getNTerminal(analyzerTable.getGraphNode(IX).getNodeReference()).getFirstNode();
+					IX = this.analyzerTable.getNTerminal(this.analyzerTable.getGraphNode(IX).getNodeReference()).getFirstNode();
 				}
 			}
 			iteration++;

@@ -14,7 +14,7 @@ public class SemanticRoutine
 		{
 			this.classLoader = new ClassLoader<SemanticRoutineClass>(semanticRoutineClass);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			throw e;
 		}
@@ -26,10 +26,10 @@ public class SemanticRoutine
 		{
 			if (function != null && function.compareToIgnoreCase("-1") != 0)
 			{
-				classLoader.execFunction(function);
+				this.classLoader.execFunction(function);
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -37,11 +37,11 @@ public class SemanticRoutine
 
 	public void setCurrentToken(Yytoken cToken)
 	{
-		classLoader.getInstance().setCurrentToken(cToken);
+		this.classLoader.getInstance().setCurrentToken(cToken);
 	}
 
 	public void setParseStack(ParseStack parseStack)
 	{
-		classLoader.getInstance().setParseStack(parseStack);
+		this.classLoader.getInstance().setParseStack(parseStack);
 	}
 }

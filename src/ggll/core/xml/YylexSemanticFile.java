@@ -43,57 +43,12 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 
 	private static final String ZZ_ACTION_PACKED_0 = "\1\0\1\1\1\2\1\3\1\4\1\1\1\5\1\2" + "\1\6\1\7\1\10\1\11\1\12\1\13\1\14\1\15" + "\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1\25" + "\1\26\1\27\1\30\1\31\3\1\2\2\2\0\1\32" + "\1\33\1\34\1\35\1\36\1\37\1\40\1\41\2\0" + "\1\1\1\42\1\43\1\1\2\0\1\32";
 
-	private static int[] zzUnpackAction()
-	{
-		int[] result = new int[52];
-		int offset = 0;
-		offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
-		return result;
-	}
-
-	private static int zzUnpackAction(String packed, int offset, int[] result)
-	{
-		int i = 0; /* index in packed string */
-		int j = offset; /* index in unpacked array */
-		int l = packed.length();
-		while (i < l)
-		{
-			int count = packed.charAt(i++);
-			int value = packed.charAt(i++);
-			do
-				result[j++] = value;
-			while (--count > 0);
-		}
-		return j;
-	}
-
 	/**
 	 * Translates a state to a row index in the transition table
 	 */
 	private static final int[] ZZ_ROWMAP = zzUnpackRowMap();
 
 	private static final String ZZ_ROWMAP_PACKED_0 = "\0\0\0\35\0\72\0\127\0\164\0\221\0\256\0\313" + "\0\350\0\72\0\72\0\u0105\0\72\0\72\0\72\0\72" + "\0\72\0\72\0\72\0\72\0\72\0\72\0\72\0\u0122" + "\0\u013f\0\72\0\72\0\72\0\u015c\0\u0179\0\72\0\u0196" + "\0\u01b3\0\313\0\u01d0\0\72\0\72\0\72\0\72\0\72" + "\0\72\0\72\0\72\0\u01ed\0\u020a\0\u0227\0\72\0\72" + "\0\u0244\0\u0261\0\u027e\0\313";
-
-	private static int[] zzUnpackRowMap()
-	{
-		int[] result = new int[52];
-		int offset = 0;
-		offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
-		return result;
-	}
-
-	private static int zzUnpackRowMap(String packed, int offset, int[] result)
-	{
-		int i = 0; /* index in packed string */
-		int j = offset; /* index in unpacked array */
-		int l = packed.length();
-		while (i < l)
-		{
-			int high = packed.charAt(i++) << 16;
-			result[j++] = high | packed.charAt(i++);
-		}
-		return j;
-	}
 
 	/**
 	 * The transition table of the DFA
@@ -102,34 +57,11 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 
 	private static final String ZZ_TRANS_PACKED_0 = "\1\3\1\4\1\5\1\6\1\7\1\6\1\3\1\10" + "\1\11\1\12\1\3\1\13\1\14\1\15\1\16\1\17" + "\1\20\1\21\1\22\1\23\1\24\1\25\1\26\1\27" + "\1\30\1\31\1\32\1\33\1\34\4\35\1\36\1\37" + "\2\35\1\40\1\41\23\35\36\0\2\4\7\0\1\4" + "\24\0\1\5\35\0\1\6\1\7\1\6\32\0\3\7" + "\27\0\4\42\2\0\1\43\1\44\25\42\11\0\1\45" + "\17\0\1\46\32\0\1\47\15\0\1\50\16\0\1\51" + "\1\0\1\52\32\0\1\53\5\0\5\35\1\0\2\35" + "\1\54\1\55\30\35\1\37\2\35\1\54\1\55\30\35" + "\1\0\2\35\1\56\1\57\30\35\1\0\2\35\1\60" + "\1\61\23\35\3\42\1\62\2\63\1\43\1\64\25\42" + "\5\35\1\0\2\35\1\56\1\0\30\35\1\0\2\35" + "\1\0\1\61\30\35\1\0\2\35\1\56\1\55\30\35" + "\1\0\2\35\1\54\1\61\23\35\3\42\1\62\2\63" + "\1\43\1\44\25\42\3\0\3\63\1\42\26\0";
 
-	private static int[] zzUnpackTrans()
-	{
-		int[] result = new int[667];
-		int offset = 0;
-		offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
-		return result;
-	}
-
-	private static int zzUnpackTrans(String packed, int offset, int[] result)
-	{
-		int i = 0; /* index in packed string */
-		int j = offset; /* index in unpacked array */
-		int l = packed.length();
-		while (i < l)
-		{
-			int count = packed.charAt(i++);
-			int value = packed.charAt(i++);
-			value--;
-			do
-				result[j++] = value;
-			while (--count > 0);
-		}
-		return j;
-	}
-
 	/* error codes */
 	private static final int ZZ_UNKNOWN_ERROR = 0;
+
 	private static final int ZZ_NO_MATCH = 1;
+
 	private static final int ZZ_PUSHBACK_2BIG = 2;
 
 	/* error messages for the codes above */
@@ -142,36 +74,10 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 
 	private static final String ZZ_ATTRIBUTE_PACKED_0 = "\1\0\1\1\1\11\6\1\2\11\1\1\13\11\2\1" + "\3\11\2\1\1\11\2\1\2\0\10\11\2\0\1\1" + "\2\11\1\1\2\0\1\1";
 
-	private static int[] zzUnpackAttribute()
-	{
-		int[] result = new int[52];
-		int offset = 0;
-		offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
-		return result;
-	}
-
-	private static int zzUnpackAttribute(String packed, int offset, int[] result)
-	{
-		int i = 0; /* index in packed string */
-		int j = offset; /* index in unpacked array */
-		int l = packed.length();
-		while (i < l)
-		{
-			int count = packed.charAt(i++);
-			int value = packed.charAt(i++);
-			do
-				result[j++] = value;
-			while (--count > 0);
-		}
-		return j;
-	}
-
 	/** the input device */
 	private java.io.Reader zzReader;
-
 	/** the current state of the DFA */
 	private int zzState;
-
 	/** the current lexical state */
 	private int zzLexicalState = YYINITIAL;
 
@@ -210,69 +116,13 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 
 	/* user code: */
 	private int comment_count = 0;
+
 	/* The two lines below can not be removed or edited */
 	private TableNode tableNode[];
-
-	@Override
-	public void TableNodes(TableNode tableNode[])
-	{
-		this.tableNode = tableNode;
-	}
 
 	/* An empty constructor, you'd have to set the reader anyway */
 	public YylexSemanticFile()
 	{
-	}
-
-	@Override
-	public void setReader(java.io.Reader in)
-	{
-		zzReader = in;
-	}
-
-	/*
-	 * If the simbol in text is in TabT this method returs its index otherwise
-	 * returns -1. The parse uses this method to know if the recognized token is
-	 * an reserved symbol or not.
-	 */
-	@Override
-	public int searchTableNodeSymbol(String text)
-	{
-		int index = -1;
-		int i = 1;
-		while (tableNode[i] != null)
-		{
-			if ((tableNode[i].getName()).equals(text))
-			{
-				index = i;
-				break;
-			}
-			i++;
-		}
-		return index;
-	}
-
-	/*
-	 * this method can not be removed, it is used by the error recovery
-	 * routines. Basically this method call the private method yypushbacck
-	 * generated by the jflex.
-	 */
-	@Override
-	public void pushback(int number)
-	{
-		this.yypushback(number);
-	}
-
-	/**
-	 * Creates a new scanner There is also a java.io.InputStream version of this
-	 * constructor.
-	 * 
-	 * @param in
-	 *            the java.io.Reader to read input from.
-	 */
-	public YylexSemanticFile(java.io.Reader in)
-	{
-		this.zzReader = in;
 	}
 
 	/**
@@ -288,6 +138,118 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 	}
 
 	/**
+	 * Creates a new scanner There is also a java.io.InputStream version of this
+	 * constructor.
+	 * 
+	 * @param in
+	 *            the java.io.Reader to read input from.
+	 */
+	public YylexSemanticFile(java.io.Reader in)
+	{
+		this.zzReader = in;
+	}
+
+	private static int[] zzUnpackAction()
+	{
+		final int[] result = new int[52];
+		int offset = 0;
+		offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
+		return result;
+	}
+
+	private static int zzUnpackAction(String packed, int offset, int[] result)
+	{
+		int i = 0; /* index in packed string */
+		int j = offset; /* index in unpacked array */
+		final int l = packed.length();
+		while (i < l)
+		{
+			int count = packed.charAt(i++);
+			final int value = packed.charAt(i++);
+			do
+			{
+				result[j++] = value;
+			}
+			while (--count > 0);
+		}
+		return j;
+	}
+
+	private static int[] zzUnpackAttribute()
+	{
+		final int[] result = new int[52];
+		int offset = 0;
+		offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
+		return result;
+	}
+
+	private static int zzUnpackAttribute(String packed, int offset, int[] result)
+	{
+		int i = 0; /* index in packed string */
+		int j = offset; /* index in unpacked array */
+		final int l = packed.length();
+		while (i < l)
+		{
+			int count = packed.charAt(i++);
+			final int value = packed.charAt(i++);
+			do
+			{
+				result[j++] = value;
+			}
+			while (--count > 0);
+		}
+		return j;
+	}
+
+	private static int[] zzUnpackRowMap()
+	{
+		final int[] result = new int[52];
+		int offset = 0;
+		offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
+		return result;
+	}
+
+	private static int zzUnpackRowMap(String packed, int offset, int[] result)
+	{
+		int i = 0; /* index in packed string */
+		int j = offset; /* index in unpacked array */
+		final int l = packed.length();
+		while (i < l)
+		{
+			final int high = packed.charAt(i++) << 16;
+			result[j++] = high | packed.charAt(i++);
+		}
+		return j;
+	}
+
+	private static int[] zzUnpackTrans()
+	{
+		final int[] result = new int[667];
+		int offset = 0;
+		offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
+		return result;
+	}
+
+	private static int zzUnpackTrans(String packed, int offset, int[] result)
+	{
+		int i = 0; /* index in packed string */
+		int j = offset; /* index in unpacked array */
+		final int l = packed.length();
+		while (i < l)
+		{
+			int count = packed.charAt(i++);
+			int value = packed.charAt(i++);
+			value--;
+			do
+			{
+				result[j++] = value;
+			}
+			while (--count > 0);
+		}
+		return j;
+	}
+
+	/**
 	 * Refills the input buffer.
 	 * 
 	 * @return <code>false</code>, iff there was new input.
@@ -299,143 +261,52 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 	{
 
 		/* first: make room (if you can) */
-		if (zzStartRead > 0)
+		if (this.zzStartRead > 0)
 		{
-			System.arraycopy(zzBuffer, zzStartRead, zzBuffer, 0, zzEndRead - zzStartRead);
+			System.arraycopy(this.zzBuffer, this.zzStartRead, this.zzBuffer, 0, this.zzEndRead - this.zzStartRead);
 
 			/* translate stored positions */
-			zzEndRead -= zzStartRead;
-			zzCurrentPos -= zzStartRead;
-			zzMarkedPos -= zzStartRead;
-			zzStartRead = 0;
+			this.zzEndRead -= this.zzStartRead;
+			this.zzCurrentPos -= this.zzStartRead;
+			this.zzMarkedPos -= this.zzStartRead;
+			this.zzStartRead = 0;
 		}
 
 		/* is the buffer big enough? */
-		if (zzCurrentPos >= zzBuffer.length)
+		if (this.zzCurrentPos >= this.zzBuffer.length)
 		{
 			/* if not: blow it up */
-			char newBuffer[] = new char[zzCurrentPos * 2];
-			System.arraycopy(zzBuffer, 0, newBuffer, 0, zzBuffer.length);
-			zzBuffer = newBuffer;
+			final char newBuffer[] = new char[this.zzCurrentPos * 2];
+			System.arraycopy(this.zzBuffer, 0, newBuffer, 0, this.zzBuffer.length);
+			this.zzBuffer = newBuffer;
 		}
 
 		/* finally: fill the buffer with new input */
-		int numRead = zzReader.read(zzBuffer, zzEndRead, zzBuffer.length - zzEndRead);
+		final int numRead = this.zzReader.read(this.zzBuffer, this.zzEndRead, this.zzBuffer.length - this.zzEndRead);
 
 		if (numRead > 0)
 		{
-			zzEndRead += numRead;
+			this.zzEndRead += numRead;
 			return false;
 		}
 		// unlikely but not impossible: read 0 characters, but not at end of
 		// stream
 		if (numRead == 0)
 		{
-			int c = zzReader.read();
+			final int c = this.zzReader.read();
 			if (c == -1)
 			{
 				return true;
 			}
 			else
 			{
-				zzBuffer[zzEndRead++] = (char) c;
+				this.zzBuffer[this.zzEndRead++] = (char) c;
 				return false;
 			}
 		}
 
 		// numRead < 0
 		return true;
-	}
-
-	/**
-	 * Closes the input stream.
-	 */
-	@Override
-	public final void yyclose() throws java.io.IOException
-	{
-		zzAtEOF = true; /* indicate end of file */
-		zzEndRead = zzStartRead; /* invalidate buffer */
-
-		if (zzReader != null)
-			zzReader.close();
-	}
-
-	/**
-	 * Resets the scanner to read from a new input stream. Does not close the
-	 * old reader.
-	 * 
-	 * All internal variables are reset, the old input stream <b>cannot</b> be
-	 * reused (internal buffer is discarded and lost). Lexical state is set to
-	 * <tt>ZZ_INITIAL</tt>.
-	 * 
-	 * @param reader
-	 *            the new input stream
-	 */
-	@Override
-	public final void yyreset(java.io.Reader reader)
-	{
-		zzReader = reader;
-		zzAtEOF = false;
-		zzEndRead = zzStartRead = 0;
-		zzCurrentPos = zzMarkedPos = 0;
-		zzLexicalState = YYINITIAL;
-		yyline = yycolumn = 0;
-	}
-
-	/**
-	 * Returns the current lexical state.
-	 */
-	@Override
-	public final int yystate()
-	{
-		return zzLexicalState;
-	}
-
-	/**
-	 * Enters a new lexical state
-	 * 
-	 * @param newState
-	 *            the new lexical state
-	 */
-	@Override
-	public final void yybegin(int newState)
-	{
-		zzLexicalState = newState;
-	}
-
-	/**
-	 * Returns the text matched by the current regular expression.
-	 */
-	@Override
-	public final String yytext()
-	{
-		return new String(zzBuffer, zzStartRead, zzMarkedPos - zzStartRead);
-	}
-
-	/**
-	 * Returns the character at position <tt>pos</tt> from the matched text.
-	 * 
-	 * It is equivalent to yytext().charAt(pos), but faster
-	 * 
-	 * @param pos
-	 *            the position of the character to fetch. A value from 0 to
-	 *            yylength()-1.
-	 * 
-	 * @return the character at position pos
-	 */
-	@Override
-	public final char yycharat(int pos)
-	{
-		return zzBuffer[zzStartRead + pos];
-	}
-
-	/**
-	 * Returns the length of the matched text region.
-	 */
-	@Override
-	public final int yylength()
-	{
-		return zzMarkedPos - zzStartRead;
 	}
 
 	/**
@@ -459,7 +330,7 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 		{
 			message = ZZ_ERROR_MSG[errorCode];
 		}
-		catch (ArrayIndexOutOfBoundsException e)
+		catch (final ArrayIndexOutOfBoundsException e)
 		{
 			message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
 		}
@@ -467,21 +338,102 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 		throw new Error(message);
 	}
 
-	/**
-	 * Pushes the specified amount of characters back into the input stream.
-	 * 
-	 * They will be read again by then next call of the scanning method
-	 * 
-	 * @param number
-	 *            the number of characters to be read again. This number must
-	 *            not be greater than yylength()!
+	/*
+	 * this method can not be removed, it is used by the error recovery
+	 * routines. Basically this method call the private method yypushbacck
+	 * generated by the jflex.
 	 */
-	public void yypushback(int number)
+	@Override
+	public void pushback(int number)
 	{
-		if (number > yylength())
-			zzScanError(ZZ_PUSHBACK_2BIG);
+		yypushback(number);
+	}
 
-		zzMarkedPos -= number;
+	/*
+	 * If the simbol in text is in TabT this method returs its index otherwise
+	 * returns -1. The parse uses this method to know if the recognized token is
+	 * an reserved symbol or not.
+	 */
+	@Override
+	public int searchTableNodeSymbol(String text)
+	{
+		int index = -1;
+		int i = 1;
+		while (this.tableNode[i] != null)
+		{
+			if (this.tableNode[i].getName().equals(text))
+			{
+				index = i;
+				break;
+			}
+			i++;
+		}
+		return index;
+	}
+
+	@Override
+	public void setReader(java.io.Reader in)
+	{
+		this.zzReader = in;
+	}
+
+	@Override
+	public void TableNodes(TableNode tableNode[])
+	{
+		this.tableNode = tableNode;
+	}
+
+	/**
+	 * Enters a new lexical state
+	 * 
+	 * @param newState
+	 *            the new lexical state
+	 */
+	@Override
+	public final void yybegin(int newState)
+	{
+		this.zzLexicalState = newState;
+	}
+
+	/**
+	 * Returns the character at position <tt>pos</tt> from the matched text.
+	 * 
+	 * It is equivalent to yytext().charAt(pos), but faster
+	 * 
+	 * @param pos
+	 *            the position of the character to fetch. A value from 0 to
+	 *            yylength()-1.
+	 * 
+	 * @return the character at position pos
+	 */
+	@Override
+	public final char yycharat(int pos)
+	{
+		return this.zzBuffer[this.zzStartRead + pos];
+	}
+
+	/**
+	 * Closes the input stream.
+	 */
+	@Override
+	public final void yyclose() throws java.io.IOException
+	{
+		this.zzAtEOF = true; /* indicate end of file */
+		this.zzEndRead = this.zzStartRead; /* invalidate buffer */
+
+		if (this.zzReader != null)
+		{
+			this.zzReader.close();
+		}
+	}
+
+	/**
+	 * Returns the length of the matched text region.
+	 */
+	@Override
+	public final int yylength()
+	{
+		return this.zzMarkedPos - this.zzStartRead;
 	}
 
 	/**
@@ -501,20 +453,20 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 		// cached fields:
 		int zzCurrentPosL;
 		int zzMarkedPosL;
-		int zzEndReadL = zzEndRead;
-		char[] zzBufferL = zzBuffer;
-		char[] zzCMapL = ZZ_CMAP;
+		int zzEndReadL = this.zzEndRead;
+		char[] zzBufferL = this.zzBuffer;
+		final char[] zzCMapL = ZZ_CMAP;
 
-		int[] zzTransL = ZZ_TRANS;
-		int[] zzRowMapL = ZZ_ROWMAP;
-		int[] zzAttrL = ZZ_ATTRIBUTE;
+		final int[] zzTransL = ZZ_TRANS;
+		final int[] zzRowMapL = ZZ_ROWMAP;
+		final int[] zzAttrL = ZZ_ATTRIBUTE;
 
 		while (true)
 		{
-			zzMarkedPosL = zzMarkedPos;
+			zzMarkedPosL = this.zzMarkedPos;
 
 			boolean zzR = false;
-			for (zzCurrentPosL = zzStartRead; zzCurrentPosL < zzMarkedPosL; zzCurrentPosL++)
+			for (zzCurrentPosL = this.zzStartRead; zzCurrentPosL < zzMarkedPosL; zzCurrentPosL++)
 			{
 				switch (zzBufferL[zzCurrentPosL])
 				{
@@ -523,27 +475,29 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					case '\u0085':
 					case '\u2028':
 					case '\u2029':
-						yyline++;
-						yycolumn = 0;
+						this.yyline++;
+						this.yycolumn = 0;
 						zzR = false;
 						break;
 					case '\r':
-						yyline++;
-						yycolumn = 0;
+						this.yyline++;
+						this.yycolumn = 0;
 						zzR = true;
 						break;
 					case '\n':
 						if (zzR)
+						{
 							zzR = false;
+						}
 						else
 						{
-							yyline++;
-							yycolumn = 0;
+							this.yyline++;
+							this.yycolumn = 0;
 						}
 						break;
 					default:
 						zzR = false;
-						yycolumn++;
+						this.yycolumn++;
 				}
 			}
 
@@ -553,28 +507,38 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 				// line too much)
 				boolean zzPeek;
 				if (zzMarkedPosL < zzEndReadL)
+				{
 					zzPeek = zzBufferL[zzMarkedPosL] == '\n';
-				else if (zzAtEOF)
+				}
+				else if (this.zzAtEOF)
+				{
 					zzPeek = false;
+				}
 				else
 				{
-					boolean eof = zzRefill();
-					zzEndReadL = zzEndRead;
-					zzMarkedPosL = zzMarkedPos;
-					zzBufferL = zzBuffer;
+					final boolean eof = zzRefill();
+					zzEndReadL = this.zzEndRead;
+					zzMarkedPosL = this.zzMarkedPos;
+					zzBufferL = this.zzBuffer;
 					if (eof)
+					{
 						zzPeek = false;
+					}
 					else
+					{
 						zzPeek = zzBufferL[zzMarkedPosL] == '\n';
+					}
 				}
 				if (zzPeek)
-					yyline--;
+				{
+					this.yyline--;
+				}
 			}
 			zzAction = -1;
 
-			zzCurrentPosL = zzCurrentPos = zzStartRead = zzMarkedPosL;
+			zzCurrentPosL = this.zzCurrentPos = this.zzStartRead = zzMarkedPosL;
 
-			zzState = ZZ_LEXSTATE[zzLexicalState];
+			this.zzState = ZZ_LEXSTATE[this.zzLexicalState];
 
 			zzForAction:
 			{
@@ -582,8 +546,10 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 				{
 
 					if (zzCurrentPosL < zzEndReadL)
+					{
 						zzInput = zzBufferL[zzCurrentPosL++];
-					else if (zzAtEOF)
+					}
+					else if (this.zzAtEOF)
 					{
 						zzInput = YYEOF;
 						break zzForAction;
@@ -591,14 +557,14 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					else
 					{
 						// store back cached positions
-						zzCurrentPos = zzCurrentPosL;
-						zzMarkedPos = zzMarkedPosL;
-						boolean eof = zzRefill();
+						this.zzCurrentPos = zzCurrentPosL;
+						this.zzMarkedPos = zzMarkedPosL;
+						final boolean eof = zzRefill();
 						// get translated positions and possibly new buffer
-						zzCurrentPosL = zzCurrentPos;
-						zzMarkedPosL = zzMarkedPos;
-						zzBufferL = zzBuffer;
-						zzEndReadL = zzEndRead;
+						zzCurrentPosL = this.zzCurrentPos;
+						zzMarkedPosL = this.zzMarkedPos;
+						zzBufferL = this.zzBuffer;
+						zzEndReadL = this.zzEndRead;
 						if (eof)
 						{
 							zzInput = YYEOF;
@@ -609,82 +575,86 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 							zzInput = zzBufferL[zzCurrentPosL++];
 						}
 					}
-					int zzNext = zzTransL[zzRowMapL[zzState] + zzCMapL[zzInput]];
+					final int zzNext = zzTransL[zzRowMapL[this.zzState] + zzCMapL[zzInput]];
 					if (zzNext == -1)
+					{
 						break zzForAction;
-					zzState = zzNext;
+					}
+					this.zzState = zzNext;
 
-					int zzAttributes = zzAttrL[zzState];
+					final int zzAttributes = zzAttrL[this.zzState];
 					if ((zzAttributes & 1) == 1)
 					{
-						zzAction = zzState;
+						zzAction = this.zzState;
 						zzMarkedPosL = zzCurrentPosL;
 						if ((zzAttributes & 8) == 8)
+						{
 							break zzForAction;
+						}
 					}
 
 				}
 			}
 
 			// store back cached position
-			zzMarkedPos = zzMarkedPosL;
+			this.zzMarkedPos = zzMarkedPosL;
 
 			switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction])
 			{
 				case 30:
 				{
-					return (new Yytoken("</", yytext(), yyline, yycolumn));
+					return new Yytoken("</", yytext(), this.yyline, this.yycolumn);
 				}
 				case 36:
 					break;
 				case 18:
 				{
-					return (new Yytoken("+", yytext(), yyline, yycolumn));
+					return new Yytoken("+", yytext(), this.yyline, this.yycolumn);
 				}
 				case 37:
 					break;
 				case 32:
 				{
-					return (new Yytoken("<>", yytext(), yyline, yycolumn));
+					return new Yytoken("<>", yytext(), this.yyline, this.yycolumn);
 				}
 				case 38:
 					break;
 				case 28:
 				{
-					return (new Yytoken("/>", yytext(), yyline, yycolumn));
+					return new Yytoken("/>", yytext(), this.yyline, this.yycolumn);
 				}
 				case 39:
 					break;
 				case 9:
 				{
-					return (new Yytoken(":", yytext(), yyline, yycolumn));
+					return new Yytoken(":", yytext(), this.yyline, this.yycolumn);
 				}
 				case 40:
 					break;
 				case 5:
 				{
-					return (new Yytoken("Esp", yytext(), yyline, yycolumn));
+					return new Yytoken("Esp", yytext(), this.yyline, this.yycolumn);
 				}
 				case 41:
 					break;
 				case 20:
 				{
-					return (new Yytoken("=", yytext(), yyline, yycolumn));
+					return new Yytoken("=", yytext(), this.yyline, this.yycolumn);
 				}
 				case 42:
 					break;
 				case 3:
 				{
-					int ret = searchTableNodeSymbol(yytext());
+					final int ret = searchTableNodeSymbol(yytext());
 					/* the token is not a reserved symbol, then return IDEN */
 					if (ret == -1)
 					{
-						return (new Yytoken("Iden", yytext(), yyline, yycolumn));
+						return new Yytoken("Iden", yytext(), this.yyline, this.yycolumn);
 					}
 					/* the token is a reserved symbol */
 					else
 					{
-						return (new Yytoken("Res", yytext(), yyline, yycolumn));
+						return new Yytoken("Res", yytext(), this.yyline, this.yycolumn);
 					}
 				}
 				case 43:
@@ -697,148 +667,150 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					break;
 				case 8:
 				{
-					return (new Yytoken(",", yytext(), yyline, yycolumn));
+					return new Yytoken(",", yytext(), this.yyline, this.yycolumn);
 				}
 				case 45:
 					break;
 				case 4:
 				{
-					return (new Yytoken("Numb", yytext(), yyline, yycolumn));
+					return new Yytoken("Numb", yytext(), this.yyline, this.yycolumn);
 				}
 				case 46:
 					break;
 				case 10:
 				{
-					return (new Yytoken(";", yytext(), yyline, yycolumn));
+					return new Yytoken(";", yytext(), this.yyline, this.yycolumn);
 				}
 				case 47:
 					break;
 				case 13:
 				{
-					return (new Yytoken("[", yytext(), yyline, yycolumn));
+					return new Yytoken("[", yytext(), this.yyline, this.yycolumn);
 				}
 				case 48:
 					break;
 				case 22:
 				{
-					return (new Yytoken(">", yytext(), yyline, yycolumn));
+					return new Yytoken(">", yytext(), this.yyline, this.yycolumn);
 				}
 				case 49:
 					break;
 				case 15:
 				{
-					return (new Yytoken("{", yytext(), yyline, yycolumn));
+					return new Yytoken("{", yytext(), this.yyline, this.yycolumn);
 				}
 				case 50:
 					break;
 				case 26:
 				{
-					String str = yytext().substring(1, yylength() - 1);
-					return (new Yytoken("String", str, yyline, yycolumn));
+					final String str = yytext().substring(1, yylength() - 1);
+					return new Yytoken("String", str, this.yyline, this.yycolumn);
 				}
 				case 51:
 					break;
 				case 19:
 				{
-					return (new Yytoken("-", yytext(), yyline, yycolumn));
+					return new Yytoken("-", yytext(), this.yyline, this.yycolumn);
 				}
 				case 52:
 					break;
 				case 27:
 				{
 					yybegin(COMMENT);
-					comment_count++;
+					this.comment_count++;
 				}
 				case 53:
 					break;
 				case 35:
 				{
-					if (--comment_count == 0)
+					if (--this.comment_count == 0)
+					{
 						yybegin(YYINITIAL);
+					}
 				}
 				case 54:
 					break;
 				case 23:
 				{
-					return (new Yytoken("&", yytext(), yyline, yycolumn));
+					return new Yytoken("&", yytext(), this.yyline, this.yycolumn);
 				}
 				case 55:
 					break;
 				case 33:
 				{
-					return (new Yytoken(">=", yytext(), yyline, yycolumn));
+					return new Yytoken(">=", yytext(), this.yyline, this.yycolumn);
 				}
 				case 56:
 					break;
 				case 21:
 				{
-					return (new Yytoken("<", yytext(), yyline, yycolumn));
+					return new Yytoken("<", yytext(), this.yyline, this.yycolumn);
 				}
 				case 57:
 					break;
 				case 12:
 				{
-					return (new Yytoken(")", yytext(), yyline, yycolumn));
+					return new Yytoken(")", yytext(), this.yyline, this.yycolumn);
 				}
 				case 58:
 					break;
 				case 25:
 				{
-					return (new Yytoken("?", yytext(), yyline, yycolumn));
+					return new Yytoken("?", yytext(), this.yyline, this.yycolumn);
 				}
 				case 59:
 					break;
 				case 24:
 				{
-					return (new Yytoken("|", yytext(), yyline, yycolumn));
+					return new Yytoken("|", yytext(), this.yyline, this.yycolumn);
 				}
 				case 60:
 					break;
 				case 29:
 				{
-					return (new Yytoken(":=", yytext(), yyline, yycolumn));
+					return new Yytoken(":=", yytext(), this.yyline, this.yycolumn);
 				}
 				case 61:
 					break;
 				case 17:
 				{
-					return (new Yytoken(".", yytext(), yyline, yycolumn));
+					return new Yytoken(".", yytext(), this.yyline, this.yycolumn);
 				}
 				case 62:
 					break;
 				case 34:
 				{
-					comment_count++;
+					this.comment_count++;
 				}
 				case 63:
 					break;
 				case 14:
 				{
-					return (new Yytoken("]", yytext(), yyline, yycolumn));
+					return new Yytoken("]", yytext(), this.yyline, this.yycolumn);
 				}
 				case 64:
 					break;
 				case 7:
 				{
-					return (new Yytoken("*", yytext(), yyline, yycolumn));
+					return new Yytoken("*", yytext(), this.yyline, this.yycolumn);
 				}
 				case 65:
 					break;
 				case 16:
 				{
-					return (new Yytoken("}", yytext(), yyline, yycolumn));
+					return new Yytoken("}", yytext(), this.yyline, this.yycolumn);
 				}
 				case 66:
 					break;
 				case 31:
 				{
-					return (new Yytoken("<=", yytext(), yyline, yycolumn));
+					return new Yytoken("<=", yytext(), this.yyline, this.yycolumn);
 				}
 				case 67:
 					break;
 				case 6:
 				{
-					return (new Yytoken("/", yytext(), yyline, yycolumn));
+					return new Yytoken("/", yytext(), this.yyline, this.yycolumn);
 				}
 				case 68:
 					break;
@@ -849,16 +821,16 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					break;
 				case 11:
 				{
-					return (new Yytoken("(", yytext(), yyline, yycolumn));
+					return new Yytoken("(", yytext(), this.yyline, this.yycolumn);
 				}
 				case 70:
 					break;
 				default:
-					if (zzInput == YYEOF && zzStartRead == zzCurrentPos)
+					if (zzInput == YYEOF && this.zzStartRead == this.zzCurrentPos)
 					{
-						zzAtEOF = true;
+						this.zzAtEOF = true;
 						{
-							return (new Yytoken("EOF", "$", yyline, yycolumn - 1));
+							return new Yytoken("EOF", "$", this.yyline, this.yycolumn - 1);
 						}
 					}
 					else
@@ -867,6 +839,65 @@ public class YylexSemanticFile implements ggll.core.lexical.Yylex
 					}
 			}
 		}
+	}
+
+	/**
+	 * Pushes the specified amount of characters back into the input stream.
+	 * 
+	 * They will be read again by then next call of the scanning method
+	 * 
+	 * @param number
+	 *            the number of characters to be read again. This number must
+	 *            not be greater than yylength()!
+	 */
+	public void yypushback(int number)
+	{
+		if (number > yylength())
+		{
+			zzScanError(ZZ_PUSHBACK_2BIG);
+		}
+
+		this.zzMarkedPos -= number;
+	}
+
+	/**
+	 * Resets the scanner to read from a new input stream. Does not close the
+	 * old reader.
+	 * 
+	 * All internal variables are reset, the old input stream <b>cannot</b> be
+	 * reused (internal buffer is discarded and lost). Lexical state is set to
+	 * <tt>ZZ_INITIAL</tt>.
+	 * 
+	 * @param reader
+	 *            the new input stream
+	 */
+	@Override
+	public final void yyreset(java.io.Reader reader)
+	{
+		this.zzReader = reader;
+		this.zzAtEOF = false;
+		this.zzEndRead = this.zzStartRead = 0;
+		this.zzCurrentPos = this.zzMarkedPos = 0;
+		this.zzLexicalState = YYINITIAL;
+		this.yyline = this.yycolumn = 0;
+	}
+
+	/**
+	 * Returns the current lexical state.
+	 */
+	@Override
+	public final int yystate()
+	{
+		return this.zzLexicalState;
+	}
+
+	/**
+	 * Returns the text matched by the current regular expression.
+	 */
+	@Override
+	public final String yytext()
+	{
+		return new String(this.zzBuffer, this.zzStartRead, this.zzMarkedPos - this.zzStartRead);
 	}
 
 }

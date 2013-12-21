@@ -21,41 +21,41 @@ public class DeleteStrategy extends IErroStrategy
 
 		init();
 
-		analyzerToken.readNext();
+		this.analyzerToken.readNext();
 
 		int iteration = 0;
 		while (IX != 0)
 		{
-			if (iteration > MAX_ITERATOR)
+			if (iteration > this.MAX_ITERATOR)
 			{
 				break;
 			}
 
-			TableGraphNode graphNode = analyzerTable.getGraphNode(IX);
-			if (analyzerTable.getGraphNode(IX).IsTerminal())
+			final TableGraphNode graphNode = this.analyzerTable.getGraphNode(IX);
+			if (this.analyzerTable.getGraphNode(IX).IsTerminal())
 			{
-				TableNode terminalNode = analyzerTable.getTermial(graphNode.getNodeReference());
+				final TableNode terminalNode = this.analyzerTable.getTermial(graphNode.getNodeReference());
 
-				if (terminalNode.getName().equals(analyzerToken.getCurrentSymbol()))
+				if (terminalNode.getName().equals(this.analyzerToken.getCurrentSymbol()))
 				{
-					analyzer.setError(new ErrorRecoveryException("Symbol \"" + analyzerToken.getLastToken().text + "\" was ignored."));
+					this.analyzer.setError(new ErrorRecoveryException("Symbol \"" + this.analyzerToken.getLastToken().text + "\" was ignored."));
 					I = IX;
 					break;
 				}
 				else
 				{
 					int alternative = 0;
-					alternative = analyzerAlternative.findAlternative(IX, analyzerStack.getNTerminalStack(), analyzerStack.getGGLLStack());
+					alternative = this.analyzerAlternative.findAlternative(IX, this.analyzerStack.getNTerminalStack(), this.analyzerStack.getGGLLStack());
 					IX = alternative;
 				}
 			}
 			else
 			{
 
-				TableNode nTerminalNode = analyzerTable.getNTerminal(graphNode.getNodeReference());
-				analyzerStack.setTop(analyzerStack.getTop() + 1);
-				analyzerStack.getGGLLStack().push(new GGLLNode(IX, analyzerStack.getTop()));
-				analyzerStack.getNTerminalStack().push(IX);
+				final TableNode nTerminalNode = this.analyzerTable.getNTerminal(graphNode.getNodeReference());
+				this.analyzerStack.setTop(this.analyzerStack.getTop() + 1);
+				this.analyzerStack.getGGLLStack().push(new GGLLNode(IX, this.analyzerStack.getTop()));
+				this.analyzerStack.getNTerminalStack().push(IX);
 				IX = nTerminalNode.getFirstNode();
 			}
 			iteration++;
@@ -63,8 +63,8 @@ public class DeleteStrategy extends IErroStrategy
 
 		if (I < 0)
 		{
-			analyzerToken.setCurrentToken(analyzerToken.getLastToken());
-			analyzerToken.getYylex().pushback(analyzerToken.getYylex().yylength());
+			this.analyzerToken.setCurrentToken(this.analyzerToken.getLastToken());
+			this.analyzerToken.getYylex().pushback(this.analyzerToken.getYylex().yylength());
 
 			restore(true);
 		}

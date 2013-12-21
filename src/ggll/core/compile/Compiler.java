@@ -30,7 +30,7 @@ public class Compiler
 		@Override
 		public void write(char[] cbuf, int off, int len) throws IOException
 		{
-			output += String.copyValueOf(cbuf, off, len);
+			Compiler.this.output += String.copyValueOf(cbuf, off, len);
 		}
 	}
 
@@ -39,8 +39,8 @@ public class Compiler
 
 	public Compiler()
 	{
-		GGLLProperties properties = new GGLLProperties();
-		javaSDK = properties.getJavaSDKPath();
+		final GGLLProperties properties = new GGLLProperties();
+		this.javaSDK = properties.getJavaSDKPath();
 	}
 
 	private String validateJavaFile(String fileName)
@@ -54,18 +54,18 @@ public class Compiler
 
 	public void compile(String fileName) throws Exception
 	{
-		String[] fileNames = new String[]{ fileName };
+		final String[] fileNames = new String[]{ fileName };
 		compile(fileNames);
 	}
 
 	public void compile(String[] fileNames) throws Exception
 	{
-		System.setProperty("java.home", javaSDK);
+		System.setProperty("java.home", this.javaSDK);
 
-		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-		StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+		final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		final StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
-		ExtendedList<File> sourceFileList = new ExtendedList<File>();
+		final ExtendedList<File> sourceFileList = new ExtendedList<File>();
 
 		for (String fileName : fileNames)
 		{
@@ -73,16 +73,16 @@ public class Compiler
 			sourceFileList.append(new File(fileName));
 		}
 
-		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(sourceFileList.getAll());
+		final Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(sourceFileList.getAll());
 
-		CompilationTask task = compiler.getTask(new OutputCompiler(), fileManager, null, null, null, compilationUnits);
+		final CompilationTask task = compiler.getTask(new OutputCompiler(), fileManager, null, null, null, compilationUnits);
 
-		boolean result = task.call();
+		final boolean result = task.call();
 		fileManager.close();
 
 		if (!result)
 		{
-			throw new Exception(output);
+			throw new Exception(this.output);
 		}
 	}
 }

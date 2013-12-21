@@ -13,52 +13,13 @@ public class InsertStrategy extends IErroStrategy
 		super(analyzer);
 	}
 
-	@Override
-	public int tryFix(int UI, int column, int line) throws Exception
-	{
-		int I = -1;
-		init();
-		int prevTableGraphNode = getNextTerminal(UI);
-		TableNode prevNode = analyzerTable.getTermial(analyzerTable.getGraphNode(prevTableGraphNode).getNodeReference());
-		int currentTableGraphNode = getNextTerminal(analyzerTable.getGraphNode(prevTableGraphNode).getSucessorIndex());
-
-		if (currentTableGraphNode > 0)
-		{
-			TableNode currentNode = analyzerTable.getTermial(analyzerTable.getGraphNode(currentTableGraphNode).getNodeReference());
-			if (currentNode.getName().equals(analyzerToken.getCurrentSymbol()))
-			{
-				I = currentTableGraphNode;
-				analyzer.setError(new ErrorRecoveryException("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + "."));
-				analyzerStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
-				analyzerStack.setTop(analyzerStack.getTop() + 1);
-				semanticRoutines.setCurrentToken(analyzerToken.getLastToken());
-				semanticRoutines.execFunction(analyzerTable.getGraphNode(prevTableGraphNode).getSemanticRoutine());
-			}
-		}
-		else if (currentTableGraphNode == 0)
-		{
-			I = currentTableGraphNode;
-			analyzer.setError(new ErrorRecoveryException("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + "."));
-			analyzerStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
-			analyzerStack.setTop(analyzerStack.getTop() + 1);
-			semanticRoutines.setCurrentToken(analyzerToken.getLastToken());
-			semanticRoutines.execFunction(analyzerTable.getGraphNode(prevTableGraphNode).getSemanticRoutine());
-		}
-
-		if (I < 0)
-		{
-			restore(false);
-		}
-		return I;
-	}
-
 	private int getNextTerminal(int Index)
 	{
-		while (Index > 0 && !analyzerTable.getGraphNode(Index).IsTerminal())
+		while (Index > 0 && !this.analyzerTable.getGraphNode(Index).IsTerminal())
 		{
-			analyzerStack.getGGLLStack().push(new GGLLNode(Index, analyzerStack.getTop() + 1));
-			analyzerStack.getNTerminalStack().push(Index);
-			Index = analyzerTable.getNTerminal(analyzerTable.getGraphNode(Index).getNodeReference()).getFirstNode();
+			this.analyzerStack.getGGLLStack().push(new GGLLNode(Index, this.analyzerStack.getTop() + 1));
+			this.analyzerStack.getNTerminalStack().push(Index);
+			Index = this.analyzerTable.getNTerminal(this.analyzerTable.getGraphNode(Index).getNodeReference()).getFirstNode();
 		}
 		if (Index > 0)
 		{
@@ -68,5 +29,44 @@ public class InsertStrategy extends IErroStrategy
 		{
 			return 0;
 		}
+	}
+
+	@Override
+	public int tryFix(int UI, int column, int line) throws Exception
+	{
+		int I = -1;
+		init();
+		final int prevTableGraphNode = getNextTerminal(UI);
+		final TableNode prevNode = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(prevTableGraphNode).getNodeReference());
+		final int currentTableGraphNode = getNextTerminal(this.analyzerTable.getGraphNode(prevTableGraphNode).getSucessorIndex());
+
+		if (currentTableGraphNode > 0)
+		{
+			final TableNode currentNode = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(currentTableGraphNode).getNodeReference());
+			if (currentNode.getName().equals(this.analyzerToken.getCurrentSymbol()))
+			{
+				I = currentTableGraphNode;
+				this.analyzer.setError(new ErrorRecoveryException("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + "."));
+				this.analyzerStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
+				this.analyzerStack.setTop(this.analyzerStack.getTop() + 1);
+				this.semanticRoutines.setCurrentToken(this.analyzerToken.getLastToken());
+				this.semanticRoutines.execFunction(this.analyzerTable.getGraphNode(prevTableGraphNode).getSemanticRoutine());
+			}
+		}
+		else if (currentTableGraphNode == 0)
+		{
+			I = currentTableGraphNode;
+			this.analyzer.setError(new ErrorRecoveryException("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + "."));
+			this.analyzerStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
+			this.analyzerStack.setTop(this.analyzerStack.getTop() + 1);
+			this.semanticRoutines.setCurrentToken(this.analyzerToken.getLastToken());
+			this.semanticRoutines.execFunction(this.analyzerTable.getGraphNode(prevTableGraphNode).getSemanticRoutine());
+		}
+
+		if (I < 0)
+		{
+			restore(false);
+		}
+		return I;
 	}
 }

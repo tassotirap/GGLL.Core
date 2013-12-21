@@ -2,7 +2,7 @@ package ggll.core.syntax.model;
 
 public class ParseNode
 {
-	private String flag;
+	private final String flag;
 
 	private Object semanticSymbol;
 
@@ -22,17 +22,17 @@ public class ParseNode
 
 	public String getFlag()
 	{
-		return flag;
+		return this.flag;
 	}
 
 	public Object getSemanticSymbol()
 	{
-		return semanticSymbol;
+		return this.semanticSymbol;
 	}
 
 	public String getType()
 	{
-		return type;
+		return this.type;
 	}
 
 	public int intSemanticSymbol()
@@ -52,7 +52,7 @@ public class ParseNode
 
 	public String stringSemanticSymbol()
 	{
-		return semanticSymbol.toString();
+		return this.semanticSymbol.toString();
 	}
 
 	@Override

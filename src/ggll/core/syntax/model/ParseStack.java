@@ -9,57 +9,57 @@ public class ParseStack
 
 	public ParseStack()
 	{
-		parseNode = new Stack<ParseNode>();
+		this.parseNode = new Stack<ParseNode>();
 	}
 
 	public void clear()
 	{
-		parseNode.clear();
+		this.parseNode.clear();
 	}
 
 	@Override
 	public ParseStack clone()
 	{
-		return this.clone();
+		return clone();
 	}
 
 	public ParseNode elementAt(int index)
 	{
-		return parseNode.elementAt(index);
+		return this.parseNode.elementAt(index);
 	}
 
 	public boolean empty()
 	{
-		return parseNode.empty();
+		return this.parseNode.empty();
 	}
 
 	public Iterator<ParseNode> iterator()
 	{
-		return parseNode.iterator();
+		return this.parseNode.iterator();
 	}
 
 	public ParseNode peek()
 	{
-		return parseNode.peek();
+		return this.parseNode.peek();
 	}
 
 	public ParseNode pop()
 	{
-		return parseNode.pop();
+		return this.parseNode.pop();
 	}
 
 	public void push(ParseNode item)
 	{
-		parseNode.push(item);
+		this.parseNode.push(item);
 	}
 
 	public int size()
 	{
-		return parseNode.size();
+		return this.parseNode.size();
 	}
 
 	public int topIndex()
 	{
-		return parseNode.size() - 1;
+		return this.parseNode.size() - 1;
 	}
 }

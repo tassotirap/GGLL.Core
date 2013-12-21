@@ -14,7 +14,7 @@ public class ParserToken
 	private String lastSemanticSymbol;
 	private String currentSymbol;
 	private String lastSymbol;
-	private Yylex yylex;
+	private final Yylex yylex;
 
 	private Yytoken lastToken;
 
@@ -30,37 +30,37 @@ public class ParserToken
 
 	public String getCurrentSemanticSymbol()
 	{
-		return currentSemanticSymbol;
+		return this.currentSemanticSymbol;
 	}
 
 	public String getCurrentSymbol()
 	{
-		return currentSymbol;
+		return this.currentSymbol;
 	}
 
 	public Yytoken getCurrentToken()
 	{
-		return currentToken;
+		return this.currentToken;
 	}
 
 	public String getLastSemanticSymbol()
 	{
-		return lastSemanticSymbol;
+		return this.lastSemanticSymbol;
 	}
 
 	public String getLastSymbol()
 	{
-		return lastSymbol;
+		return this.lastSymbol;
 	}
 
 	public Yytoken getLastToken()
 	{
-		return lastToken;
+		return this.lastToken;
 	}
 
 	public Yylex getYylex()
 	{
-		return yylex;
+		return this.yylex;
 	}
 
 	public void readNext() throws LexicalException
@@ -84,7 +84,7 @@ public class ParserToken
 
 			setCurrentSemanticSymbol(getCurrentToken().text);
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 		}
 	}

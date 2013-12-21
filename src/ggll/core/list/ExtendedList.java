@@ -7,129 +7,114 @@ import java.util.Collection;
 public class ExtendedList<T> implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	
-	private ArrayList<T> list;
-	
+
+	private final ArrayList<T> list;
+
 	public ExtendedList()
 	{
-		list = new ArrayList<T>();
+		this.list = new ArrayList<T>();
 	}
-	
-	public T[] toArray()
-	{
-		return (T[])list.toArray();
-	}
-	
-	public void addAll(Collection<T> items)
-	{
-		list.addAll(items);
-	}
-	
-	public void addAll(ExtendedList<T> items)
-	{
-		for(T t : items.getAll())
-		{
-			append(t);
-		}	
-	}
-	
-	public void addAll(T[] items)
-	{
-		for(T t : items)
-		{
-			append(t);
-		}		
-	}
-		
-	public ExtendedList(int size)
-	{
-		list = new ArrayList<T>(size);
-	}
-	
+
 	public ExtendedList(Collection<T> items)
 	{
-		list = new ArrayList<T>(items);
+		this.list = new ArrayList<T>(items);
 	}
-	
+
+	public ExtendedList(int size)
+	{
+		this.list = new ArrayList<T>(size);
+	}
+
+	public ExtendedList(T[] items)
+	{
+		this.list = new ArrayList<T>();
+		addAll(items);
+	}
+
+	public void addAll(Collection<T> items)
+	{
+		this.list.addAll(items);
+	}
+
+	public void addAll(ExtendedList<T> items)
+	{
+		for (final T t : items.getAll())
+		{
+			append(t);
+		}
+	}
+
+	public void addAll(T[] items)
+	{
+		for (final T t : items)
+		{
+			append(t);
+		}
+	}
+
+	public void append(T item)
+	{
+		this.list.add(item);
+	}
+
 	public boolean contains(T item)
 	{
-		return list.contains(item);
-	}
-	
-	public ArrayList<T> getAll()
-	{
-		return list;
+		return this.list.contains(item);
 	}
 
 	public int count()
 	{
-		return list.size();
-	}
-
-	public T get(int index)
-	{
-		if (index < count())
-		{
-			return list.get(index);
-		}
-		return null;
-	}
-	
-	public void insertAt(int index, T item)
-	{
-		index = index < 0 ? 0 : index;
-		list.add(index, item);
+		return this.list.size();
 	}
 
 	public T first()
 	{
 		if (count() > 0)
 		{
-			return list.get(0);
+			return this.list.get(0);
 		}
 		return null;
+	}
+
+	public T get(int index)
+	{
+		if (index < count())
+		{
+			return this.list.get(index);
+		}
+		return null;
+	}
+
+	public ArrayList<T> getAll()
+	{
+		return this.list;
+	}
+
+	public void insertAt(int index, T item)
+	{
+		index = index < 0 ? 0 : index;
+		this.list.add(index, item);
 	}
 
 	public T last()
 	{
 		if (count() > 0)
 		{
-			return list.get(count() - 1);
+			return this.list.get(count() - 1);
 		}
 		return null;
 	}
 
-	public void append(T item)
-	{
-		list.add(item);
-	}
-
 	public void prepend(T item)
 	{
-		list.add(0, item);
+		this.list.add(0, item);
 	}
 
 	public void remove(T item)
 	{
-		if (list.contains(item))
+		if (this.list.contains(item))
 		{
-			list.remove(item);
-		}
-	}
-
-	public void removeLast()
-	{
-		if (count() > 0)
-		{
-			list.remove(count() - 1);
-		}
-	}
-
-	public void removeFirst()
-	{
-		if (count() > 0)
-		{
-			list.remove(0);
+			this.list.remove(item);
 		}
 	}
 
@@ -137,7 +122,28 @@ public class ExtendedList<T> implements Serializable
 	{
 		if (count() > 0)
 		{
-			list.clear();
+			this.list.clear();
 		}
+	}
+
+	public void removeFirst()
+	{
+		if (count() > 0)
+		{
+			this.list.remove(0);
+		}
+	}
+
+	public void removeLast()
+	{
+		if (count() > 0)
+		{
+			this.list.remove(count() - 1);
+		}
+	}
+
+	public T[] toArray()
+	{
+		return (T[]) this.list.toArray();
 	}
 }

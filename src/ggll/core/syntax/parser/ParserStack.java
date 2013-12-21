@@ -18,29 +18,29 @@ public class ParserStack
 
 	public GGLLStack getGGLLStack()
 	{
-		return grViewStack;
+		return this.grViewStack;
 	}
 
 	public NTerminalStack getNTerminalStack()
 	{
-		return nTerminalStack;
+		return this.nTerminalStack;
 	}
 
 	public ParseStack getParseStack()
 	{
-		return parseStack;
+		return this.parseStack;
 	}
 
 	public int getTop()
 	{
-		return top;
+		return this.top;
 	}
 
 	public void init()
 	{
-		grViewStack = new GGLLStack();
-		nTerminalStack = new NTerminalStack();
-		parseStack = new ParseStack();
+		this.grViewStack = new GGLLStack();
+		this.nTerminalStack = new NTerminalStack();
+		this.parseStack = new ParseStack();
 	}
 
 	public void setGGLLStack(GGLLStack grViewStack)
