@@ -7,7 +7,7 @@ import java.io.File;
 
 public class YyFactory
 {
-	public static void createYylex(String baseDir, String path, String scanner)
+	public void createYylex(String baseDir, String path, String scanner)
 	{
 		try
 		{
@@ -28,7 +28,7 @@ public class YyFactory
 		}
 	}
 
-	public static Yylex getYylex(File path) throws Exception
+	public Yylex getYylex(File path) throws Exception
 	{
 		try
 		{
@@ -45,7 +45,7 @@ public class YyFactory
 		}
 	}
 
-	public static Yylex getYylex(String file) throws Exception
+	public Yylex getYylex(String file) throws Exception
 	{
 		return getYylex(new File(file));
 	}

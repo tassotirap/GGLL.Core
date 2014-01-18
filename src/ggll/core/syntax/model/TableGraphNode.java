@@ -10,10 +10,9 @@ public class TableGraphNode implements Serializable
 	private int nodeReference;
 	private int sucessorIndex;
 	private boolean isTerminal;
-
+	
 	public TableGraphNode()
-	{
-
+	{		
 	}
 
 	public TableGraphNode(int alternativeIndex, boolean isTerminal, int nodeReference, String semanticRoutine, int sucessorIndex)
@@ -79,11 +78,4 @@ public class TableGraphNode implements Serializable
 	{
 		this.sucessorIndex = node;
 	}
-
-	@Override
-	public String toString()
-	{
-		return this.isTerminal + " " + this.nodeReference + " " + this.alternativeIndex + " " + this.sucessorIndex + " " + this.semanticRoutine;
-	}
-
 }

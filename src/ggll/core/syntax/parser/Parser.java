@@ -296,7 +296,6 @@ public class Parser
 	{
 		while (next())
 		{
-			;
 		}
 	}
 
@@ -306,14 +305,8 @@ public class Parser
 
 		getParseToken().setCurrentSemanticSymbol(null);
 		getParserStacks().init();
-
 		getParseToken().getYylex().TableNodes(getParseTable().getTermials());
-		getParseTable().setGraphNode(0, new TableGraphNode());
-		getParseTable().getGraphNode(0).setIsTerminal(false);
-		getParseTable().getGraphNode(0).setNodeReference(1);
-		getParseTable().getGraphNode(0).setAlternativeIndex(0);
-		getParseTable().getGraphNode(0).setSucessorIndex(0);
-
+		getParseTable().setGraphNode(0, new TableGraphNode(0, false, 1, null, 0));
 		getParserStacks().getGGLLStack().push(new GGLLNode(0, 0));
 		getParserStacks().setTop(0);
 		try
