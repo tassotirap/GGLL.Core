@@ -1,12 +1,13 @@
 package ggll.core.syntax.error;
 
 import ggll.core.exceptions.ErrorRecoveryException;
+import ggll.core.exceptions.LexicalException;
 import ggll.core.syntax.model.GGLLNode;
 import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.model.TableNode;
 import ggll.core.syntax.parser.Parser;
 
-public class DeleteStrategy extends IErroStrategy
+public class DeleteStrategy extends ErroStrategy
 {
 	public DeleteStrategy(Parser analyzer)
 	{
@@ -14,61 +15,52 @@ public class DeleteStrategy extends IErroStrategy
 	}
 
 	@Override
-	public int tryFix(int UI, int column, int line) throws Exception
+	protected int tryFix(int currentIndex, int column, int line) throws LexicalException
 	{
-		int I = -1;
-		int IX = UI;
+		int returnIndex = -1;
+		int tempIndex = currentIndex;
 
-		init();
-
-		this.analyzerToken.readNext();
+		this.parserToken.readNext();
+		
+		//End of file in stater node
+		if(tempIndex == 0 && this.parserToken.getCurrentToken().type.equals("EOF"))
+		{
+			this.parser.setError(new ErrorRecoveryException("Symbol \"" + this.parserToken.getLastToken().text + "\" was ignored."));
+			returnIndex = tempIndex;
+		}
 
 		int iteration = 0;
-		while (IX != 0)
+		while (tempIndex != 0 && iteration < this.MAX_ITERATOR)
 		{
-			if (iteration > this.MAX_ITERATOR)
-			{
-				break;
-			}
-
-			final TableGraphNode graphNode = this.analyzerTable.getGraphNode(IX);
-			if (this.analyzerTable.getGraphNode(IX).IsTerminal())
+			final TableGraphNode graphNode = this.analyzerTable.getGraphNode(tempIndex);
+			if (this.analyzerTable.getGraphNode(tempIndex).IsTerminal())
 			{
 				final TableNode terminalNode = this.analyzerTable.getTermial(graphNode.getNodeReference());
-
-				if (terminalNode.getName().equals(this.analyzerToken.getCurrentSymbol()))
+				if (terminalNode.getName().equals(this.parserToken.getCurrentSymbol()))
 				{
-					this.analyzer.setError(new ErrorRecoveryException("Symbol \"" + this.analyzerToken.getLastToken().text + "\" was ignored."));
-					I = IX;
+					this.parser.setError(new ErrorRecoveryException("Symbol \"" + this.parserToken.getLastToken().text + "\" was ignored."));
+					returnIndex = tempIndex;
 					break;
 				}
 				else
 				{
-					int alternative = 0;
-					alternative = this.analyzerAlternative.findAlternative(IX, this.analyzerStack.getNTerminalStack(), this.analyzerStack.getGGLLStack());
-					IX = alternative;
+					int alternative = this.analyzerAlternative.findAlternative(tempIndex, this.parserStack.getNTerminalStack(), this.parserStack.getGGLLStack());
+					tempIndex = alternative;
 				}
 			}
 			else
 			{
 
 				final TableNode nTerminalNode = this.analyzerTable.getNTerminal(graphNode.getNodeReference());
-				this.analyzerStack.setTop(this.analyzerStack.getTop() + 1);
-				this.analyzerStack.getGGLLStack().push(new GGLLNode(IX, this.analyzerStack.getTop()));
-				this.analyzerStack.getNTerminalStack().push(IX);
-				IX = nTerminalNode.getFirstNode();
+				this.parserStack.setTop(this.parserStack.getTop() + 1);
+				this.parserStack.getGGLLStack().push(new GGLLNode(tempIndex, this.parserStack.getTop()));
+				this.parserStack.getNTerminalStack().push(tempIndex);
+				tempIndex = nTerminalNode.getFirstNode();
 			}
 			iteration++;
-		}
+		}		
 
-		if (I < 0)
-		{
-			this.analyzerToken.setCurrentToken(this.analyzerToken.getLastToken());
-			this.analyzerToken.getYylex().pushback(this.analyzerToken.getYylex().yylength());
-
-			restore(true);
-		}
-		return I;
+		return returnIndex;
 	}
 
 }

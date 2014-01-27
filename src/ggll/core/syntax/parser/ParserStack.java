@@ -4,7 +4,7 @@ import ggll.core.syntax.model.GGLLStack;
 import ggll.core.syntax.model.NTerminalStack;
 import ggll.core.syntax.model.ParseStack;
 
-public class ParserStack
+public class ParserStack implements Cloneable
 {
 	private ParseStack parseStack;
 	private GGLLStack grViewStack;
@@ -56,5 +56,19 @@ public class ParserStack
 	public void setTop(int top)
 	{
 		this.top = top;
+	}
+
+	@Override
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

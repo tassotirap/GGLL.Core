@@ -1,11 +1,12 @@
 package ggll.core.syntax.error;
 
-import ggll.core.exceptions.ErrorRecoveryException;
 import ggll.core.exceptions.SintaticException;
 import ggll.core.list.ExtendedList;
 import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.parser.Parser;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Stack;
 
 public class ParserError
@@ -17,53 +18,38 @@ public class ParserError
 		this.analyzer = analyzer;
 	}
 
-	public int dealWithError(int UI, int column, int line) throws Exception
+	public String join(ArrayList<String> s, String delimiter)
 	{
-		final int lastIndexNode = UI;
-
-		this.analyzer.setError(new SintaticException(this.analyzer.getParseToken().getCurrentToken().text, line, column));
-		int IX = UI;
-
-		final Stack<TableGraphNode> nTerminalStack = new Stack<TableGraphNode>();
-
-		while (IX != 0)
+		if (s == null || s.isEmpty())
+			return "";
+		Iterator<String> iter = s.iterator();
+		StringBuilder builder = new StringBuilder("\"" + iter.next() + "\"");
+		while (iter.hasNext())
 		{
-			if (this.analyzer.getParseTable().getGraphNode(IX).IsTerminal())
-			{
-				this.analyzer.setError(new ErrorRecoveryException(this.analyzer.getParseTable().getTermial(this.analyzer.getParseTable().getGraphNode(IX).getNodeReference()).getName() + " expected."));
-				IX = this.analyzer.getParseTable().getGraphNode(IX).getAlternativeIndex();
-
-				if (IX == 0 && nTerminalStack.size() > 0)
-				{
-					IX = nTerminalStack.pop().getAlternativeIndex();
-				}
-
-			}
-			else
-			{
-				nTerminalStack.push(this.analyzer.getParseTable().getGraphNode(IX));
-				IX = this.analyzer.getParseTable().getNTerminal(this.analyzer.getParseTable().getGraphNode(IX).getNodeReference()).getFirstNode();
-			}
+			builder.append(delimiter).append("\"" + iter.next() + "\"");
 		}
+		return builder.toString();
+	}
 
-		final ExtendedList<IErroStrategy> strategyList = new ExtendedList<IErroStrategy>();
-
+	public int dealWithError(int lastIndex, int column, int line) throws Exception
+	{
+		sintaticErrorMessage(column, line, lastIndex);
+		
+		final ExtendedList<ErroStrategy> strategyList = new ExtendedList<ErroStrategy>();
 		strategyList.append(new DeleteStrategy(this.analyzer));
-		strategyList.append(new InsertStrategy(this.analyzer));
 		strategyList.append(new ChangeStrategy(this.analyzer));
+		strategyList.append(new InsertStrategy(this.analyzer));
 		strategyList.append(new DelimiterSearchStrategy(this.analyzer));
 
-		int I = UI;
-
-		for (final IErroStrategy errorStrategy : strategyList.getAll())
+		int I = lastIndex;
+		for (final ErroStrategy errorStrategy : strategyList.getAll())
 		{
-			I = errorStrategy.tryFix(lastIndexNode, column, line);
+			I = errorStrategy.execute(lastIndex, column, line);
 			if (I >= 0)
 			{
 				return I;
 			}
 		}
-
 		if (I < 0)
 		{
 			this.analyzer.getParseToken().readNext();
@@ -73,9 +59,43 @@ public class ParserError
 			}
 			else
 			{
-				I = dealWithError(lastIndexNode, this.analyzer.getParseToken().getCurrentToken().column + 1, this.analyzer.getParseToken().getCurrentToken().line + 1);
+				I = dealWithError(lastIndex, this.analyzer.getParseToken().getCurrentToken().column + 1, this.analyzer.getParseToken().getCurrentToken().line + 1);
 			}
 		}
 		return I;
+	}
+
+	private void sintaticErrorMessage(int column, int line, int index)
+	{
+		final Stack<TableGraphNode> nTerminalStack = new Stack<TableGraphNode>();
+		final ArrayList<String> expecteds = new ArrayList<String>();
+		while (index != 0)
+		{
+			TableGraphNode tableGraphNode = this.analyzer.getParseTable().getGraphNode(index);
+			if (tableGraphNode.IsTerminal())
+			{
+				expecteds.add(this.analyzer.getParseTable().getTermial(tableGraphNode.getNodeReference()).getName());
+				index = tableGraphNode.getAlternativeIndex();
+				if (index == 0 && nTerminalStack.size() > 0)
+				{
+					index = nTerminalStack.pop().getAlternativeIndex();
+				}
+			}
+			else
+			{
+				nTerminalStack.push(tableGraphNode);
+				index = this.analyzer.getParseTable().getNTerminal(tableGraphNode.getNodeReference()).getFirstNode();
+			}
+		}
+		String error = "Error at line: " + line + " and column: " + column + ", \"" + this.analyzer.getParseToken().getCurrentToken().text + "\" found";
+		if (expecteds.size() > 0)
+		{
+			error += ", but " + join(expecteds, ",") + " was expected.";
+		}
+		else
+		{
+			error += ".";
+		}
+		this.analyzer.setError(new SintaticException(error));
 	}
 }

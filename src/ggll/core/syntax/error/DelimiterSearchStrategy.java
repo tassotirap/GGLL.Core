@@ -6,7 +6,7 @@ import ggll.core.syntax.parser.Parser;
 
 import java.util.Stack;
 
-public class DelimiterSearchStrategy extends IErroStrategy
+public class DelimiterSearchStrategy extends ErroStrategy
 {
 	public DelimiterSearchStrategy(Parser analyzer)
 	{
@@ -14,7 +14,7 @@ public class DelimiterSearchStrategy extends IErroStrategy
 	}
 
 	@Override
-	public int tryFix(int UI, int column, int line) throws Exception
+	protected int tryFix(int UI, int column, int line)
 	{
 		int IX;
 		IX = UI;
@@ -22,8 +22,6 @@ public class DelimiterSearchStrategy extends IErroStrategy
 		int I = -1;
 
 		final Stack<Integer> pilhaNaoTerminalY = new Stack<Integer>();
-
-		init();
 
 		int iteration = 0;
 		while (IX != 0 && I < 0)
@@ -36,9 +34,9 @@ public class DelimiterSearchStrategy extends IErroStrategy
 			{
 				final TableNode terminalNode = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(IX).getNodeReference());
 
-				if (terminalNode.getName().equals(this.analyzerToken.getCurrentSymbol()))
+				if (terminalNode.getName().equals(this.parserToken.getCurrentSymbol()))
 				{
-					this.analyzer.setError(new ErrorRecoveryException("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter."));
+					this.parser.setError(new ErrorRecoveryException("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter."));
 					I = IX;
 				}
 				else
@@ -75,10 +73,6 @@ public class DelimiterSearchStrategy extends IErroStrategy
 				}
 			}
 			iteration++;
-		}
-		if (I < 0)
-		{
-			restore(false);
 		}
 
 		return I;

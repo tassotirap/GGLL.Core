@@ -88,6 +88,11 @@ public class Parser
 		}
 		return this.parserStacks;
 	}
+	
+	public void setParserStacks(ParserStack parserStack)
+	{
+		this.parserStacks = parserStack;
+	}
 
 	public GGLLTable getParseTable()
 	{
@@ -103,12 +108,24 @@ public class Parser
 
 		return this.parserToken;
 	}
-
-	public SemanticRoutine getSemanticRoutines() throws Exception
+	
+	public void setParseToken(ParserToken parserToken)
 	{
-		if (this.semanticRoutines == null)
+		this.parserToken = parserToken;
+	}
+
+	public SemanticRoutine getSemanticRoutines()
+	{
+		try
 		{
-			this.semanticRoutines = new SemanticRoutine(this.semanticRoutineClass);
+			if (this.semanticRoutines == null)
+			{
+				this.semanticRoutines = new SemanticRoutine(this.semanticRoutineClass);
+			}
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
 		}
 
 		return this.semanticRoutines;

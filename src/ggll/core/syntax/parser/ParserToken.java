@@ -6,7 +6,7 @@ import ggll.core.lexical.Yytoken;
 
 import java.io.IOException;
 
-public class ParserToken
+public class ParserToken implements Cloneable
 {
 	private Yytoken currentToken;
 
@@ -112,6 +112,20 @@ public class ParserToken
 	public void setLastSymbol(String lastSymbol)
 	{
 		this.lastSymbol = lastSymbol;
+	}
+
+	@Override
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
