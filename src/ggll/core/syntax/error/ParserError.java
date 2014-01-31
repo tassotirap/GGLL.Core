@@ -18,53 +18,6 @@ public class ParserError
 		this.analyzer = analyzer;
 	}
 
-	public String join(ArrayList<String> s, String delimiter)
-	{
-		if (s == null || s.isEmpty())
-			return "";
-		Iterator<String> iter = s.iterator();
-		StringBuilder builder = new StringBuilder("\"" + iter.next() + "\"");
-		while (iter.hasNext())
-		{
-			builder.append(delimiter).append("\"" + iter.next() + "\"");
-		}
-		return builder.toString();
-	}
-
-	public int dealWithError(int lastIndex, int column, int line) throws Exception
-	{
-		sintaticErrorMessage(column, line, lastIndex);
-		
-		final ExtendedList<ErroStrategy> strategyList = new ExtendedList<ErroStrategy>();
-		strategyList.append(new DeleteStrategy(this.analyzer));
-		strategyList.append(new ChangeStrategy(this.analyzer));
-		strategyList.append(new InsertStrategy(this.analyzer));
-		strategyList.append(new DelimiterSearchStrategy(this.analyzer));
-
-		int I = lastIndex;
-		for (final ErroStrategy errorStrategy : strategyList.getAll())
-		{
-			I = errorStrategy.execute(lastIndex, column, line);
-			if (I >= 0)
-			{
-				return I;
-			}
-		}
-		if (I < 0)
-		{
-			this.analyzer.getParseToken().readNext();
-			if (this.analyzer.getParseToken().getCurrentToken().text.equals("$"))
-			{
-				return I;
-			}
-			else
-			{
-				I = dealWithError(lastIndex, this.analyzer.getParseToken().getCurrentToken().column + 1, this.analyzer.getParseToken().getCurrentToken().line + 1);
-			}
-		}
-		return I;
-	}
-
 	private void sintaticErrorMessage(int column, int line, int index)
 	{
 		final Stack<TableGraphNode> nTerminalStack = new Stack<TableGraphNode>();
@@ -97,5 +50,52 @@ public class ParserError
 			error += ".";
 		}
 		this.analyzer.setError(new SintaticException(error));
+	}
+
+	public int dealWithError(int lastIndex, int column, int line) throws Exception
+	{
+		sintaticErrorMessage(column, line, lastIndex);
+		
+		final ExtendedList<ErroStrategy> strategyList = new ExtendedList<ErroStrategy>();
+		strategyList.append(new InsertStrategy(this.analyzer));
+		strategyList.append(new DeleteStrategy(this.analyzer));
+		strategyList.append(new ChangeStrategy(this.analyzer));
+		strategyList.append(new DelimiterSearchStrategy(this.analyzer));
+
+		int I = lastIndex;
+		for (final ErroStrategy errorStrategy : strategyList.getAll())
+		{
+			I = errorStrategy.execute(lastIndex, column, line);
+			if (I >= 0)
+			{
+				return I;
+			}
+		}
+		if (I < 0)
+		{
+			this.analyzer.getParseToken().readNext();
+			if (this.analyzer.getParseToken().getCurrentToken().text.equals("$"))
+			{
+				return I;
+			}
+			else
+			{
+				I = dealWithError(lastIndex, this.analyzer.getParseToken().getCurrentToken().column + 1, this.analyzer.getParseToken().getCurrentToken().line + 1);
+			}
+		}
+		return I;
+	}
+
+	public String join(ArrayList<String> s, String delimiter)
+	{
+		if (s == null || s.isEmpty())
+			return "";
+		Iterator<String> iter = s.iterator();
+		StringBuilder builder = new StringBuilder("\"" + iter.next() + "\"");
+		while (iter.hasNext())
+		{
+			builder.append(delimiter).append("\"" + iter.next() + "\"");
+		}
+		return builder.toString();
 	}
 }

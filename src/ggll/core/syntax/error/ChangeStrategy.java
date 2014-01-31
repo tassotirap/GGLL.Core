@@ -63,8 +63,8 @@ public class ChangeStrategy extends ErroStrategy
 								this.parserStack.getParseStack().push(new ParseNode(this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(IX).getNodeReference()).getFlag(), terminalNode.getName(), terminalNode.getName()));
 								this.parserStack.setTop(this.parserStack.getTop() + 1);
 
-								this.semanticRoutines.setCurrentToken(this.parserToken.getLastToken());
-								this.semanticRoutines.execFunction(this.analyzerTable.getGraphNode(IX).getSemanticRoutine());
+								//this.semanticRoutines.setCurrentToken(this.parserToken.getLastToken());
+								//this.semanticRoutines.execFunction(this.analyzerTable.getGraphNode(IX).getSemanticRoutine());
 								this.parserStack.getNTerminalStack().clear();
 								I = IY;
 							}

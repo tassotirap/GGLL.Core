@@ -7,7 +7,7 @@ import ggll.core.syntax.model.ParseStack;
 public class ParserStack implements Cloneable
 {
 	private ParseStack parseStack;
-	private GGLLStack grViewStack;
+	private GGLLStack ggllStack;
 	private NTerminalStack nTerminalStack;
 	private int top;
 
@@ -18,7 +18,7 @@ public class ParserStack implements Cloneable
 
 	public GGLLStack getGGLLStack()
 	{
-		return this.grViewStack;
+		return this.ggllStack;
 	}
 
 	public NTerminalStack getNTerminalStack()
@@ -38,14 +38,14 @@ public class ParserStack implements Cloneable
 
 	public void init()
 	{
-		this.grViewStack = new GGLLStack();
+		this.ggllStack = new GGLLStack();
 		this.nTerminalStack = new NTerminalStack();
 		this.parseStack = new ParseStack();
 	}
 
 	public void setGGLLStack(GGLLStack grViewStack)
 	{
-		this.grViewStack = grViewStack;
+		this.ggllStack = grViewStack;
 	}
 
 	public void setNTerminalStack(NTerminalStack nTerminalStack)

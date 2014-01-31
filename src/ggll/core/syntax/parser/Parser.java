@@ -22,8 +22,8 @@ public class Parser
 	private ParserStack parserStacks;
 	private final GGLLTable parserTable;
 
-	private int I;
-	private int UI;
+	private int currentIndex;
+	private int safeIndex;
 
 	private final boolean debug;
 	private final Yylex yylex;
@@ -39,7 +39,7 @@ public class Parser
 		this.debug = debug;
 	}
 
-	private void Output()
+	public void Output()
 	{
 		if (this.parserOutput != null)
 		{
@@ -140,9 +140,9 @@ public class Parser
 	{
 		while (this.continueSentinel)
 		{
-			if (this.I != 0)
+			if (this.currentIndex != 0)
 			{
-				final TableGraphNode currentGraphNode = getParseTable().getGraphNode(this.I);
+				final TableGraphNode currentGraphNode = getParseTable().getGraphNode(this.currentIndex);
 				if (currentGraphNode.IsTerminal())
 				{
 					final TableNode currentTerminal = getParseTable().getTermial(currentGraphNode.getNodeReference());
@@ -158,8 +158,8 @@ public class Parser
 							this.errorList.append(e);
 						}
 
-						this.I = currentGraphNode.getSucessorIndex();
-						this.UI = this.I;
+						this.currentIndex = currentGraphNode.getSucessorIndex();
+						this.safeIndex = this.currentIndex;
 					}
 					else
 					{
@@ -189,8 +189,8 @@ public class Parser
 								return false;
 							}
 
-							this.I = currentGraphNode.getSucessorIndex();
-							this.UI = this.I;
+							this.currentIndex = currentGraphNode.getSucessorIndex();
+							this.safeIndex = this.currentIndex;
 							getParserStacks().setTop(getParserStacks().getTop() + 1);
 
 							getParserStacks().getNTerminalStack().clear();
@@ -204,7 +204,7 @@ public class Parser
 						{
 							if (currentGraphNode.getAlternativeIndex() != 0)
 							{
-								this.I = currentGraphNode.getAlternativeIndex();
+								this.currentIndex = currentGraphNode.getAlternativeIndex();
 							}
 							else
 							{
@@ -212,34 +212,34 @@ public class Parser
 								{
 									try
 									{
-										this.I = getParseError().dealWithError(this.UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+										this.currentIndex = getParseError().dealWithError(this.safeIndex, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 									}
 									catch (final Exception e)
 									{
 										this.errorList.append(e);
-										this.I = -1;
+										this.currentIndex = -1;
 									}
 
-									this.continueSentinel = this.I >= 0;
+									this.continueSentinel = this.currentIndex >= 0;
 								}
 								else
 								{
-									final int alternative = getParseAlternative().findAlternative(this.I, getParserStacks().getNTerminalStack(), getParserStacks().getGGLLStack());
+									final int alternative = getParseAlternative().findAlternative(this.currentIndex, getParserStacks().getNTerminalStack(), getParserStacks().getGGLLStack());
 									if (alternative != 0)
 									{
-										this.I = alternative;
+										this.currentIndex = alternative;
 									}
 									else
 									{
 										try
 										{
-											this.I = getParseError().dealWithError(this.UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+											this.currentIndex = getParseError().dealWithError(this.safeIndex, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 										}
 										catch (final Exception e)
 										{
 											this.errorList.append(e);
 										}
-										this.continueSentinel = this.I >= 0;
+										this.continueSentinel = this.currentIndex >= 0;
 									}
 								}
 							}
@@ -248,10 +248,10 @@ public class Parser
 				}
 				else
 				{
-					final TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(this.I).getNodeReference());
-					getParserStacks().getNTerminalStack().push(this.I);
-					getParserStacks().getGGLLStack().push(new GGLLNode(this.I, getParserStacks().getParseStack().size()));
-					this.I = currentNTerminal.getFirstNode();
+					final TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(this.currentIndex).getNodeReference());
+					getParserStacks().getNTerminalStack().push(this.currentIndex);
+					getParserStacks().getGGLLStack().push(new GGLLNode(this.currentIndex, getParserStacks().getParseStack().size()));
+					this.currentIndex = currentNTerminal.getFirstNode();
 				}
 			}
 			else
@@ -273,20 +273,20 @@ public class Parser
 						Output();
 					}
 
-					this.I = grViewStackNode.index;
+					this.currentIndex = grViewStackNode.index;
 
 					try
 					{
 						getSemanticRoutines().setCurrentToken(getParseToken().getCurrentToken());
-						getSemanticRoutines().execFunction(getParseTable().getGraphNode(this.I).getSemanticRoutine());
+						getSemanticRoutines().execFunction(getParseTable().getGraphNode(this.currentIndex).getSemanticRoutine());
 					}
 					catch (final Exception e)
 					{
 						this.errorList.append(e);
 					}
 
-					this.I = getParseTable().getGraphNode(this.I).getSucessorIndex();
-					this.UI = this.I;
+					this.currentIndex = getParseTable().getGraphNode(this.currentIndex).getSucessorIndex();
+					this.safeIndex = this.currentIndex;
 				}
 				else
 				{
@@ -295,14 +295,14 @@ public class Parser
 
 						try
 						{
-							this.I = getParseError().dealWithError(this.UI, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
+							this.currentIndex = getParseError().dealWithError(this.safeIndex, getParseToken().getCurrentToken().column + 1, getParseToken().getCurrentToken().line + 1);
 						}
 						catch (final Exception e)
 						{
 							this.errorList.append(e);
 						}
 					}
-					this.continueSentinel = this.I > 0;
+					this.continueSentinel = this.currentIndex > 0;
 				}
 			}
 		}
@@ -337,7 +337,7 @@ public class Parser
 			return;
 		}
 
-		this.UI = this.I = getParseTable().getNTerminal(1).getFirstNode();
+		this.safeIndex = this.currentIndex = getParseTable().getNTerminal(1).getFirstNode();
 
 		this.continueSentinel = true;
 
@@ -356,4 +356,6 @@ public class Parser
 	{
 		this.parserOutput = parserOutput;
 	}
+	
+	
 }

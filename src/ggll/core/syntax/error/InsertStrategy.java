@@ -1,8 +1,8 @@
 package ggll.core.syntax.error;
 
 import ggll.core.exceptions.ErrorRecoveryException;
-import ggll.core.syntax.model.GGLLNode;
 import ggll.core.syntax.model.ParseNode;
+import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.model.TableNode;
 import ggll.core.syntax.parser.Parser;
 
@@ -13,11 +13,10 @@ public class InsertStrategy extends ErroStrategy
 		super(analyzer);
 	}
 
-	private int getNextTerminal(int Index)
+	private int getNextTerminalIndex(int Index)
 	{
 		while (Index > 0 && !this.analyzerTable.getGraphNode(Index).IsTerminal())
 		{
-			this.parserStack.getGGLLStack().push(new GGLLNode(Index, this.parserStack.getTop() + 1));
 			this.parserStack.getNTerminalStack().push(Index);
 			Index = this.analyzerTable.getNTerminal(this.analyzerTable.getGraphNode(Index).getNodeReference()).getFirstNode();
 		}
@@ -34,34 +33,26 @@ public class InsertStrategy extends ErroStrategy
 	@Override
 	protected int tryFix(int UI, int column, int line)
 	{
-		int I = -1;
-		final int prevTableGraphNode = getNextTerminal(UI);
-		final TableNode prevNode = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(prevTableGraphNode).getNodeReference());
-		final int currentTableGraphNode = getNextTerminal(this.analyzerTable.getGraphNode(prevTableGraphNode).getSucessorIndex());
-
-		if (currentTableGraphNode > 0)
+		final int insertedIndex = getNextTerminalIndex(UI);
+		int nextIndex = this.analyzerTable.getGraphNode(insertedIndex).getSucessorIndex();
+		if (nextIndex == 0 && this.parserStack.getNTerminalStack().size() > 0)
 		{
-			final TableNode currentNode = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(currentTableGraphNode).getNodeReference());
-			if (currentNode.getName().equals(this.parserToken.getCurrentSymbol()))
+			nextIndex = this.analyzerTable.getGraphNode(this.parserStack.getNTerminalStack().pop()).getSucessorIndex();
+		}
+		if (insertedIndex > 0)
+		{
+			TableGraphNode insertedGraphNode = this.analyzerTable.getGraphNode(insertedIndex);
+			TableNode insertedNode = this.analyzerTable.getTermial(insertedGraphNode.getNodeReference());
+			this.parserStack.getParseStack().push(new ParseNode(insertedNode.getFlag(), insertedNode.getName(), insertedNode.getName()));
+			this.parserStack.setTop(this.parserStack.getTop() + 1);
+			this.parserStack.getNTerminalStack().clear();
+			if (validate(nextIndex))
 			{
-				I = currentTableGraphNode;
-				this.parser.setError(new ErrorRecoveryException("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + "."));
-				this.parserStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
-				this.parserStack.setTop(this.parserStack.getTop() + 1);
-				this.semanticRoutines.setCurrentToken(this.parserToken.getLastToken());
-				this.semanticRoutines.execFunction(this.analyzerTable.getGraphNode(prevTableGraphNode).getSemanticRoutine());
+				
+				this.parser.setError(new ErrorRecoveryException("Symbol \"" + insertedNode.getName() + "\" inserted before column " + column + "."));
+				return nextIndex;
 			}
 		}
-		else if (currentTableGraphNode == 0)
-		{
-			I = currentTableGraphNode;
-			this.parser.setError(new ErrorRecoveryException("Symbol \"" + prevNode.getName() + "\" inserted before column " + column + "."));
-			this.parserStack.getParseStack().push(new ParseNode(prevNode.getFlag(), prevNode.getName(), prevNode.getName()));
-			this.parserStack.setTop(this.parserStack.getTop() + 1);
-			this.semanticRoutines.setCurrentToken(this.parserToken.getLastToken());
-			this.semanticRoutines.execFunction(this.analyzerTable.getGraphNode(prevTableGraphNode).getSemanticRoutine());
-		}
-
-		return I;
-	}
+		return -1;
+	}	
 }
