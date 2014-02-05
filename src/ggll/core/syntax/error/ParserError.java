@@ -24,10 +24,10 @@ public class ParserError
 		final ArrayList<String> expecteds = new ArrayList<String>();
 		while (index != 0)
 		{
-			TableGraphNode tableGraphNode = this.analyzer.getParseTable().getGraphNode(index);
+			TableGraphNode tableGraphNode = this.analyzer.getGGLLTable().getGraphNode(index);
 			if (tableGraphNode.IsTerminal())
 			{
-				expecteds.add(this.analyzer.getParseTable().getTermial(tableGraphNode.getNodeReference()).getName());
+				expecteds.add(this.analyzer.getGGLLTable().getTermial(tableGraphNode.getNodeReference()).getName());
 				index = tableGraphNode.getAlternativeIndex();
 				if (index == 0 && nTerminalStack.size() > 0)
 				{
@@ -37,7 +37,7 @@ public class ParserError
 			else
 			{
 				nTerminalStack.push(tableGraphNode);
-				index = this.analyzer.getParseTable().getNTerminal(tableGraphNode.getNodeReference()).getFirstNode();
+				index = this.analyzer.getGGLLTable().getNTerminal(tableGraphNode.getNodeReference()).getFirstNode();
 			}
 		}
 		String error = "Error at line: " + line + " and column: " + column + ", \"" + this.analyzer.getParseToken().getCurrentToken().text + "\" found";

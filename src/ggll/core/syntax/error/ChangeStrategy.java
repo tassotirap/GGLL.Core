@@ -3,10 +3,13 @@ package ggll.core.syntax.error;
 import ggll.core.exceptions.ErrorRecoveryException;
 import ggll.core.exceptions.LexicalException;
 import ggll.core.syntax.model.GGLLNode;
+import ggll.core.syntax.model.GGLLStack;
 import ggll.core.syntax.model.NTerminalStack;
 import ggll.core.syntax.model.ParseNode;
+import ggll.core.syntax.model.ParseStack;
 import ggll.core.syntax.model.TableNode;
 import ggll.core.syntax.parser.Parser;
+import ggll.core.syntax.parser.ParserToken;
 
 public class ChangeStrategy extends ErroStrategy
 {
@@ -16,85 +19,129 @@ public class ChangeStrategy extends ErroStrategy
 	}
 
 	@Override
-	protected int tryFix(int UI, int column, int line) throws LexicalException
+	protected int tryFix(int Index, int column, int line) throws LexicalException
 	{
-		int IX, IY;
 		int I = -1;
-
-		IX = UI;
-
-		this.parserToken.readNext();
-
-		int iteration = 0;
-		while (IX != 0 && I < 0)
+		final NTerminalStack nTerminalStackClone = this.nTerminalStack.clone();
+		final GGLLStack ggLLStackClone = this.ggLLStack.clone();
+		final ParseStack parseStackClone = this.parseStack.clone();
+		
+		final ParserToken parserTokenClone = (ParserToken)parseToken.clone();
+		parseToken.readNext();
+		
+		do
 		{
-			if (iteration > this.MAX_ITERATOR)
+			if (Index > 0)
 			{
-				break;
-			}
-			if (this.analyzerTable.getGraphNode(IX).IsTerminal())
-			{
-				final NTerminalStack pilhaNaoTerminalY = new NTerminalStack();
-
-				final TableNode terminalNode = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(IX).getNodeReference());
-				IY = this.analyzerTable.getGraphNode(IX).getSucessorIndex();
-
-				if(IY == 0 && this.parserToken.getCurrentToken().type.equals("EOF"))
+				if (ggLLTable.getGraphNode(Index).IsTerminal())
 				{
-					this.parser.setError(new ErrorRecoveryException("Symbol \"" + this.parserToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\""));
-					I = IY;
-				}				
-				
-				while (IY != 0 && I < 0)
-				{
-					if (this.analyzerTable.getGraphNode(IY).IsTerminal())
+					final TableNode terminalNode = ggLLTable.getTermial(ggLLTable.getGraphNode(Index).getNodeReference());
+					I = InnerLoop(ggLLTable.getGraphNode(Index).getSucessorIndex(), terminalNode, column, nTerminalStackClone, ggLLStackClone, parseStackClone);
+
+					if (I < 0)
 					{
-						if (this.analyzerTable.getGraphNode(IY).getNodeReference() == 0)
-						{
-							IY = this.analyzerTable.getGraphNode(IY).getSucessorIndex();
-						}
-						else
-						{
-							final String temp = this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(IY).getNodeReference()).getName();
-							if (temp.equals(this.parserToken.getCurrentSymbol()))
-							{
+						Index = parser.getParseAlternative().findAlternative(Index, nTerminalStackClone, ggLLStackClone);
+					}
 
-								this.parser.setError(new ErrorRecoveryException("Symbol \"" + this.parserToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\""));
-								this.parserStack.getParseStack().push(new ParseNode(this.analyzerTable.getTermial(this.analyzerTable.getGraphNode(IX).getNodeReference()).getFlag(), terminalNode.getName(), terminalNode.getName()));
-								this.parserStack.setTop(this.parserStack.getTop() + 1);
+				}
+				else
+				{
+					ggLLStackClone.push(new GGLLNode(Index, parseStackClone.size()));
+					nTerminalStackClone.push(Index);
+					Index = ggLLTable.getNTerminal(ggLLTable.getGraphNode(Index).getNodeReference()).getFirstNode();
+				}
+			}
 
-								//this.semanticRoutines.setCurrentToken(this.parserToken.getLastToken());
-								//this.semanticRoutines.execFunction(this.analyzerTable.getGraphNode(IX).getSemanticRoutine());
-								this.parserStack.getNTerminalStack().clear();
-								I = IY;
-							}
-							else
-							{
-								IY = this.analyzerAlternative.findAlternative(IY, pilhaNaoTerminalY, this.parserStack.getGGLLStack());
-							}
-						}
+			while (Index == 0 && !ggLLStackClone.empty())
+			{
+				final GGLLNode grViewStackNode = ggLLStackClone.pop();
+				ParseNode auxParseSNode = null;
+
+				while (parseStackClone.size() > grViewStackNode.size)
+				{
+					auxParseSNode = parseStackClone.pop();
+				}
+
+				if (auxParseSNode != null)
+				{
+					final TableNode currentNTerminal = ggLLTable.getNTerminal(ggLLTable.getGraphNode(grViewStackNode.index).getNodeReference());
+					parseStackClone.push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
+				}
+				Index = ggLLTable.getGraphNode(grViewStackNode.index).getSucessorIndex();
+			}
+
+		}
+		while (Index != 0 && I < 0);
+
+		if(I < 0)
+		{
+			parser.setParseToken(parserTokenClone);
+		}		
+		return I;
+	}
+
+	private int InnerLoop(int Index, TableNode terminalNode, int column, NTerminalStack nTerminalStack, GGLLStack ggLLStack, ParseStack parseStack)
+	{
+		final NTerminalStack nTerminalStackClone = nTerminalStack.clone();
+		final GGLLStack ggLLStackClone = ggLLStack.clone();
+		final ParseStack parseStackClone = parseStack.clone();
+
+		do
+		{
+			if (Index > 0)
+			{
+				if (ggLLTable.getGraphNode(Index).IsTerminal())
+				{
+					if (ggLLTable.getGraphNode(Index).getNodeReference() == 0)
+					{
+						Index = ggLLTable.getGraphNode(Index).getSucessorIndex();
 					}
 					else
 					{
-						this.parserStack.getGGLLStack().push(new GGLLNode(IY, this.parserStack.getTop() + 2));
-						pilhaNaoTerminalY.push(IY);
-						IY = this.analyzerTable.getNTerminal(this.analyzerTable.getGraphNode(IY).getNodeReference()).getFirstNode();
+						final String temp = ggLLTable.getTermial(ggLLTable.getGraphNode(Index).getNodeReference()).getName();
+						if (temp.equals(parseToken.getCurrentSymbol()))
+						{
+							parser.setError(new ErrorRecoveryException("Symbol \"" + parseToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\""));
+							parseStackClone.push(new ParseNode(terminalNode.getFlag(), terminalNode.getName(), terminalNode.getName()));
+							parser.getParserStacks().setParseStack(parseStackClone);
+							parser.getParserStacks().setGGLLStack(ggLLStackClone);
+							parser.getParserStacks().getNTerminalStack().clear();
+							return Index;
+						}
+						else
+						{
+							Index = parser.getParseAlternative().findAlternative(Index, nTerminalStackClone, ggLLStackClone);
+						}
 					}
 				}
-				if (I < 0)
+				else
 				{
-					IX = this.analyzerAlternative.findAlternative(IX, this.parserStack.getNTerminalStack(), this.parserStack.getGGLLStack());
+					ggLLStackClone.push(new GGLLNode(Index, ggLLStackClone.size()));
+					nTerminalStackClone.push(Index);
+					Index = ggLLTable.getNTerminal(ggLLTable.getGraphNode(Index).getNodeReference()).getFirstNode();
 				}
 			}
-			else
-			{
-				this.parserStack.getGGLLStack().push(new GGLLNode(IX, this.parserStack.getTop() + 1));
-				this.parserStack.getNTerminalStack().push(IX);
-				IX = this.analyzerTable.getNTerminal(this.analyzerTable.getGraphNode(IX).getNodeReference()).getFirstNode();
-			}
-			iteration++;
-		}
 
-		return I;
+			while (Index == 0 && !ggLLStackClone.empty())
+			{
+				final GGLLNode grViewStackNode = ggLLStackClone.pop();
+				ParseNode auxParseSNode = null;
+
+				while (parseStackClone.size() > grViewStackNode.size)
+				{
+					auxParseSNode = parseStackClone.pop();
+				}
+
+				if (auxParseSNode != null)
+				{
+					final TableNode currentNTerminal = ggLLTable.getNTerminal(ggLLTable.getGraphNode(grViewStackNode.index).getNodeReference());
+					parseStackClone.push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
+				}
+				Index = ggLLTable.getGraphNode(grViewStackNode.index).getSucessorIndex();
+			}
+		}
+		while (Index != 0);
+
+		return -1;
 	}
 }

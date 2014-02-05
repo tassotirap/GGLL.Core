@@ -94,7 +94,7 @@ public class Parser
 		this.parserStacks = parserStack;
 	}
 
-	public GGLLTable getParseTable()
+	public GGLLTable getGGLLTable()
 	{
 		return this.parserTable;
 	}
@@ -142,10 +142,10 @@ public class Parser
 		{
 			if (this.currentIndex != 0)
 			{
-				final TableGraphNode currentGraphNode = getParseTable().getGraphNode(this.currentIndex);
+				final TableGraphNode currentGraphNode = getGGLLTable().getGraphNode(this.currentIndex);
 				if (currentGraphNode.IsTerminal())
 				{
-					final TableNode currentTerminal = getParseTable().getTermial(currentGraphNode.getNodeReference());
+					final TableNode currentTerminal = getGGLLTable().getTermial(currentGraphNode.getNodeReference());
 					if (currentGraphNode.isLambda())
 					{
 						try
@@ -191,7 +191,6 @@ public class Parser
 
 							this.currentIndex = currentGraphNode.getSucessorIndex();
 							this.safeIndex = this.currentIndex;
-							getParserStacks().setTop(getParserStacks().getTop() + 1);
 
 							getParserStacks().getNTerminalStack().clear();
 
@@ -248,7 +247,7 @@ public class Parser
 				}
 				else
 				{
-					final TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(this.currentIndex).getNodeReference());
+					final TableNode currentNTerminal = getGGLLTable().getNTerminal(getGGLLTable().getGraphNode(this.currentIndex).getNodeReference());
 					getParserStacks().getNTerminalStack().push(this.currentIndex);
 					getParserStacks().getGGLLStack().push(new GGLLNode(this.currentIndex, getParserStacks().getParseStack().size()));
 					this.currentIndex = currentNTerminal.getFirstNode();
@@ -268,7 +267,7 @@ public class Parser
 
 					if (auxParseSNode != null)
 					{
-						final TableNode currentNTerminal = getParseTable().getNTerminal(getParseTable().getGraphNode(grViewStackNode.index).getNodeReference());
+						final TableNode currentNTerminal = getGGLLTable().getNTerminal(getGGLLTable().getGraphNode(grViewStackNode.index).getNodeReference());
 						getParserStacks().getParseStack().push(new ParseNode(currentNTerminal.getFlag(), currentNTerminal.getName(), auxParseSNode.getSemanticSymbol()));
 						Output();
 					}
@@ -278,14 +277,14 @@ public class Parser
 					try
 					{
 						getSemanticRoutines().setCurrentToken(getParseToken().getCurrentToken());
-						getSemanticRoutines().execFunction(getParseTable().getGraphNode(this.currentIndex).getSemanticRoutine());
+						getSemanticRoutines().execFunction(getGGLLTable().getGraphNode(this.currentIndex).getSemanticRoutine());
 					}
 					catch (final Exception e)
 					{
 						this.errorList.append(e);
 					}
 
-					this.currentIndex = getParseTable().getGraphNode(this.currentIndex).getSucessorIndex();
+					this.currentIndex = getGGLLTable().getGraphNode(this.currentIndex).getSucessorIndex();
 					this.safeIndex = this.currentIndex;
 				}
 				else
@@ -322,10 +321,9 @@ public class Parser
 
 		getParseToken().setCurrentSemanticSymbol(null);
 		getParserStacks().init();
-		getParseToken().getYylex().TableNodes(getParseTable().getTermials());
-		getParseTable().setGraphNode(0, new TableGraphNode(0, false, 1, null, 0));
+		getParseToken().getYylex().TableNodes(getGGLLTable().getTermials());
+		getGGLLTable().setGraphNode(0, new TableGraphNode(0, false, 1, null, 0));
 		getParserStacks().getGGLLStack().push(new GGLLNode(0, 0));
-		getParserStacks().setTop(0);
 		try
 		{
 			getSemanticRoutines().setParseStack(getParserStacks().getParseStack());
@@ -337,7 +335,7 @@ public class Parser
 			return;
 		}
 
-		this.safeIndex = this.currentIndex = getParseTable().getNTerminal(1).getFirstNode();
+		this.safeIndex = this.currentIndex = getGGLLTable().getNTerminal(1).getFirstNode();
 
 		this.continueSentinel = true;
 

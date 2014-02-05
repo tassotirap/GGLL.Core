@@ -9,7 +9,6 @@ public class ParserStack implements Cloneable
 	private ParseStack parseStack;
 	private GGLLStack ggllStack;
 	private NTerminalStack nTerminalStack;
-	private int top;
 
 	public ParserStack()
 	{
@@ -31,11 +30,6 @@ public class ParserStack implements Cloneable
 		return this.parseStack;
 	}
 
-	public int getTop()
-	{
-		return this.top;
-	}
-
 	public void init()
 	{
 		this.ggllStack = new GGLLStack();
@@ -47,15 +41,15 @@ public class ParserStack implements Cloneable
 	{
 		this.ggllStack = grViewStack;
 	}
+	
+	public void setParseStack(ParseStack parseStack)
+	{
+		this.parseStack = parseStack;
+	}
 
 	public void setNTerminalStack(NTerminalStack nTerminalStack)
 	{
 		this.nTerminalStack = nTerminalStack;
-	}
-
-	public void setTop(int top)
-	{
-		this.top = top;
 	}
 
 	@Override

@@ -20,7 +20,9 @@ public class ParseStack
 	@Override
 	public ParseStack clone()
 	{
-		return clone();
+		final ParseStack newInstance = new ParseStack();
+		newInstance.parseNode = (Stack<ParseNode>) this.parseNode.clone();
+		return newInstance;
 	}
 
 	public ParseNode elementAt(int index)

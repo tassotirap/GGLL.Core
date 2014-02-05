@@ -15,11 +15,11 @@ public class ParserAlternative
 	public int findAlternative(int indexNode, NTerminalStack nTermStack, GGLLStack ggllStack)
 	{
 		int alternative = 0;
-		alternative = this.parser.getParseTable().getGraphNode(indexNode).getAlternativeIndex();
-		while (alternative == 0 && !nTermStack.empty())
+		alternative = this.parser.getGGLLTable().getGraphNode(indexNode).getAlternativeIndex();
+		while (alternative == 0 && !nTermStack.empty() && !ggllStack.empty())
 		{
 			ggllStack.pop();
-			alternative = this.parser.getParseTable().getGraphNode(nTermStack.pop()).getAlternativeIndex();
+			alternative = this.parser.getGGLLTable().getGraphNode(nTermStack.pop()).getAlternativeIndex();
 		}
 		return alternative;
 	}
