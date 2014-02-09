@@ -26,7 +26,7 @@ public abstract class ErroStrategy
 		this.ggLLStack = parser.getParserStacks().getGGLLStack();
 		this.parseStack = parser.getParserStacks().getParseStack();
 		this.nTerminalStack = parser.getParserStacks().getNTerminalStack();
-		this.parseToken = parser.getParseToken();
+		this.parseToken = parser.getParserToken();
 	}
 
 	protected abstract int tryFix(int UI, int column, int line) throws LexicalException;

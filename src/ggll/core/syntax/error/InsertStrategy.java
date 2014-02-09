@@ -35,7 +35,7 @@ public class InsertStrategy extends ErroStrategy
 
 					if (I < 0)
 					{
-						Index = parser.getParseAlternative().findAlternative(Index, nTerminalStackClone, ggLLStackClone);
+						Index = parser.getParseAlternative().find(Index, nTerminalStackClone, ggLLStackClone);
 					}
 
 				}
@@ -101,7 +101,7 @@ public class InsertStrategy extends ErroStrategy
 						}
 						else
 						{
-							Index = parser.getParseAlternative().findAlternative(Index, nTerminalStackClone, ggLLStackClone);
+							Index = parser.getParseAlternative().find(Index, nTerminalStackClone, ggLLStackClone);
 						}
 					}
 				}

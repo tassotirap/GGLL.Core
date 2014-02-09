@@ -8,7 +8,7 @@ public class SemanticRoutine
 {
 	private ClassLoader<SemanticRoutineClass> classLoader;
 
-	public SemanticRoutine(SemanticRoutineClass semanticRoutineClass) throws Exception
+	public SemanticRoutine(SemanticRoutineClass semanticRoutineClass)
 	{
 		try
 		{
@@ -16,7 +16,7 @@ public class SemanticRoutine
 		}
 		catch (final Exception e)
 		{
-			throw e;
+			e.printStackTrace();
 		}
 	}
 

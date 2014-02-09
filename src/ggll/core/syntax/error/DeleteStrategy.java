@@ -51,7 +51,7 @@ public class DeleteStrategy extends ErroStrategy
 						}
 						else
 						{
-							Index = parser.getParseAlternative().findAlternative(Index, nTerminalStackClone, ggLLStackClone);
+							Index = parser.getParseAlternative().find(Index, nTerminalStackClone, ggLLStackClone);
 						}
 					}
 				}

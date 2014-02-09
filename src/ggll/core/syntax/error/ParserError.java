@@ -40,7 +40,7 @@ public class ParserError
 				index = this.analyzer.getGGLLTable().getNTerminal(tableGraphNode.getNodeReference()).getFirstNode();
 			}
 		}
-		String error = "Error at line: " + line + " and column: " + column + ", \"" + this.analyzer.getParseToken().getCurrentToken().text + "\" found";
+		String error = "Error at line: " + line + " and column: " + column + ", \"" + this.analyzer.getParserToken().getCurrentToken().text + "\" found";
 		if (expecteds.size() > 0)
 		{
 			error += ", but " + join(expecteds, ",") + " was expected.";
@@ -74,14 +74,14 @@ public class ParserError
 		}
 		if (index < 0)
 		{
-			this.analyzer.getParseToken().readNext();
-			if (this.analyzer.getParseToken().getCurrentToken().text.equals("$"))
+			this.analyzer.getParserToken().readNext();
+			if (this.analyzer.getParserToken().getCurrentToken().text.equals("$"))
 			{
 				return index;
 			}
 			else
 			{
-				index = dealWithError(lastIndex, this.analyzer.getParseToken().getCurrentToken().column + 1, this.analyzer.getParseToken().getCurrentToken().line + 1);
+				index = dealWithError(lastIndex, this.analyzer.getParserToken().getCurrentToken().column + 1, this.analyzer.getParserToken().getCurrentToken().line + 1);
 			}
 		}
 		return index;

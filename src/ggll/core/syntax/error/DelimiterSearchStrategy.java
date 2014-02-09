@@ -44,15 +44,7 @@ public class DelimiterSearchStrategy extends ErroStrategy
 					}
 					else
 					{
-						if (ggLLTable.getGraphNode(Index).getSucessorIndex() != 0)
-						{
-							Index = ggLLTable.getGraphNode(Index).getSucessorIndex();
-
-						}
-						else
-						{
-							Index = ggLLTable.getGraphNode(Index).getAlternativeIndex();
-						}
+						Index = ggLLTable.getGraphNode(Index).getAlternativeIndex();
 					}
 				}
 				else

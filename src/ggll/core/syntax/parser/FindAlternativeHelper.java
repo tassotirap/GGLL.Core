@@ -3,16 +3,16 @@ package ggll.core.syntax.parser;
 import ggll.core.syntax.model.GGLLStack;
 import ggll.core.syntax.model.NTerminalStack;
 
-public class ParserAlternative
+public class FindAlternativeHelper
 {
 	Parser parser;
 
-	public ParserAlternative(Parser parser)
+	public FindAlternativeHelper(Parser parser)
 	{
 		this.parser = parser;
 	}
 
-	public int findAlternative(int indexNode, NTerminalStack nTermStack, GGLLStack ggllStack)
+	public int find(int indexNode, NTerminalStack nTermStack, GGLLStack ggllStack)
 	{
 		int alternative = 0;
 		alternative = this.parser.getGGLLTable().getGraphNode(indexNode).getAlternativeIndex();

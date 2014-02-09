@@ -40,7 +40,7 @@ public class ChangeStrategy extends ErroStrategy
 
 					if (I < 0)
 					{
-						Index = parser.getParseAlternative().findAlternative(Index, nTerminalStackClone, ggLLStackClone);
+						Index = parser.getParseAlternative().find(Index, nTerminalStackClone, ggLLStackClone);
 					}
 
 				}
@@ -110,7 +110,7 @@ public class ChangeStrategy extends ErroStrategy
 						}
 						else
 						{
-							Index = parser.getParseAlternative().findAlternative(Index, nTerminalStackClone, ggLLStackClone);
+							Index = parser.getParseAlternative().find(Index, nTerminalStackClone, ggLLStackClone);
 						}
 					}
 				}
