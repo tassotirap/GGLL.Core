@@ -55,35 +55,36 @@ public class ParserError
 	public int dealWithError(int lastIndex, int column, int line) throws Exception
 	{
 		sintaticErrorMessage(column, line, lastIndex);
-		
+
 		final ExtendedList<ErroStrategy> strategyList = new ExtendedList<ErroStrategy>();
+		strategyList.append(new DelimiterSearchStrategy(this.analyzer));
 		strategyList.append(new InsertStrategy(this.analyzer));
 		strategyList.append(new DeleteStrategy(this.analyzer));
 		strategyList.append(new ChangeStrategy(this.analyzer));
-		strategyList.append(new DelimiterSearchStrategy(this.analyzer));
+		
 
-		int I = lastIndex;
+		int index = lastIndex;
 		for (final ErroStrategy errorStrategy : strategyList.getAll())
 		{
-			I = errorStrategy.execute(lastIndex, column, line);
-			if (I >= 0)
+			index = errorStrategy.execute(lastIndex, column, line);
+			if (index >= 0)
 			{
-				return I;
+				return index;
 			}
 		}
-		if (I < 0)
+		if (index < 0)
 		{
 			this.analyzer.getParseToken().readNext();
 			if (this.analyzer.getParseToken().getCurrentToken().text.equals("$"))
 			{
-				return I;
+				return index;
 			}
 			else
 			{
-				I = dealWithError(lastIndex, this.analyzer.getParseToken().getCurrentToken().column + 1, this.analyzer.getParseToken().getCurrentToken().line + 1);
+				index = dealWithError(lastIndex, this.analyzer.getParseToken().getCurrentToken().column + 1, this.analyzer.getParseToken().getCurrentToken().line + 1);
 			}
 		}
-		return I;
+		return index;
 	}
 
 	public String join(ArrayList<String> s, String delimiter)

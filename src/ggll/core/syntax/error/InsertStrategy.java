@@ -131,7 +131,7 @@ public class InsertStrategy extends ErroStrategy
 				Index = ggLLTable.getGraphNode(grViewStackNode.index).getSucessorIndex();
 			}
 
-			if (ggLLStackClone.empty() && Index == 0 && parseToken.getCurrentSymbol().equals(new String("$")))
+			if (ggLLStackClone.empty() && Index == 0 && parseToken.getCurrentSymbol().equals("$"))
 			{
 				parser.setError(new ErrorRecoveryException("Symbol \"" + terminalNode.getName() + "\" inserted before column " + column + "."));
 				parseStackClone.push(new ParseNode(terminalNode.getFlag(), terminalNode.getName(), terminalNode.getName()));

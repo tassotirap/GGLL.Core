@@ -48,5 +48,10 @@ public class NTerminalStack
 	{
 		return this.nTerminalStack.size();
 	}
+	
+	public boolean contains(Integer item)
+	{
+		return this.nTerminalStack.contains(item);
+	}
 
 }
