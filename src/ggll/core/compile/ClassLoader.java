@@ -1,6 +1,7 @@
 package ggll.core.compile;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -56,7 +57,7 @@ public class ClassLoader<T>
 		return fileName;
 	}
 
-	public void execFunction(String function)
+	public void execFunction(String function) throws Throwable
 	{
 		try
 		{
@@ -71,9 +72,17 @@ public class ClassLoader<T>
 		{
 			System.out.println("Method " + function + " not found.");
 		}
-		catch (final Exception ex)
+		catch (IllegalAccessException e)
 		{
-			ex.printStackTrace();
+			e.printStackTrace();
+		}
+		catch (IllegalArgumentException e)
+		{
+			e.printStackTrace();
+		}
+		catch (InvocationTargetException e)
+		{
+			throw e.getTargetException();
 		}
 	}
 

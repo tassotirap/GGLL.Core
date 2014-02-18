@@ -20,19 +20,12 @@ public class SemanticRoutine
 		}
 	}
 
-	public void execFunction(String function)
+	public void execFunction(String function) throws Throwable
 	{
-		try
-		{
 			if (function != null && function.compareToIgnoreCase("-1") != 0)
 			{
 				this.classLoader.execFunction(function);
 			}
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	public void setCurrentToken(Yytoken cToken)

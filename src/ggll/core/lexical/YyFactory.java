@@ -7,11 +7,11 @@ import java.io.File;
 
 public class YyFactory
 {
-	public void createYylex(String baseDir, String path, String scanner)
+	public void createYylex(String path, String scanner)
 	{
 		try
 		{
-			final File targetDir = new File(baseDir + "/" + path);
+			final File targetDir = new File(path);
 			if (!targetDir.exists())
 			{
 				if (!targetDir.mkdir())
@@ -19,7 +19,7 @@ public class YyFactory
 					return;
 				}
 			}
-			final String[] arguments = new String[]{ "-d", baseDir + "/" + path, scanner };
+			final String[] arguments = new String[]{ "-d", path, scanner };
 			JFlex.Main.main(arguments);
 		}
 		catch (final Exception e)
@@ -45,8 +45,8 @@ public class YyFactory
 		}
 	}
 
-	public Yylex getYylex(String file) throws Exception
+	public Yylex getYylex(String path) throws Exception
 	{
-		return getYylex(new File(file));
+		return getYylex(new File(path));
 	}
 }

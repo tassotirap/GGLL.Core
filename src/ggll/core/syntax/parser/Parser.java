@@ -114,7 +114,13 @@ public class Parser
 			}
 			catch (final Exception e)
 			{
+				sucess = false;
 				setError(e);
+			}
+			catch (Throwable e)
+			{
+				sucess = false;
+				setError((Exception)e);
 			}
 		}
 	}
