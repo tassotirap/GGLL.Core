@@ -4,7 +4,7 @@ import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.model.TableNode;
 import ggll.core.xml.GGLLTableParser;
 import ggll.core.xml.XmlSemanticFile;
-import ggll.core.xml.YylexSemanticFile;
+import ggll.core.xml.XmlLexicalAnaliser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -58,7 +58,7 @@ public class GGLLTable implements Serializable
 
 	public static GGLLTable deserialize(File file) throws Exception
 	{
-		final YylexSemanticFile yylex = new YylexSemanticFile();
+		final XmlLexicalAnaliser yylex = new XmlLexicalAnaliser();
 		final GGLLTable ggllTable = new GGLLTableParser().ggllTable;
 		final XmlSemanticFile xmlSemanticFile = new ggll.core.xml.XmlSemanticFile();
 
