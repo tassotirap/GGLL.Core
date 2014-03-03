@@ -35,10 +35,6 @@ public class ParseNode
 		return this.type;
 	}
 
-	public int intSemanticSymbol()
-	{
-		return Integer.parseInt(stringSemanticSymbol());
-	}
 
 	public void setSemanticSymbol(Object semanticSymbol)
 	{
@@ -48,11 +44,6 @@ public class ParseNode
 	public void setType(String type)
 	{
 		this.type = type;
-	}
-
-	public String stringSemanticSymbol()
-	{
-		return this.semanticSymbol.toString();
 	}
 
 	@Override
