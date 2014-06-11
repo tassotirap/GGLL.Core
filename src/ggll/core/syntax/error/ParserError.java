@@ -1,6 +1,6 @@
 package ggll.core.syntax.error;
 
-import ggll.core.exceptions.SintaticException;
+import ggll.core.exceptions.SyntacticException;
 import ggll.core.list.ExtendedList;
 import ggll.core.syntax.model.TableGraphNode;
 import ggll.core.syntax.parser.Parser;
@@ -49,7 +49,7 @@ public class ParserError
 		{
 			error += ".";
 		}
-		this.analyzer.setError(new SintaticException(error));
+		this.analyzer.setError(new SyntacticException(error));
 	}
 
 	public int dealWithError(int lastIndex, int column, int line) throws Exception
@@ -57,11 +57,11 @@ public class ParserError
 		sintaticErrorMessage(column, line, lastIndex);
 
 		final ExtendedList<ErroStrategy> strategyList = new ExtendedList<ErroStrategy>();
-		strategyList.append(new DelimiterSearchStrategy(this.analyzer));
 		strategyList.append(new InsertStrategy(this.analyzer));
-		strategyList.append(new DeleteStrategy(this.analyzer));
 		strategyList.append(new ChangeStrategy(this.analyzer));
-		
+		strategyList.append(new DeleteStrategy(this.analyzer));
+		strategyList.append(new DelimiterSearchStrategy(this.analyzer));
+
 
 		int index = lastIndex;
 		for (final ErroStrategy errorStrategy : strategyList.getAll())

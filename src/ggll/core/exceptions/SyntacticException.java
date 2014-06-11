@@ -1,10 +1,10 @@
 package ggll.core.exceptions;
 
-public class SintaticException extends Exception
+public class SyntacticException extends Exception
 {
 	private static final long serialVersionUID = 1L;
 
-	public SintaticException(String message)
+	public SyntacticException(String message)
 	{
 		super(message);
 	}
