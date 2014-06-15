@@ -22,6 +22,10 @@ public abstract class ErroStrategy
 	public ErroStrategy(Parser parser)
 	{
 		this.parser = parser;
+	}
+	
+	private void init()
+	{
 		this.ggLLTable = parser.getGGLLTable();
 		this.ggLLStack = parser.getParserStacks().getGGLLStack();
 		this.parseStack = parser.getParserStacks().getParseStack();
@@ -33,6 +37,7 @@ public abstract class ErroStrategy
 
 	public int execute(int index, int column, int line) throws LexicalException
 	{
+		init();
 		return tryFix(index, column, line);
 	}
 }

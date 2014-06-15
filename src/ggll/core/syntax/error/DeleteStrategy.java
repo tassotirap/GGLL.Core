@@ -83,8 +83,7 @@ public class DeleteStrategy extends ErroStrategy
 			
 			if (ggLLStackClone.empty() && Index == 0)
 			{
-				parser.setError(new ErrorRecoveryException("Symbol \"" + this.parseToken.getLastToken().text + "\" was ignored."));
-				parser.getParserStacks().setParseStack(parseStackClone);
+				parser.setError(new ErrorRecoveryException("Symbol \"" + parseToken.getLastToken().text + "\" was ignored."));
 				return 0;
 			}
 
@@ -94,7 +93,7 @@ public class DeleteStrategy extends ErroStrategy
 		if(I < 0)
 		{
 			parser.setParseToken(parserTokenClone);
-		}	
+		}
 
 		return I;
 	}

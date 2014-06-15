@@ -42,6 +42,15 @@ public class Compiler
 		final GGLLProperties properties = new GGLLProperties();
 		this.javaSDK = properties.getJavaSDKPath();
 	}
+	
+	public boolean validateSDKPath()
+	{
+		String sdkPath = System.getProperty("java.home");
+		System.setProperty("java.home", this.javaSDK);
+		final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		System.setProperty("java.home", sdkPath);
+		return compiler != null;
+	}
 
 	private String validateJavaFile(String fileName)
 	{
@@ -60,6 +69,7 @@ public class Compiler
 
 	public void compile(String[] fileNames) throws Exception
 	{
+		String sdkPath = System.getProperty("java.home");
 		System.setProperty("java.home", this.javaSDK);
 
 		final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -84,5 +94,6 @@ public class Compiler
 		{
 			throw new Exception(this.output);
 		}
+		System.setProperty("java.home", sdkPath);
 	}
 }

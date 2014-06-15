@@ -3,6 +3,8 @@ package ggll.core.syntax.model;
 import java.util.Iterator;
 import java.util.Stack;
 
+import com.rits.cloning.Cloner;
+
 public class ParseStack
 {
 	Stack<ParseNode> parseNode;
@@ -20,8 +22,8 @@ public class ParseStack
 	@Override
 	public ParseStack clone()
 	{
-		final ParseStack newInstance = new ParseStack();
-		newInstance.parseNode = (Stack<ParseNode>) this.parseNode.clone();
+		Cloner cloner = new Cloner();
+		ParseStack newInstance = cloner.deepClone(this);
 		return newInstance;
 	}
 

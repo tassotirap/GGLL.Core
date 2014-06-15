@@ -2,6 +2,8 @@ package ggll.core.syntax.model;
 
 import java.util.Stack;
 
+import com.rits.cloning.Cloner;
+
 public class NTerminalStack
 {
 	Stack<Integer> nTerminalStack;
@@ -19,8 +21,8 @@ public class NTerminalStack
 	@Override
 	public NTerminalStack clone()
 	{
-		final NTerminalStack newInstance = new NTerminalStack();
-		newInstance.nTerminalStack = (Stack<Integer>) this.nTerminalStack.clone();
+		Cloner cloner = new Cloner();
+		NTerminalStack newInstance = cloner.deepClone(this);
 		return newInstance;
 	}
 

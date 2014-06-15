@@ -4,9 +4,38 @@ import ggll.core.compile.ClassLoader;
 import ggll.core.compile.Compiler;
 
 import java.io.File;
+import java.security.Permission;
 
 public class YyFactory
 {
+	protected static class ExitException extends SecurityException 
+    {
+        public final int status;
+        public ExitException(int status) 
+        {
+            super("Error.");
+            this.status = status;
+        }
+    }
+
+    private static class NoExitSecurityManager extends SecurityManager 
+    {
+        @Override
+        public void checkPermission(Permission perm) 
+        {
+        }
+        @Override
+        public void checkPermission(Permission perm, Object context) 
+        {
+        }
+        @Override
+        public void checkExit(int status) 
+        {
+            super.checkExit(status);
+            throw new ExitException(status);
+        }
+    }
+	
 	public void createYylex(String path, String scanner)
 	{
 		try
@@ -20,7 +49,9 @@ public class YyFactory
 				}
 			}
 			final String[] arguments = new String[]{ "-d", path, scanner };
+			System.setSecurityManager(new NoExitSecurityManager());
 			JFlex.Main.main(arguments);
+			System.setSecurityManager(null);
 		}
 		catch (final Exception e)
 		{
