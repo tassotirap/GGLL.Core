@@ -1,8 +1,6 @@
 package ggll.core.lexical;
 
-import java.io.Serializable;
-
-public class Yytoken implements Serializable
+public class Yytoken
 {
 	public int column;
 	public int line;

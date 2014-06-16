@@ -8,34 +8,34 @@ import java.security.Permission;
 
 public class YyFactory
 {
-	protected static class ExitException extends SecurityException 
+	protected static class ExitException extends SecurityException
     {
         public final int status;
-        public ExitException(int status) 
+        public ExitException(int status)
         {
             super("Error.");
             this.status = status;
         }
     }
 
-    private static class NoExitSecurityManager extends SecurityManager 
+    private static class NoExitSecurityManager extends SecurityManager
     {
         @Override
-        public void checkPermission(Permission perm) 
+        public void checkPermission(Permission perm)
         {
         }
         @Override
-        public void checkPermission(Permission perm, Object context) 
+        public void checkPermission(Permission perm, Object context)
         {
         }
         @Override
-        public void checkExit(int status) 
+        public void checkExit(int status)
         {
             super.checkExit(status);
             throw new ExitException(status);
         }
     }
-	
+
 	public void createYylex(String path, String scanner)
 	{
 		try

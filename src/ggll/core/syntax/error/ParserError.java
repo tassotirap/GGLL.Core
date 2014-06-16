@@ -1,5 +1,6 @@
 package ggll.core.syntax.error;
 
+import ggll.core.exceptions.ErrorRecoveryException;
 import ggll.core.exceptions.SyntacticException;
 import ggll.core.list.ExtendedList;
 import ggll.core.syntax.model.TableGraphNode;
@@ -75,6 +76,7 @@ public class ParserError
 		}
 		if (index < 0)
 		{
+			this.analyzer.setError(new ErrorRecoveryException("Symbol \"" + this.analyzer.getParserToken().getCurrentToken().text + "\" was ignored."));
 			this.analyzer.getParserToken().readNext();
 			if (this.analyzer.getParserToken().getCurrentToken().text.equals("$"))
 			{

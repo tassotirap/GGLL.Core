@@ -20,12 +20,12 @@ public class DeleteStrategy extends ErroStrategy
 
 	@Override
 	protected int tryFix(int Index, int column, int line) throws LexicalException
-	{	
+	{
 		int I = -1;
 		final NTerminalStack nTerminalStackClone = nTerminalStack.clone();
 		final GGLLStack ggLLStackClone = ggLLStack.clone();
 		final ParseStack parseStackClone = parseStack.clone();
-		
+
 		final ParserToken parserTokenClone = (ParserToken)parseToken.clone();
 		parseToken.readNext();
 
@@ -80,16 +80,10 @@ public class DeleteStrategy extends ErroStrategy
 				}
 				Index = ggLLTable.getGraphNode(grViewStackNode.index).getSucessorIndex();
 			}
-			
-			if (ggLLStackClone.empty() && Index == 0)
-			{
-				parser.setError(new ErrorRecoveryException("Symbol \"" + parseToken.getLastToken().text + "\" was ignored."));
-				return 0;
-			}
 
 		}
 		while (Index != 0 && I < 0);
-		
+
 		if(I < 0)
 		{
 			parser.setParseToken(parserTokenClone);
