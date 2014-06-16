@@ -56,20 +56,13 @@ public class ParserError
 	{
 		sintaticErrorMessage(column, line, lastIndex);
 
-<<<<<<< HEAD
+
 		final ExtendedList<ErroStrategy> strategyList = new ExtendedList<ErroStrategy>();
-=======
-		final ExtendedList<ErroStrategy> strategyList = new ExtendedList<ErroStrategy>();		
->>>>>>> origin/master
+
 		strategyList.append(new InsertStrategy(this.analyzer));
 		strategyList.append(new ChangeStrategy(this.analyzer));
 		strategyList.append(new DeleteStrategy(this.analyzer));
 		strategyList.append(new DelimiterSearchStrategy(this.analyzer));
-<<<<<<< HEAD
-
-=======
-		
->>>>>>> origin/master
 
 		int index = lastIndex;
 		for (final ErroStrategy errorStrategy : strategyList.getAll())
