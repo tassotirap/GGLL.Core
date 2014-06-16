@@ -2,6 +2,8 @@ package ggll.core.syntax.model;
 
 import java.util.Stack;
 
+import com.rits.cloning.Cloner;
+
 public class GGLLStack
 {
 	Stack<GGLLNode> ggllStack;
@@ -19,8 +21,8 @@ public class GGLLStack
 	@Override
 	public GGLLStack clone()
 	{
-		final GGLLStack newInstance = new GGLLStack();
-		newInstance.ggllStack = (Stack<GGLLNode>) this.ggllStack.clone();
+		Cloner cloner = new Cloner();
+		GGLLStack newInstance = cloner.deepClone(this);
 		return newInstance;
 	}
 
