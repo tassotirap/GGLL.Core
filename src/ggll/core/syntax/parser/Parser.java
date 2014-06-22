@@ -324,7 +324,7 @@ public class Parser
 	{
 		this.parserStacks = parserStack;
 	}
-
+	
 	public void setParseToken(ParserToken parserToken)
 	{
 		this.parserToken = parserToken;

@@ -3,6 +3,7 @@ package ggll.core.syntax.model;
 import java.util.Stack;
 
 import com.rits.cloning.Cloner;
+import com.rits.cloning.ObjenesisInstantiationStrategy;
 
 public class GGLLStack
 {
@@ -18,10 +19,9 @@ public class GGLLStack
 		this.ggllStack.clear();
 	}
 
-	@Override
 	public GGLLStack clone()
 	{
-		Cloner cloner = new Cloner();
+		Cloner cloner = new Cloner(new ObjenesisInstantiationStrategy());
 		GGLLStack newInstance = cloner.deepClone(this);
 		return newInstance;
 	}

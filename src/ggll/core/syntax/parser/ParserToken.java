@@ -7,8 +7,9 @@ import ggll.core.lexical.Yytoken;
 import java.io.IOException;
 
 import com.rits.cloning.Cloner;
+import com.rits.cloning.ObjenesisInstantiationStrategy;
 
-public class ParserToken implements Cloneable
+public class ParserToken
 {
 	private Yytoken currentToken;
 	
@@ -116,10 +117,9 @@ public class ParserToken implements Cloneable
 		this.lastSymbol = lastSymbol;
 	}
 	
-	@Override
-	public Object clone()
+	public ParserToken clone()
 	{
-		Cloner cloner = new Cloner();
+		Cloner cloner = new Cloner(new ObjenesisInstantiationStrategy());
 		ParserToken clone = cloner.deepClone(this);
 		return clone;		
 	}	

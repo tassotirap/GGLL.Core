@@ -24,9 +24,8 @@ public class ChangeStrategy extends ErroStrategy
 		int I = -1;
 		final NTerminalStack nTerminalStackClone = this.nTerminalStack.clone();
 		final GGLLStack ggLLStackClone = this.ggLLStack.clone();
-		final ParseStack parseStackClone = this.parseStack.clone();
-		
-		final ParserToken parserTokenClone = (ParserToken)parseToken.clone();
+		final ParseStack parseStackClone = this.parseStack.clone();		
+		final ParserToken parserTokenClone = parseToken.clone();
 		parseToken.readNext();
 		
 		do

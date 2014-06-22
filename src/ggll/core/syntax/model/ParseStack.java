@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import com.rits.cloning.Cloner;
+import com.rits.cloning.ObjenesisInstantiationStrategy;
 
 public class ParseStack
 {
@@ -19,10 +20,9 @@ public class ParseStack
 		this.parseNode.clear();
 	}
 
-	@Override
 	public ParseStack clone()
 	{
-		Cloner cloner = new Cloner();
+		Cloner cloner = new Cloner(new ObjenesisInstantiationStrategy());
 		ParseStack newInstance = cloner.deepClone(this);
 		return newInstance;
 	}
