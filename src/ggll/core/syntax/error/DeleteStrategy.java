@@ -44,7 +44,7 @@ public class DeleteStrategy extends ErroStrategy
 						final String temp = ggLLTable.getTermial(ggLLTable.getGraphNode(Index).getNodeReference()).getName();
 						if (temp.equals(parseToken.getCurrentSymbol()))
 						{
-							parser.setError(new ErrorRecoveryException("Symbol \"" + this.parseToken.getLastToken().text + "\" was ignored."));
+							parser.setError(new ErrorRecoveryException("symbol \"" + this.parseToken.getLastToken().text + "\" was ignored."));
 							parser.getParserStacks().setParseStack(parseStackClone);
 							parser.getParserStacks().setGGLLStack(ggLLStackClone);
 							I = Index;

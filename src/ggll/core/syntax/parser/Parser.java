@@ -68,9 +68,9 @@ public class Parser
 				output();
 			}
 			this.currentIndex = ggllStackNode.index;
-			
+
 			executeSemanticRoutine(getGGLLTable().getGraphNode(this.currentIndex));
-			
+
 			this.currentIndex = getGGLLTable().getGraphNode(this.currentIndex).getSucessorIndex();
 			this.safeIndex = this.currentIndex;
 		}
@@ -114,12 +114,10 @@ public class Parser
 			}
 			catch (final Exception e)
 			{
-				sucess = false;
 				setError(e);
 			}
 			catch (Throwable e)
 			{
-				sucess = false;
 				setError((Exception)e);
 			}
 		}
@@ -212,7 +210,6 @@ public class Parser
 							catch (final Exception e)
 							{
 								setError(e);
-								return false;
 							}
 
 							this.currentIndex = currentGraphNode.getSucessorIndex();
@@ -312,6 +309,7 @@ public class Parser
 
 	public void setError(Exception error)
 	{
+		sucess = false;
 		getErrorList().append(error);
 	}
 
@@ -324,7 +322,7 @@ public class Parser
 	{
 		this.parserStacks = parserStack;
 	}
-	
+
 	public void setParseToken(ParserToken parserToken)
 	{
 		this.parserToken = parserToken;

@@ -16,27 +16,27 @@ public class DelimiterSearchStrategy extends ErroStrategy
 	{
 		super(analyzer);
 	}
-	
+
 	@Override
 	protected int tryFix(int Index, int column, int line) throws LexicalException
-	{	
-		int currentIndex = Index;		
+	{
+		int currentIndex = Index;
 		ParseStack parseStackClone = this.parseStack.clone();
 		GGLLStack ggLLStackClone = this.ggLLStack.clone();
 		final ParserToken parserTokenClone = (ParserToken) parseToken.clone();
-		
+
 		while (!parserTokenClone.getCurrentToken().text.equals("$"))
 		{
 			while (Index != 0 && !ggLLStackClone.empty())
 			{
 				final GGLLNode grViewStackNode = ggLLStackClone.pop();
 				ParseNode auxParseSNode = null;
-				
+
 				while (parseStackClone.size() > grViewStackNode.size)
 				{
 					auxParseSNode = parseStackClone.pop();
 				}
-				
+
 				if (auxParseSNode != null)
 				{
 					final TableNode currentNTerminal = ggLLTable.getNTerminal(ggLLTable.getGraphNode(grViewStackNode.index).getNodeReference());
@@ -48,12 +48,12 @@ public class DelimiterSearchStrategy extends ErroStrategy
 					TableNode terminalNode = ggLLTable.getTermial(ggLLTable.getGraphNode(Index).getNodeReference());
 					if (terminalNode.getName().equals(parserTokenClone.getCurrentSymbol()))
 					{
-						this.parser.setError(new ErrorRecoveryException("Symbol \"" + terminalNode.getName() + "\" at before column " + column + " assumed as delimiter."));
+						this.parser.setError(new ErrorRecoveryException("symbol \"" + terminalNode.getName() + "\" before column " + column + " assumed a delimiter."));
 						parser.getParserStacks().setParseStack(parseStackClone);
-						
+
 						this.parser.getParserStacks().setGGLLStack(ggLLStackClone);
 						this.parser.getParserStacks().setParseStack(parseStackClone);
-						this.parser.setParseToken(parserTokenClone);						
+						this.parser.setParseToken(parserTokenClone);
 						return Index;
 					}
 					else
@@ -68,13 +68,13 @@ public class DelimiterSearchStrategy extends ErroStrategy
 					Index = ggLLTable.getGraphNode(Index).getSucessorIndex();
 				}
 			}
-			
+
 			parserTokenClone.readNext();
-			Index = currentIndex;			
+			Index = currentIndex;
 			parseStackClone = this.parseStack.clone();
-			ggLLStackClone = this.ggLLStack.clone();			
+			ggLLStackClone = this.ggLLStack.clone();
 		}
-		
+
 		return -1;
 	}
 }

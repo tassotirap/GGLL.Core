@@ -92,7 +92,7 @@ public class InsertStrategy extends ErroStrategy
 						final String temp = ggLLTable.getTermial(ggLLTable.getGraphNode(Index).getNodeReference()).getName();
 						if (temp.equals(parseToken.getCurrentSymbol()))
 						{
-							parser.setError(new ErrorRecoveryException("Symbol \"" + terminalNode.getName() + "\" inserted before column " + column + "."));
+							parser.setError(new ErrorRecoveryException("symbol \"" + terminalNode.getName() + "\" inserted before column " + column + "."));
 							parseStackClone.push(new ParseNode(terminalNode.getFlag(), terminalNode.getName(), terminalNode.getName()));
 							parser.getParserStacks().setParseStack(parseStackClone);
 							parser.getParserStacks().setGGLLStack(ggLLStackClone);
@@ -133,7 +133,7 @@ public class InsertStrategy extends ErroStrategy
 
 			if (ggLLStackClone.empty() && Index == 0 && parseToken.getCurrentSymbol().equals("$"))
 			{
-				parser.setError(new ErrorRecoveryException("Symbol \"" + terminalNode.getName() + "\" inserted before column " + column + "."));
+				parser.setError(new ErrorRecoveryException("symbol \"" + terminalNode.getName() + "\" inserted before column " + column + "."));
 				parseStackClone.push(new ParseNode(terminalNode.getFlag(), terminalNode.getName(), terminalNode.getName()));
 				parser.getParserStacks().setParseStack(parseStackClone);
 				return 0;

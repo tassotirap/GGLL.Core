@@ -100,7 +100,7 @@ public class ChangeStrategy extends ErroStrategy
 						final String temp = ggLLTable.getTermial(ggLLTable.getGraphNode(Index).getNodeReference()).getName();
 						if (temp.equals(parseToken.getCurrentSymbol()))
 						{
-							parser.setError(new ErrorRecoveryException("Symbol \"" + parseToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\""));
+							parser.setError(new ErrorRecoveryException("symbol \"" + parseToken.getLastToken().text + "\" has been replaced by \"" + terminalNode.getName() + "\""));
 							parseStackClone.push(new ParseNode(terminalNode.getFlag(), terminalNode.getName(), terminalNode.getName()));
 							parser.getParserStacks().setParseStack(parseStackClone);
 							parser.getParserStacks().setGGLLStack(ggLLStackClone);

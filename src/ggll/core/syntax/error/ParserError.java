@@ -44,7 +44,7 @@ public class ParserError
 		String error = "Error at line: " + line + " and column: " + column + ", \"" + this.analyzer.getParserToken().getCurrentToken().text + "\" found";
 		if (expecteds.size() > 0)
 		{
-			error += ", but " + join(expecteds, ",") + " was expected.";
+			error += ", but " + join(expecteds, ",") + " expected.";
 		}
 		else
 		{
@@ -76,7 +76,7 @@ public class ParserError
 		}
 		if (index < 0)
 		{
-			this.analyzer.setError(new ErrorRecoveryException("Symbol \"" + this.analyzer.getParserToken().getCurrentToken().text + "\" was ignored."));
+			this.analyzer.setError(new ErrorRecoveryException("symbol \"" + this.analyzer.getParserToken().getCurrentToken().text + "\" was ignored."));
 			this.analyzer.getParserToken().readNext();
 			if (this.analyzer.getParserToken().getCurrentToken().text.equals("$"))
 			{
